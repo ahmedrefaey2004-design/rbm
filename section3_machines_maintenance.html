@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مصر ستيل — الماكينات والصيانة</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d1117;--bg2:#13181f;--bg3:#1c2230;--card:#181e2a;
+  --border:#252d3d;--border2:#334060;
+  --steel:#5b9bd5;--steel2:#3a7fbf;
+  --green:#22c55e;--amber:#f59e0b;--red:#ef4444;
+  --purple:#a78bfa;--teal:#14b8a6;--orange:#f97316;
+  --text:#dde3f0;--text2:#7a87a0;--text3:#3d4a60;
+  --font:'Cairo',sans-serif;--mono:'JetBrains Mono',monospace;
+  --r:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;min-height:100vh;}
+
+/* HEADER */
+.header{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100;}
+.logo-dot{width:10px;height:10px;border-radius:50%;background:var(--steel);box-shadow:0 0 12px var(--steel);}
+.htab{padding:6px 15px;border-radius:6px;border:none;background:transparent;color:var(--text2);font-family:var(--font);font-size:13px;cursor:pointer;transition:all .2s;border-bottom:2px solid transparent;}
+.htab.active{color:var(--steel);border-bottom-color:var(--steel);background:rgba(91,155,213,.07);border-radius:6px 6px 0 0;}
+.htab:hover:not(.active){background:var(--bg3);color:var(--text);}
+
+/* LAYOUT */
+.page{max-width:1320px;margin:0 auto;padding:22px 24px;}
+.pg-title{font-size:21px;font-weight:700;margin-bottom:3px;}
+.pg-sub{font-size:13px;color:var(--text2);margin-bottom:22px;}
+
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:22px;}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;position:relative;overflow:hidden;}
+.kpi::before{content:'';position:absolute;top:0;right:0;width:3px;height:100%;background:var(--a,var(--steel));}
+.kpi-label{font-size:11px;color:var(--text2);margin-bottom:5px;}
+.kpi-value{font-size:23px;font-weight:700;font-family:var(--mono);}
+.kpi-sub{font-size:11px;color:var(--text3);margin-top:3px;}
+
+/* GRID */
+.main-grid{display:grid;grid-template-columns:1fr 370px;gap:18px;}
+.sidebar{display:flex;flex-direction:column;gap:14px;}
+
+/* CARD */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;}
+.card-hd{padding:13px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.card-title{font-weight:600;font-size:14px;display:flex;align-items:center;gap:7px;}
+
+/* TABS */
+.tab-bar{display:flex;gap:2px;padding:12px 18px 0;border-bottom:1px solid var(--border);}
+.tab{padding:7px 13px;border-radius:7px 7px 0 0;border:none;background:transparent;color:var(--text2);font-family:var(--font);font-size:13px;cursor:pointer;transition:all .2s;border-bottom:2px solid transparent;}
+.tab.active{color:var(--steel);border-bottom-color:var(--steel);background:rgba(91,155,213,.06);}
+.tab:hover:not(.active){color:var(--text);background:var(--bg3);}
+.tab-content{display:none;}
+.tab-content.active{display:block;}
+
+/* TABLE */
+.tbl-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+th{background:var(--bg3);color:var(--text2);font-size:11px;font-weight:600;letter-spacing:.4px;padding:9px 14px;text-align:right;border-bottom:1px solid var(--border);white-space:nowrap;}
+td{padding:10px 14px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.018);}
+.mono{font-family:var(--mono);font-size:12px;}
+
+/* BADGE */
+.badge{display:inline-flex;align-items:center;gap:3px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;}
+.bg{background:rgba(34,197,94,.11);color:var(--green);border:1px solid rgba(34,197,94,.2);}
+.ba{background:rgba(245,158,11,.11);color:var(--amber);border:1px solid rgba(245,158,11,.2);}
+.br{background:rgba(239,68,68,.11);color:var(--red);border:1px solid rgba(239,68,68,.2);}
+.bb{background:rgba(91,155,213,.11);color:var(--steel);border:1px solid rgba(91,155,213,.2);}
+.bp{background:rgba(167,139,250,.11);color:var(--purple);border:1px solid rgba(167,139,250,.2);}
+.bt{background:rgba(20,184,166,.11);color:var(--teal);border:1px solid rgba(20,184,166,.2);}
+.bo{background:rgba(249,115,22,.11);color:var(--orange);border:1px solid rgba(249,115,22,.2);}
+
+/* FORM */
+.fc{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;}
+.fc-hd{padding:12px 16px;border-bottom:1px solid var(--border);font-weight:600;font-size:13px;color:var(--steel);display:flex;align-items:center;gap:7px;}
+.fc-body{padding:14px 16px;display:flex;flex-direction:column;gap:11px;}
+.field{display:flex;flex-direction:column;gap:4px;}
+.field label{font-size:11px;color:var(--text2);font-weight:600;}
+.field input,.field select,.field textarea{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:8px 11px;color:var(--text);font-family:var(--font);font-size:13px;outline:none;transition:border .2s;width:100%;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--steel);}
+.fr2{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.fc-actions{display:flex;gap:8px;padding:0 16px 14px;}
+
+/* BTN */
+.btn{padding:7px 13px;border-radius:7px;border:none;font-family:var(--font);font-size:13px;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:5px;font-weight:600;}
+.btn-p{background:var(--steel);color:#000;}
+.btn-p:hover{background:var(--steel2);}
+.btn-g{background:var(--bg3);color:var(--text2);border:1px solid var(--border);}
+.btn-g:hover{color:var(--text);}
+.btn-d{background:transparent;color:var(--red);border:1px solid transparent;padding:3px 7px;font-size:12px;}
+.btn-d:hover{background:rgba(239,68,68,.1);border-color:var(--red);}
+.btn-e{background:transparent;color:var(--steel);border:1px solid transparent;padding:3px 7px;font-size:12px;}
+.btn-e:hover{background:rgba(91,155,213,.1);border-color:var(--steel);}
+.btn-sm{padding:5px 10px;font-size:12px;}
+.btn-xs{padding:3px 8px;font-size:11px;}
+.btn-warn{background:rgba(245,158,11,.15);color:var(--amber);border:1px solid rgba(245,158,11,.3);}
+
+/* PROGRESS */
+.pbar{background:var(--bg);border-radius:4px;height:5px;overflow:hidden;margin-top:3px;}
+.pfill{height:100%;border-radius:4px;transition:width .5s;}
+
+/* MACHINE CARD GRID */
+.machine-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;padding:16px;}
+.mcard{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:16px;position:relative;overflow:hidden;transition:border .2s;}
+.mcard:hover{border-color:var(--border2);}
+.mcard::before{content:'';position:absolute;top:0;right:0;width:100%;height:3px;background:var(--mc,var(--steel));}
+.mcard-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;}
+.mcard-code{font-family:var(--mono);font-size:11px;color:var(--text2);}
+.mcard-name{font-weight:700;font-size:14px;margin-bottom:3px;}
+.mcard-type{font-size:12px;color:var(--text2);}
+.mcard-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;}
+.mstat{background:var(--bg);border-radius:7px;padding:8px 10px;}
+.mstat-label{font-size:10px;color:var(--text3);margin-bottom:3px;}
+.mstat-val{font-family:var(--mono);font-size:14px;font-weight:600;}
+.mcard-actions{display:flex;gap:6px;margin-top:12px;}
+
+/* OEE gauge */
+.oee-ring{position:relative;width:64px;height:64px;flex-shrink:0;}
+.oee-ring svg{transform:rotate(-90deg);}
+.oee-ring-label{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:13px;font-weight:700;}
+
+/* MAINTENANCE TIMELINE */
+.mt-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);}
+.mt-item:last-child{border-bottom:none;}
+.mt-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.mt-body{flex:1;}
+.mt-title{font-weight:600;font-size:13px;}
+.mt-meta{font-size:11px;color:var(--text2);margin-top:2px;}
+
+/* ALERT */
+.alert{background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:11px 14px;margin-bottom:14px;font-size:13px;color:var(--red);display:flex;align-items:center;gap:10px;}
+.alert-warn{background:rgba(245,158,11,.07);border-color:rgba(245,158,11,.2);color:var(--amber);}
+
+/* MODAL */
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:999;align-items:center;justify-content:center;backdrop-filter:blur(3px);}
+.modal-ov.open{display:flex;}
+.modal{background:var(--card);border:1px solid var(--border2);border-radius:14px;width:540px;max-width:95vw;animation:su .25s ease;}
+@keyframes su{from{transform:translateY(18px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal-hd{padding:17px 22px 13px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.modal-title{font-weight:700;font-size:15px;}
+.modal-x{background:none;border:none;color:var(--text2);font-size:20px;cursor:pointer;border-radius:5px;padding:3px;}
+.modal-x:hover{background:var(--bg3);}
+.modal-body{padding:18px 22px;display:flex;flex-direction:column;gap:12px;max-height:70vh;overflow-y:auto;}
+.modal-ft{padding:13px 22px;border-top:1px solid var(--border);display:flex;gap:9px;justify-content:flex-end;}
+
+/* TOAST */
+.toast-c{position:fixed;bottom:22px;left:22px;z-index:9999;display:flex;flex-direction:column;gap:7px;}
+.toast{background:var(--bg2);border:1px solid var(--border2);border-radius:8px;padding:10px 15px;font-size:13px;display:flex;align-items:center;gap:9px;animation:ti .3s ease;min-width:210px;}
+@keyframes ti{from{transform:translateX(-18px);opacity:0}to{transform:translateX(0);opacity:1}}
+.toast.s{border-color:rgba(34,197,94,.3);}
+.toast.e{border-color:rgba(239,68,68,.3);}
+
+.empty{text-align:center;padding:32px;color:var(--text2);}
+.divider{height:1px;background:var(--border);margin:8px 0;}
+.search-row{padding:11px 18px;border-bottom:1px solid var(--border);display:flex;gap:9px;align-items:center;}
+.sbox{position:relative;flex:1;}
+.sbox input{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:7px 11px 7px 30px;color:var(--text);font-family:var(--font);font-size:13px;width:100%;outline:none;transition:border .2s;}
+.sbox input:focus{border-color:var(--steel);}
+.sbox::before{content:'⌕';position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:15px;}
+
+@media(max-width:900px){.main-grid{grid-template-columns:1fr;}.kpi-row{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div style="display:flex;align-items:center;gap:10px;">
+    <div class="logo-dot"></div>
+    <div>
+      <span style="font-weight:700;font-size:16px">مصر ستيل</span>
+      <small style="font-size:11px;color:var(--text2);margin-right:4px">— تشكيل المعادن | كراسي وترابيزات</small>
+    </div>
+  </div>
+  <div style="display:flex;gap:3px;">
+    <button class="htab active" onclick="nav('machines')">🏗️ الماكينات</button>
+    <button class="htab" onclick="nav('maintenance')">🔧 الصيانة</button>
+    <button class="htab" onclick="nav('oee')">📊 كفاءة OEE</button>
+    <button class="htab" onclick="nav('breakdowns')">⚡ الأعطال</button>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <span style="font-size:12px;color:var(--text2)">القسم 3 من 6</span>
+    <div style="width:80px;height:4px;background:var(--bg3);border-radius:2px;overflow:hidden;">
+      <div style="width:50%;height:100%;background:var(--steel);border-radius:2px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MACHINES ══ -->
+<div id="pg-machines" class="page">
+  <div class="pg-title">🏗️ بيانات الماكينات</div>
+  <div class="pg-sub">كل ماكينات مصر ستيل · ساعات التشغيل · الحالة الآنية</div>
+
+  <div class="kpi-row">
+    <div class="kpi" style="--a:var(--steel)"><div class="kpi-label">إجمالي الماكينات</div><div class="kpi-value" id="k-total">0</div><div class="kpi-sub">ماكينة</div></div>
+    <div class="kpi" style="--a:var(--green)"><div class="kpi-label">تعمل الآن</div><div class="kpi-value" id="k-running">0</div><div class="kpi-sub">في الإنتاج</div></div>
+    <div class="kpi" style="--a:var(--amber)"><div class="kpi-label">صيانة دورية</div><div class="kpi-value" id="k-maint">0</div><div class="kpi-sub">مجدولة</div></div>
+    <div class="kpi" style="--a:var(--red)"><div class="kpi-label">متوقفة / عطل</div><div class="kpi-value" id="k-down">0</div><div class="kpi-sub">خارج الخدمة</div></div>
+    <div class="kpi" style="--a:var(--purple)"><div class="kpi-label">متوسط OEE</div><div class="kpi-value" id="k-oee">0%</div><div class="kpi-sub">كفاءة التشغيل</div></div>
+  </div>
+
+  <div id="machine-alerts"></div>
+
+  <div class="main-grid">
+    <div>
+      <div class="card">
+        <div class="card-hd">
+          <div class="card-title">🏭 قائمة الماكينات</div>
+          <div style="display:flex;gap:7px;">
+            <button class="btn btn-g btn-sm" id="view-toggle" onclick="toggleView()">🔲 عرض كروت</button>
+            <button class="btn btn-g btn-sm" onclick="exportMachines()">↓ تصدير</button>
+          </div>
+        </div>
+        <div class="search-row">
+          <div class="sbox"><input type="text" id="m-search" placeholder="بحث بالاسم أو الكود..." oninput="renderMachines()"></div>
+          <select id="m-status-f" onchange="renderMachines()" style="background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:7px 11px;color:var(--text);font-family:var(--font);font-size:13px;outline:none;">
+            <option value="">كل الحالات</option>
+            <option value="تعمل">تعمل</option>
+            <option value="صيانة">صيانة</option>
+            <option value="متوقفة">متوقفة</option>
+            <option value="عطل">عطل</option>
+          </select>
+        </div>
+        <div id="machines-view"></div>
+      </div>
+    </div>
+
+    <!-- sidebar -->
+    <div class="sidebar">
+      <div class="fc">
+        <div class="fc-hd">➕ إضافة / تعديل ماكينة</div>
+        <div class="fc-body">
+          <div class="fr2">
+            <div class="field"><label>كود الماكينة</label><input type="text" id="mc-code" placeholder="MCH-001"></div>
+            <div class="field"><label>النوع</label>
+              <select id="mc-type">
+                <option>ماكينة قطع</option><option>ماكينة لحام</option>
+                <option>ماكينة جلخ</option><option>ماكينة تشكيل</option>
+                <option>ماكينة ثني</option><option>كمبريسور</option>
+                <option>أخرى</option>
+              </select>
+            </div>
+          </div>
+          <div class="field"><label>اسم الماكينة</label><input type="text" id="mc-name" placeholder="مثال: ماكينة قطع بلازما CNC"></div>
+          <div class="field"><label>الماركة / الموديل</label><input type="text" id="mc-brand" placeholder="مثال: Hypertherm XPR300"></div>
+          <div class="fr2">
+            <div class="field"><label>سنة الصنع</label><input type="number" id="mc-year" placeholder="2020" min="1990" max="2030"></div>
+            <div class="field"><label>الحالة</label>
+              <select id="mc-status"><option>تعمل</option><option>صيانة</option><option>متوقفة</option><option>عطل</option></select>
+            </div>
+          </div>
+          <div class="fr2">
+            <div class="field"><label>ساعات التشغيل</label><input type="number" id="mc-hours" placeholder="0" min="0"></div>
+            <div class="field"><label>قيمة الشراء (ج)</label><input type="number" id="mc-value" placeholder="0"></div>
+          </div>
+          <div class="field"><label>موقع الماكينة في المصنع</label>
+            <select id="mc-location">
+              <option>قسم القطع</option><option>قسم اللحام</option>
+              <option>قسم الجلخ والتشطيب</option><option>قسم التشكيل</option><option>الورشة العامة</option>
+            </select>
+          </div>
+          <div class="field"><label>ملاحظات</label><input type="text" id="mc-notes" placeholder="أي معلومات إضافية..."></div>
+        </div>
+        <div class="fc-actions">
+          <button class="btn btn-p" style="flex:1" onclick="saveMachine()">💾 حفظ</button>
+          <button class="btn btn-g" onclick="clearMachineForm()">✕</button>
+        </div>
+      </div>
+
+      <!-- Hours log -->
+      <div class="fc">
+        <div class="fc-hd">⏱️ تسجيل ساعات تشغيل</div>
+        <div class="fc-body">
+          <div class="field"><label>الماكينة</label>
+            <select id="h-machine"><option value="">— اختر —</option></select>
+          </div>
+          <div class="fr2">
+            <div class="field"><label>ساعات اليوم</label><input type="number" id="h-hours" placeholder="0" min="0" max="24" step="0.5"></div>
+            <div class="field"><label>التاريخ</label><input type="date" id="h-date"></div>
+          </div>
+          <div class="field"><label>الوردية</label>
+            <select id="h-shift"><option>الأولى (8ص-4م)</option><option>الثانية (4م-12م)</option><option>ليلي (12م-8ص)</option></select>
+          </div>
+        </div>
+        <div class="fc-actions">
+          <button class="btn btn-p" style="flex:1" onclick="logHours()">تسجيل</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MAINTENANCE ══ -->
+<div id="pg-maintenance" class="page" style="display:none">
+  <div class="pg-title">🔧 إدارة الصيانة</div>
+  <div class="pg-sub">وقائية · دورية · طارئة · قطع الغيار</div>
+
+  <div class="kpi-row">
+    <div class="kpi" style="--a:var(--teal)"><div class="kpi-label">صيانة وقائية</div><div class="kpi-value" id="km-prev">0</div><div class="kpi-sub">هذا الشهر</div></div>
+    <div class="kpi" style="--a:var(--steel)"><div class="kpi-label">صيانة دورية</div><div class="kpi-value" id="km-sched">0</div><div class="kpi-sub">مجدولة</div></div>
+    <div class="kpi" style="--a:var(--red)"><div class="kpi-label">صيانة طارئة</div><div class="kpi-value" id="km-emrg">0</div><div class="kpi-sub">هذا الشهر</div></div>
+    <div class="kpi" style="--a:var(--amber)"><div class="kpi-label">تكلفة الصيانة</div><div class="kpi-value" id="km-cost">0</div><div class="kpi-sub">جنيه هذا الشهر</div></div>
+    <div class="kpi" style="--a:var(--green)"><div class="kpi-label">صيانة مكتملة</div><div class="kpi-value" id="km-done">0</div><div class="kpi-sub">هذا الشهر</div></div>
+  </div>
+
+  <div id="maint-alerts"></div>
+
+  <div class="main-grid">
+    <div>
+      <div class="card">
+        <div class="tab-bar">
+          <button class="tab active" onclick="switchTab(this,'mt-list')">سجل الصيانة</button>
+          <button class="tab" onclick="switchTab(this,'mt-schedule')">جدول مجدول</button>
+          <button class="tab" onclick="switchTab(this,'mt-spares')">قطع الغيار</button>
+        </div>
+        <div class="search-row">
+          <div class="sbox"><input type="text" id="mt-search" placeholder="بحث..." oninput="renderMaint()"></div>
+          <select id="mt-type-f" onchange="renderMaint()" style="background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:7px 11px;color:var(--text);font-family:var(--font);font-size:13px;outline:none;">
+            <option value="">كل الأنواع</option>
+            <option value="وقائية">وقائية</option>
+            <option value="دورية">دورية</option>
+            <option value="طارئة">طارئة</option>
+          </select>
+          <button class="btn btn-g btn-sm" onclick="exportMaint()">↓ تصدير</button>
+        </div>
+
+        <div class="tab-content active" id="mt-list">
+          <div class="tbl-wrap"><table>
+            <thead><tr>
+              <th>رقم</th><th>الماكينة</th><th>نوع الصيانة</th><th>الوصف</th>
+              <th>الفني</th><th>التاريخ</th><th>مدة الإيقاف</th><th>التكلفة</th><th>الحالة</th><th>إجراء</th>
+            </tr></thead>
+            <tbody id="maint-tbody"></tbody>
+          </table></div>
+        </div>
+
+        <div class="tab-content" id="mt-schedule">
+          <div style="padding:14px 18px;display:flex;flex-direction:column;gap:10px;" id="schedule-list"></div>
+        </div>
+
+        <div class="tab-content" id="mt-spares">
+          <div class="tbl-wrap"><table>
+            <thead><tr>
+              <th>قطعة الغيار</th><th>للماكينة</th><th>الكمية</th><th>الحد الأدنى</th><th>سعر الوحدة</th><th>الحالة</th><th>إجراء</th>
+            </tr></thead>
+            <tbody id="spares-tbody"></tbody>
+          </table></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- sidebar maintenance -->
+    <div class="sidebar">
+      <div class="fc">
+        <div class="fc-hd">➕ تسجيل صيانة</div>
+        <div class="fc-body">
+          <div class="field"><label>الماكينة</label>
+            <select id="mt-machine"><option value="">— اختر —</option></select>
+          </div>
+          <div class="fr2">
+            <div class="field"><label>نوع الصيانة</label>
+              <select id="mt-type">
+                <option value="وقائية">وقائية</option>
+                <option value="دورية">دورية</option>
+                <option value="طارئة">طارئة</option>
+              </select>
+            </div>
+            <div class="field"><label>التاريخ</label><input type="date" id="mt-date"></div>
+          </div>
+          <div class="field"><label>وصف العمل</label><textarea id="mt-desc" placeholder="ما تم عمله..." style="min-height:60px;resize:vertical"></textarea></div>
+          <div class="fr2">
+            <div class="field"><label>الفني المسؤول</label><input type="text" id="mt-tech" placeholder="اسم الفني"></div>
+            <div class="field"><label>مدة الإيقاف (ساعة)</label><input type="number" id="mt-downtime" placeholder="0" min="0" step="0.5"></div>
+          </div>
+          <div class="fr2">
+            <div class="field"><label>تكلفة العمل (ج)</label><input type="number" id="mt-labor-cost" placeholder="0"></div>
+            <div class="field"><label>تكلفة القطع (ج)</label><input type="number" id="mt-parts-cost" placeholder="0"></div>
+          </div>
+          <div class="field"><label>الحالة</label>
+            <select id="mt-status"><option>مكتملة</option><option>جارية</option><option>مجدولة</option></select>
+          </div>
+        </div>
+        <div class="fc-actions">
+          <button class="btn btn-p" style="flex:1" onclick="saveMaint()">💾 حفظ الصيانة</button>
+          <button class="btn btn-g" onclick="clearMaintForm()">✕</button>
+        </div>
+      </div>
+
+      <!-- Spare parts form -->
+      <div class="fc">
+        <div class="fc-hd">🔩 إضافة قطعة غيار</div>
+        <div class="fc-body">
+          <div class="field"><label>اسم القطعة</label><input type="text" id="sp-name" placeholder="مثال: شفرة قطع بلازما"></div>
+          <div class="field"><label>للماكينة</label>
+            <select id="sp-machine"><option value="">— اختر —</option></select>
+          </div>
+          <div class="fr3">
+            <div class="field"><label>الكمية</label><input type="number" id="sp-qty" placeholder="0" min="0"></div>
+            <div class="field"><label>الحد الأدنى</label><input type="number" id="sp-min" placeholder="0" min="0"></div>
+            <div class="field"><label>السعر (ج)</label><input type="number" id="sp-price" placeholder="0"></div>
+          </div>
+        </div>
+        <div class="fc-actions">
+          <button class="btn btn-p" style="flex:1" onclick="saveSpare()">إضافة</button>
+        </div>
+      </div>
+
+      <!-- Next maintenance alert -->
+      <div class="fc">
+        <div class="fc-hd">📅 الصيانة القادمة</div>
+        <div style="padding:12px 16px;" id="next-maint-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ OEE ══ -->
+<div id="pg-oee" class="page" style="display:none">
+  <div class="pg-title">📊 كفاءة التشغيل OEE</div>
+  <div class="pg-sub">Overall Equipment Effectiveness — مؤشر الكفاءة الشاملة لكل ماكينة</div>
+
+  <div class="kpi-row" style="grid-template-columns:repeat(4,1fr)">
+    <div class="kpi" style="--a:var(--green)"><div class="kpi-label">متوسط OEE المصنع</div><div class="kpi-value" id="oee-avg">0%</div><div class="kpi-sub">هدف: 85%</div></div>
+    <div class="kpi" style="--a:var(--steel)"><div class="kpi-label">أعلى كفاءة</div><div class="kpi-value" id="oee-best">—</div><div class="kpi-sub">أفضل ماكينة</div></div>
+    <div class="kpi" style="--a:var(--red)"><div class="kpi-label">أقل كفاءة</div><div class="kpi-value" id="oee-worst">—</div><div class="kpi-sub">تحتاج تحسين</div></div>
+    <div class="kpi" style="--a:var(--amber)"><div class="kpi-label">ساعات التوقف</div><div class="kpi-value" id="oee-down-h">0</div><div class="kpi-sub">ساعة هذا الشهر</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-hd"><div class="card-title">📈 OEE تفصيلي لكل ماكينة</div></div>
+    <div class="tbl-wrap"><table>
+      <thead><tr>
+        <th>الماكينة</th><th>توافر A</th><th>أداء P</th><th>جودة Q</th>
+        <th>OEE</th><th>ساعات المتاحة</th><th>ساعات الفعلية</th><th>الحالة</th>
+      </tr></thead>
+      <tbody id="oee-tbody"></tbody>
+    </table></div>
+  </div>
+
+  <div style="margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+    <div class="card">
+      <div class="card-hd"><div class="card-title">📌 تسجيل بيانات OEE</div></div>
+      <div style="padding:16px;display:flex;flex-direction:column;gap:11px;">
+        <div class="field"><label>الماكينة</label><select id="oee-machine"><option value="">— اختر —</option></select></div>
+        <div class="fr3">
+          <div class="field"><label>ساعات متاحة</label><input type="number" id="oee-avail" placeholder="8" min="0" max="24"></div>
+          <div class="field"><label>ساعات فعلية</label><input type="number" id="oee-actual" placeholder="0" min="0" max="24"></div>
+          <div class="field"><label>وقت توقف</label><input type="number" id="oee-down" placeholder="0" min="0" step="0.5"></div>
+        </div>
+        <div class="fr3">
+          <div class="field"><label>وحدات مخططة</label><input type="number" id="oee-planned" placeholder="0" min="0"></div>
+          <div class="field"><label>وحدات فعلية</label><input type="number" id="oee-produced" placeholder="0" min="0"></div>
+          <div class="field"><label>وحدات مقبولة</label><input type="number" id="oee-good" placeholder="0" min="0"></div>
+        </div>
+        <button class="btn btn-p" onclick="saveOEE()">حساب وحفظ OEE</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd"><div class="card-title">💡 دليل OEE</div></div>
+      <div style="padding:16px;font-size:13px;display:flex;flex-direction:column;gap:10px;">
+        <div style="background:var(--bg3);border-radius:8px;padding:12px;">
+          <div style="font-weight:600;margin-bottom:6px;color:var(--steel)">OEE = A × P × Q</div>
+          <div style="color:var(--text2);line-height:1.8">
+            <div><strong style="color:var(--text)">A (Availability)</strong> — نسبة وقت التشغيل الفعلي</div>
+            <div><strong style="color:var(--text)">P (Performance)</strong> — نسبة الأداء مقارنة بالمخطط</div>
+            <div><strong style="color:var(--text)">Q (Quality)</strong> — نسبة الوحدات المقبولة</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="display:flex;justify-content:space-between;padding:5px 8px;border-radius:6px;background:rgba(34,197,94,.07)"><span>ممتاز</span><span style="color:var(--green);font-family:var(--mono)">≥ 85%</span></div>
+          <div style="display:flex;justify-content:space-between;padding:5px 8px;border-radius:6px;background:rgba(245,158,11,.07)"><span>جيد</span><span style="color:var(--amber);font-family:var(--mono)">65–84%</span></div>
+          <div style="display:flex;justify-content:space-between;padding:5px 8px;border-radius:6px;background:rgba(239,68,68,.07)"><span>يحتاج تحسين</span><span style="color:var(--red);font-family:var(--mono)">< 65%</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ BREAKDOWNS ══ -->
+<div id="pg-breakdowns" class="page" style="display:none">
+  <div class="pg-title">⚡ سجل الأعطال</div>
+  <div class="pg-sub">تتبع الأعطال · أسبابها · زمن الإصلاح · التأثير على الإنتاج</div>
+
+  <div class="kpi-row" style="grid-template-columns:repeat(4,1fr)">
+    <div class="kpi" style="--a:var(--red)"><div class="kpi-label">أعطال هذا الشهر</div><div class="kpi-value" id="bd-total">0</div><div class="kpi-sub">عطل</div></div>
+    <div class="kpi" style="--a:var(--amber)"><div class="kpi-label">متوسط وقت الإصلاح</div><div class="kpi-value" id="bd-mttr">0</div><div class="kpi-sub">ساعة</div></div>
+    <div class="kpi" style="--a:var(--orange)"><div class="kpi-label">خسارة الإنتاج</div><div class="kpi-value" id="bd-loss">0</div><div class="kpi-sub">ج بسبب التوقف</div></div>
+    <div class="kpi" style="--a:var(--purple)"><div class="kpi-label">أكثر ماكينة أعطالاً</div><div class="kpi-value" id="bd-worst-m" style="font-size:14px;padding-top:3px">—</div><div class="kpi-sub"> </div></div>
+  </div>
+
+  <div class="main-grid">
+    <div class="card">
+      <div class="card-hd">
+        <div class="card-title">⚡ سجل الأعطال</div>
+        <button class="btn btn-g btn-sm" onclick="exportBreakdowns()">↓ تصدير</button>
+      </div>
+      <div class="tbl-wrap"><table>
+        <thead><tr>
+          <th>رقم</th><th>الماكينة</th><th>نوع العطل</th><th>الوصف</th>
+          <th>تاريخ العطل</th><th>وقت الإصلاح (ساعة)</th><th>خسارة إنتاج</th><th>الحالة</th><th>إجراء</th>
+        </tr></thead>
+        <tbody id="bd-tbody"></tbody>
+      </table></div>
+    </div>
+
+    <div class="sidebar">
+      <div class="fc">
+        <div class="fc-hd">⚡ تسجيل عطل</div>
+        <div class="fc-body">
+          <div class="field"><label>الماكينة</label>
+            <select id="bd-machine"><option value="">— اختر —</option></select>
+          </div>
+          <div class="field"><label>نوع العطل</label>
+            <select id="bd-type">
+              <option>عطل كهربائي</option><option>عطل ميكانيكي</option>
+              <option>كسر شفرة / أداة</option><option>تسريب زيت / هيدروليك</option>
+              <option>عطل في التحكم PLC</option><option>توقف حارس حراري</option>
+              <option>أخرى</option>
+            </select>
+          </div>
+          <div class="field"><label>وصف العطل</label><textarea id="bd-desc" placeholder="ما الذي حدث..." style="min-height:55px;resize:vertical"></textarea></div>
+          <div class="fr2">
+            <div class="field"><label>تاريخ العطل</label><input type="date" id="bd-date"></div>
+            <div class="field"><label>وقت الإصلاح (ساعة)</label><input type="number" id="bd-repair-h" placeholder="0" min="0" step="0.5"></div>
+          </div>
+          <div class="field"><label>خسارة الإنتاج (ج)</label><input type="number" id="bd-loss-val" placeholder="0"></div>
+          <div class="field"><label>الحالة</label>
+            <select id="bd-status"><option>تم الإصلاح</option><option>جاري الإصلاح</option><option>انتظار قطعة غيار</option></select>
+          </div>
+        </div>
+        <div class="fc-actions">
+          <button class="btn btn-p" style="flex:1" onclick="saveBreakdown()">تسجيل العطل</button>
+        </div>
+      </div>
+
+      <!-- breakdown analysis -->
+      <div class="fc">
+        <div class="fc-hd">📊 أسباب الأعطال</div>
+        <div style="padding:12px 16px;" id="bd-analysis"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-ov" id="modal">
+  <div class="modal">
+    <div class="modal-hd">
+      <div class="modal-title" id="modal-title">تفاصيل</div>
+      <button class="modal-x" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-ft">
+      <button class="btn btn-g" onclick="closeModal()">إغلاق</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-c" id="tc"></div>
+
+<script>
+// ═══════════════════════════════════
+// DATA
+// ═══════════════════════════════════
+let DB = {
+  machines: [
+    {id:1,code:'MCH-001',name:'ماكينة قطع بلازما CNC',type:'ماكينة قطع',brand:'Hypertherm XPR300',year:2021,status:'تعمل',hours:4820,value:850000,location:'قسم القطع',notes:'للقطع الدقيق ستانلس وحديد',oee:82},
+    {id:2,code:'MCH-002',name:'ماكينة لحام MIG تلقائي',type:'ماكينة لحام',brand:'Lincoln Electric',year:2020,status:'تعمل',hours:6200,value:320000,location:'قسم اللحام',notes:'للحام هياكل الكراسي والترابيزات',oee:78},
+    {id:3,code:'MCH-003',name:'ماكينة جلخ وتلميع',type:'ماكينة جلخ',brand:'Metabo',year:2019,status:'صيانة',hours:8900,value:180000,location:'قسم الجلخ والتشطيب',notes:'صيانة دورية',oee:71},
+    {id:4,code:'MCH-004',name:'ماكينة ثني هيدروليك',type:'ماكينة ثني',brand:'Amada',year:2022,status:'تعمل',hours:2100,value:650000,location:'قسم التشكيل',notes:'لثني أنابيب الستانلس',oee:88},
+    {id:5,code:'MCH-005',name:'ماكينة لحام TIG',type:'ماكينة لحام',brand:'Miller Electric',year:2021,status:'تعمل',hours:3400,value:280000,location:'قسم اللحام',notes:'للحام الدقيق ستانلس 316',oee:85},
+    {id:6,code:'MCH-006',name:'كمبريسور هواء 500L',type:'كمبريسور',brand:'Atlas Copco',year:2018,status:'عطل',hours:12000,value:95000,location:'الورشة العامة',notes:'عطل في الكمبريسور - انتظار قطعة',oee:55},
+    {id:7,code:'MCH-007',name:'ماكينة قطع دوارة',type:'ماكينة قطع',brand:'Ficep',year:2023,status:'تعمل',hours:980,value:420000,location:'قسم القطع',notes:'للقطع السريع حديد',oee:91},
+  ],
+  maintenance: [
+    {id:1,machineId:1,type:'دورية',desc:'تغيير زيت وتشحيم عام وفحص الرأس',tech:'أحمد محمد',date:'2025-05-15',downtime:3,laborCost:500,partsCost:800,status:'مكتملة'},
+    {id:2,machineId:3,type:'وقائية',desc:'فحص شفرات الجلخ وتعديل الضغط',tech:'محمود علي',date:'2025-06-01',downtime:2,laborCost:300,partsCost:450,status:'مكتملة'},
+    {id:3,machineId:6,type:'طارئة',desc:'استبدال مكبس الهواء الرئيسي',tech:'كريم سالم',date:'2025-06-03',downtime:16,laborCost:1200,partsCost:3500,status:'جارية'},
+    {id:4,machineId:2,type:'دورية',desc:'فحص أسلاك اللحام وتعديل الجهد',tech:'أحمد محمد',date:'2025-06-20',downtime:2,laborCost:400,partsCost:200,status:'مجدولة'},
+  ],
+  spares: [
+    {id:1,name:'شفرة قطع بلازما',machineId:1,qty:8,minQty:3,price:850},
+    {id:2,name:'سلك تغذية MIG',machineId:2,qty:12,minQty:5,price:320},
+    {id:3,name:'قرص جلخ ستانلس',machineId:3,qty:5,minQty:10,price:45},
+    {id:4,name:'زيت هيدروليك 20L',machineId:4,qty:4,minQty:2,price:780},
+    {id:5,name:'فلتر كمبريسور',machineId:6,qty:2,minQty:2,price:380},
+    {id:6,name:'تنجستن TIG 2.4mm',machineId:5,qty:20,minQty:10,price:95},
+  ],
+  oeeData: [
+    {machineId:1,avail:7.5,actual:6.8,downtime:0.7,planned:25,produced:22,good:21,date:'2025-06-06'},
+    {machineId:2,avail:8,actual:7.2,downtime:0.8,planned:40,produced:35,good:34,date:'2025-06-06'},
+    {machineId:3,avail:6,actual:4.5,downtime:1.5,planned:30,produced:24,good:23,date:'2025-06-06'},
+    {machineId:4,avail:8,actual:7.8,downtime:0.2,planned:20,produced:19,good:19,date:'2025-06-06'},
+    {machineId:5,avail:8,actual:7.5,downtime:0.5,planned:18,produced:16,good:16,date:'2025-06-06'},
+    {machineId:6,avail:4,actual:2,downtime:2,planned:10,produced:5,good:4,date:'2025-06-06'},
+    {machineId:7,avail:8,actual:7.9,downtime:0.1,planned:50,produced:47,good:47,date:'2025-06-06'},
+  ],
+  breakdowns: [
+    {id:1,machineId:6,type:'عطل ميكانيكي',desc:'توقف مكبس الهواء الرئيسي فجأة',date:'2025-06-03',repairH:16,lossVal:8500,status:'جاري الإصلاح'},
+    {id:2,machineId:3,type:'كسر شفرة / أداة',desc:'كسر قرص الجلخ أثناء التشغيل',date:'2025-05-28',repairH:1.5,lossVal:1200,status:'تم الإصلاح'},
+    {id:3,machineId:1,type:'عطل في التحكم PLC',desc:'خطأ في برنامج CNC يوقف الشغل',date:'2025-05-20',repairH:3,lossVal:2800,status:'تم الإصلاح'},
+  ],
+  nextId:{mc:8,maint:5,spare:7,oee:8,bd:4},
+  hoursLog:[]
+};
+
+let viewMode = 'table'; // table | cards
+let editMachineId = null;
+
+// ═══════════════════════════════════
+// NAV
+// ═══════════════════════════════════
+function nav(p){
+  ['machines','maintenance','oee','breakdowns'].forEach(k=>{
+    document.getElementById('pg-'+k).style.display = k===p?'':'none';
+  });
+  document.querySelectorAll('.htab').forEach((b,i)=>{
+    b.classList.toggle('active',['machines','maintenance','oee','breakdowns'][i]===p);
+  });
+  if(p==='machines') renderMachines(), updateMachineKPIs(), populateMachineSelects();
+  if(p==='maintenance') renderMaint(), renderSchedule(), renderSpares(), updateMaintKPIs(), populateMachineSelects();
+  if(p==='oee') renderOEE(), updateOEEKPIs();
+  if(p==='breakdowns') renderBreakdowns(), renderBDAnalysis(), updateBDKPIs();
+}
+
+function switchTab(btn,id){
+  const card=btn.closest('.card');
+  card.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  card.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(id)?.classList.add('active');
+  if(id==='mt-spares') renderSpares();
+  if(id==='mt-schedule') renderSchedule();
+}
+
+// ═══════════════════════════════════
+// MACHINES
+// ═══════════════════════════════════
+function renderMachines(){
+  const search = document.getElementById('m-search').value.toLowerCase();
+  const sf = document.getElementById('m-status-f').value;
+  const items = DB.machines.filter(m=>{
+    const ms = !search || m.name.toLowerCase().includes(search) || m.code.toLowerCase().includes(search);
+    const mst = !sf || m.status===sf;
+    return ms && mst;
+  });
+
+  if(viewMode==='cards'){
+    document.getElementById('machines-view').innerHTML = `<div class="machine-grid">${items.map(m=>{
+      const stColor = {تعمل:'var(--green)',صيانة:'var(--amber)',متوقفة:'var(--steel)',عطل:'var(--red)'}[m.status]||'var(--steel)';
+      const oeeColor = m.oee>=85?'var(--green)':m.oee>=65?'var(--amber)':'var(--red)';
+      return `<div class="mcard" style="--mc:${stColor}">
+        <div class="mcard-top">
+          <div>
+            <div class="mcard-code">${m.code} · ${m.location}</div>
+            <div class="mcard-name">${m.name}</div>
+            <div class="mcard-type">${m.brand} · ${m.year}</div>
+          </div>
+          <span class="badge ${m.status==='تعمل'?'bg':m.status==='صيانة'?'ba':m.status==='متوقفة'?'bb':'br'}">${m.status}</span>
+        </div>
+        <div class="mcard-stats">
+          <div class="mstat"><div class="mstat-label">ساعات التشغيل</div><div class="mstat-val" style="color:var(--steel)">${m.hours.toLocaleString()}</div></div>
+          <div class="mstat"><div class="mstat-label">OEE</div><div class="mstat-val" style="color:${oeeColor}">${m.oee}%</div></div>
+          <div class="mstat"><div class="mstat-label">القيمة</div><div class="mstat-val" style="font-size:12px">${(m.value/1000).toFixed(0)}k ج</div></div>
+          <div class="mstat"><div class="mstat-label">النوع</div><div class="mstat-val" style="font-size:11px;color:var(--text2)">${m.type}</div></div>
+        </div>
+        <div class="mcard-actions">
+          <button class="btn btn-e btn-xs" onclick="editMachine(${m.id})">✎ تعديل</button>
+          <button class="btn btn-warn btn-xs" onclick="quickMaintenance(${m.id})">🔧 صيانة</button>
+          <button class="btn btn-d" onclick="deleteMachine(${m.id})">✕</button>
+        </div>
+      </div>`;
+    }).join('')}</div>`;
+  } else {
+    document.getElementById('machines-view').innerHTML = `<div class="tbl-wrap"><table>
+      <thead><tr><th>الكود</th><th>الاسم</th><th>النوع</th><th>الموقع</th><th>الحالة</th><th>ساعات التشغيل</th><th>OEE</th><th>القيمة</th><th>إجراء</th></tr></thead>
+      <tbody>${items.length?items.map(m=>{
+        const oeeColor = m.oee>=85?'var(--green)':m.oee>=65?'var(--amber)':'var(--red)';
+        return `<tr>
+          <td class="mono" style="color:var(--steel)">${m.code}</td>
+          <td><strong>${m.name}</strong><br><small style="color:var(--text3)">${m.brand} · ${m.year}</small></td>
+          <td><span class="badge bb">${m.type}</span></td>
+          <td style="color:var(--text2);font-size:12px">${m.location}</td>
+          <td><span class="badge ${m.status==='تعمل'?'bg':m.status==='صيانة'?'ba':m.status==='متوقفة'?'bb':'br'}">${m.status}</span></td>
+          <td class="mono">${m.hours.toLocaleString()} س</td>
+          <td>
+            <span class="mono" style="color:${oeeColor};font-size:14px">${m.oee}%</span>
+            <div class="pbar" style="width:80px"><div class="pfill" style="width:${m.oee}%;background:${oeeColor}"></div></div>
+          </td>
+          <td class="mono">${m.value.toLocaleString()} ج</td>
+          <td style="display:flex;gap:4px;flex-wrap:wrap">
+            <button class="btn btn-e" onclick="editMachine(${m.id})">✎</button>
+            <button class="btn btn-warn btn-xs" onclick="quickMaintenance(${m.id})">🔧</button>
+            <button class="btn btn-d" onclick="deleteMachine(${m.id})">✕</button>
+          </td>
+        </tr>`;
+      }).join(''):'<tr><td colspan="9"><div class="empty">لا توجد ماكينات</div></td></tr>'}</tbody>
+    </table></div>`;
+  }
+  updateMachineKPIs();
+  renderMachineAlerts();
+}
+
+function toggleView(){
+  viewMode = viewMode==='table'?'cards':'table';
+  document.getElementById('view-toggle').textContent = viewMode==='table'?'🔲 عرض كروت':'📋 عرض جدول';
+  renderMachines();
+}
+
+function updateMachineKPIs(){
+  const running = DB.machines.filter(m=>m.status==='تعمل').length;
+  const maint = DB.machines.filter(m=>m.status==='صيانة').length;
+  const down = DB.machines.filter(m=>m.status==='متوقفة'||m.status==='عطل').length;
+  const avgOEE = DB.machines.length? (DB.machines.reduce((s,m)=>s+m.oee,0)/DB.machines.length).toFixed(0)+'%' : '0%';
+  document.getElementById('k-total').textContent = DB.machines.length;
+  document.getElementById('k-running').textContent = running;
+  document.getElementById('k-maint').textContent = maint;
+  document.getElementById('k-down').textContent = down;
+  document.getElementById('k-oee').textContent = avgOEE;
+}
+
+function renderMachineAlerts(){
+  const down = DB.machines.filter(m=>m.status==='عطل');
+  const alerts = document.getElementById('machine-alerts');
+  alerts.innerHTML = down.map(m=>`<div class="alert">⚡ <span>${m.name} (${m.code}) — متوقفة بسبب عطل</span> <button class="btn btn-d btn-sm" onclick="quickMaintenance(${m.id})">تسجيل صيانة</button></div>`).join('');
+}
+
+function populateMachineSelects(){
+  const opts = '<option value="">— اختر —</option>' + DB.machines.map(m=>`<option value="${m.id}">${m.code} — ${m.name}</option>`).join('');
+  ['h-machine','mt-machine','sp-machine','bd-machine','oee-machine'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.innerHTML=opts;
+  });
+}
+
+function saveMachine(){
+  const name=document.getElementById('mc-name').value.trim();
+  if(!name) return toast('أدخل اسم الماكينة','e');
+  const data={
+    code:document.getElementById('mc-code').value.trim()||`MCH-${String(DB.nextId.mc).padStart(3,'0')}`,
+    name, type:document.getElementById('mc-type').value,
+    brand:document.getElementById('mc-brand').value,
+    year:parseInt(document.getElementById('mc-year').value)||new Date().getFullYear(),
+    status:document.getElementById('mc-status').value,
+    hours:parseInt(document.getElementById('mc-hours').value)||0,
+    value:parseInt(document.getElementById('mc-value').value)||0,
+    location:document.getElementById('mc-location').value,
+    notes:document.getElementById('mc-notes').value,
+    oee:75
+  };
+  if(editMachineId){
+    Object.assign(DB.machines.find(m=>m.id===editMachineId),data);
+    editMachineId=null; toast('تم تعديل الماكينة ✓');
+  } else {
+    DB.machines.push({id:DB.nextId.mc++,...data});
+    toast('تم إضافة الماكينة ✓');
+  }
+  clearMachineForm(); renderMachines(); populateMachineSelects();
+}
+
+function clearMachineForm(){
+  ['mc-code','mc-name','mc-brand','mc-year','mc-hours','mc-value','mc-notes'].forEach(id=>document.getElementById(id).value='');
+  editMachineId=null;
+}
+
+function editMachine(id){
+  const m=DB.machines.find(x=>x.id===id);
+  if(!m) return;
+  document.getElementById('mc-code').value=m.code;
+  document.getElementById('mc-name').value=m.name;
+  document.getElementById('mc-type').value=m.type;
+  document.getElementById('mc-brand').value=m.brand;
+  document.getElementById('mc-year').value=m.year;
+  document.getElementById('mc-status').value=m.status;
+  document.getElementById('mc-hours').value=m.hours;
+  document.getElementById('mc-value').value=m.value;
+  document.getElementById('mc-location').value=m.location;
+  document.getElementById('mc-notes').value=m.notes;
+  editMachineId=id;
+  toast('جاهز للتعديل — عدّل واضغط حفظ');
+}
+
+function deleteMachine(id){
+  if(!confirm('حذف الماكينة؟')) return;
+  DB.machines=DB.machines.filter(m=>m.id!==id);
+  renderMachines(); populateMachineSelects(); toast('تم الحذف','e');
+}
+
+function quickMaintenance(id){
+  const m=DB.machines.find(x=>x.id===id);
+  if(!m) return;
+  nav('maintenance');
+  setTimeout(()=>{
+    document.getElementById('mt-machine').value=id;
+    document.getElementById('mt-type').value='طارئة';
+  },200);
+}
+
+function logHours(){
+  const mid=parseInt(document.getElementById('h-machine').value);
+  const hrs=parseFloat(document.getElementById('h-hours').value)||0;
+  if(!mid||!hrs) return toast('اختر ماكينة وأدخل الساعات','e');
+  const m=DB.machines.find(x=>x.id===mid);
+  if(m){ m.hours+=hrs; DB.hoursLog.push({machineId:mid,hours:hrs,date:document.getElementById('h-date').value,shift:document.getElementById('h-shift').value}); }
+  document.getElementById('h-hours').value='';
+  renderMachines(); toast(`تم إضافة ${hrs} ساعة لـ ${m?m.name:''} ✓`);
+}
+
+function exportMachines(){
+  const rows=DB.machines.map(m=>[m.code,m.name,m.type,m.brand,m.year,m.status,m.hours,m.oee+'%',m.value].join(','));
+  const csv=['الكود,الاسم,النوع,الماركة,سنة الصنع,الحالة,ساعات التشغيل,OEE,القيمة',...rows].join('\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'}));a.download='ماكينات_مصر_ستيل.csv';a.click();
+  toast('تم تصدير بيانات الماكينات ✓');
+}
+
+// ═══════════════════════════════════
+// MAINTENANCE
+// ═══════════════════════════════════
+function renderMaint(){
+  const search=document.getElementById('mt-search').value.toLowerCase();
+  const tf=document.getElementById('mt-type-f').value;
+  const items=DB.maintenance.filter(m=>{
+    const mc=DB.machines.find(x=>x.id===m.machineId);
+    const ms=!search||(mc&&mc.name.toLowerCase().includes(search))||m.desc.toLowerCase().includes(search);
+    const mt=!tf||m.type===tf;
+    return ms&&mt;
+  });
+  const tbody=document.getElementById('maint-tbody');
+  tbody.innerHTML=items.length?items.map((m,i)=>{
+    const mc=DB.machines.find(x=>x.id===m.machineId);
+    const total=m.laborCost+m.partsCost;
+    const tc={وقائية:'bt',دورية:'bb',طارئة:'br'}[m.type]||'bb';
+    const sc={مكتملة:'bg',جارية:'bo',مجدولة:'ba'}[m.status]||'ba';
+    return `<tr>
+      <td class="mono" style="color:var(--text3)">${i+1}</td>
+      <td><strong>${mc?mc.name:'—'}</strong><br><small style="color:var(--text3)">${mc?mc.code:''}</small></td>
+      <td><span class="badge ${tc}">${m.type}</span></td>
+      <td style="max-width:180px;font-size:12px;color:var(--text2)">${m.desc}</td>
+      <td style="color:var(--text2);font-size:12px">${m.tech}</td>
+      <td style="color:var(--text2);font-size:12px">${m.date}</td>
+      <td class="mono">${m.downtime} س</td>
+      <td class="mono" style="color:var(--amber)">${total.toLocaleString()} ج</td>
+      <td><span class="badge ${sc}">${m.status}</span></td>
+      <td style="display:flex;gap:3px">
+        <button class="btn btn-e" onclick="viewMaint(${m.id})">👁</button>
+        <button class="btn btn-d" onclick="deleteMaint(${m.id})">✕</button>
+      </td>
+    </tr>`;
+  }).join(''):'<tr><td colspan="10"><div class="empty">لا توجد سجلات صيانة</div></td></tr>';
+  updateMaintKPIs();
+  renderNextMaint();
+}
+
+function renderSchedule(){
+  const list=document.getElementById('schedule-list');
+  const items=[
+    {machineId:2,desc:'فحص أسلاك اللحام وتعديل الجهد',dueDate:'2025-06-20',type:'دورية',tech:'أحمد محمد'},
+    {machineId:1,desc:'معايرة رأس القطع CNC',dueDate:'2025-07-01',type:'وقائية',tech:'محمود علي'},
+    {machineId:4,desc:'تغيير زيت الهيدروليك',dueDate:'2025-07-15',type:'دورية',tech:'كريم سالم'},
+    {machineId:5,desc:'فحص قطب TIG وتنظيف الفوهة',dueDate:'2025-07-10',type:'وقائية',tech:'أحمد محمد'},
+  ];
+  list.innerHTML=items.map(item=>{
+    const mc=DB.machines.find(x=>x.id===item.machineId);
+    const days=Math.round((new Date(item.dueDate)-new Date())/(1000*60*60*24));
+    const urgent=days<=7;
+    return `<div style="display:flex;align-items:flex-start;gap:12px;padding:12px;background:var(--bg3);border-radius:8px;border:1px solid ${urgent?'rgba(239,68,68,.3)':'var(--border)'}">
+      <div style="width:10px;height:10px;border-radius:50%;background:${item.type==='طارئة'?'var(--red)':item.type==='دورية'?'var(--steel)':'var(--teal)'};flex-shrink:0;margin-top:4px;"></div>
+      <div style="flex:1">
+        <div style="font-weight:600;font-size:13px">${mc?mc.name:'—'}</div>
+        <div style="font-size:12px;color:var(--text2);margin-top:2px">${item.desc}</div>
+        <div style="display:flex;gap:10px;margin-top:6px;font-size:11px;color:var(--text3)">
+          <span>📅 ${item.dueDate}</span>
+          <span>👤 ${item.tech}</span>
+        </div>
+      </div>
+      <div style="text-align:left">
+        <span class="badge ${urgent?'br':'ba'}">${days>0?'بعد '+days+' يوم':'اليوم'}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderSpares(){
+  const tbody=document.getElementById('spares-tbody');
+  tbody.innerHTML=DB.spares.map((s,i)=>{
+    const mc=DB.machines.find(x=>x.id===s.machineId);
+    const isLow=s.qty<=s.minQty;
+    return `<tr>
+      <td><strong>${s.name}</strong></td>
+      <td style="font-size:12px;color:var(--text2)">${mc?mc.name:'—'}</td>
+      <td class="mono" style="color:${isLow?'var(--red)':'var(--text)'}">${s.qty}</td>
+      <td class="mono" style="color:var(--text2)">${s.minQty}</td>
+      <td class="mono">${s.price.toLocaleString()} ج</td>
+      <td><span class="badge ${isLow?'br':'bg'}">${isLow?'⚠ منخفض':'متوفر'}</span></td>
+      <td><button class="btn btn-d" onclick="deleteSpare(${s.id})">✕</button></td>
+    </tr>`;
+  }).join('')||'<tr><td colspan="7"><div class="empty">لا توجد قطع غيار</div></td></tr>';
+}
+
+function renderNextMaint(){
+  const list=document.getElementById('next-maint-list');
+  const upcoming=DB.maintenance.filter(m=>m.status==='مجدولة');
+  list.innerHTML=upcoming.length?upcoming.map(m=>{
+    const mc=DB.machines.find(x=>x.id===m.machineId);
+    return `<div class="mt-item">
+      <div class="mt-dot" style="background:var(--amber)"></div>
+      <div class="mt-body">
+        <div class="mt-title">${mc?mc.name:'—'}</div>
+        <div class="mt-meta">${m.desc}<br>📅 ${m.date} · ${m.tech}</div>
+      </div>
+    </div>`;
+  }).join(''):'<div style="color:var(--text3);font-size:13px;padding:8px 0">لا توجد صيانة مجدولة</div>';
+}
+
+function updateMaintKPIs(){
+  const prev=DB.maintenance.filter(m=>m.type==='وقائية').length;
+  const sched=DB.maintenance.filter(m=>m.type==='دورية').length;
+  const emrg=DB.maintenance.filter(m=>m.type==='طارئة').length;
+  const cost=DB.maintenance.reduce((s,m)=>s+m.laborCost+m.partsCost,0);
+  const done=DB.maintenance.filter(m=>m.status==='مكتملة').length;
+  document.getElementById('km-prev').textContent=prev;
+  document.getElementById('km-sched').textContent=sched;
+  document.getElementById('km-emrg').textContent=emrg;
+  document.getElementById('km-cost').textContent=cost.toLocaleString();
+  document.getElementById('km-done').textContent=done;
+}
+
+function saveMaint(){
+  const mid=parseInt(document.getElementById('mt-machine').value);
+  const desc=document.getElementById('mt-desc').value.trim();
+  if(!mid||!desc) return toast('اختر ماكينة وأدخل وصف الصيانة','e');
+  const type=document.getElementById('mt-type').value;
+  const status=document.getElementById('mt-status').value;
+  DB.maintenance.push({id:DB.nextId.maint++,machineId:mid,type,desc,tech:document.getElementById('mt-tech').value,date:document.getElementById('mt-date').value||new Date().toISOString().split('T')[0],downtime:parseFloat(document.getElementById('mt-downtime').value)||0,laborCost:parseInt(document.getElementById('mt-labor-cost').value)||0,partsCost:parseInt(document.getElementById('mt-parts-cost').value)||0,status});
+  if(type==='طارئة'){const m=DB.machines.find(x=>x.id===mid);if(m)m.status='صيانة';}
+  clearMaintForm(); renderMaint(); renderMachines(); toast('تم تسجيل الصيانة ✓');
+}
+
+function clearMaintForm(){
+  ['mt-desc','mt-tech','mt-downtime','mt-labor-cost','mt-parts-cost'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('mt-machine').value='';
+}
+
+function viewMaint(id){
+  const m=DB.maintenance.find(x=>x.id===id);
+  const mc=DB.machines.find(x=>x.id===m.machineId);
+  document.getElementById('modal-title').textContent='تفاصيل الصيانة';
+  document.getElementById('modal-body').innerHTML=`
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:13px">
+      <div><span style="color:var(--text2)">الماكينة:</span><br><strong>${mc?mc.name:'—'}</strong></div>
+      <div><span style="color:var(--text2)">نوع الصيانة:</span><br><strong>${m.type}</strong></div>
+      <div><span style="color:var(--text2)">الفني:</span><br><strong>${m.tech}</strong></div>
+      <div><span style="color:var(--text2)">التاريخ:</span><br><strong>${m.date}</strong></div>
+      <div><span style="color:var(--text2)">مدة الإيقاف:</span><br><strong>${m.downtime} ساعة</strong></div>
+      <div><span style="color:var(--text2)">تكلفة العمل:</span><br><strong>${m.laborCost.toLocaleString()} ج</strong></div>
+      <div><span style="color:var(--text2)">تكلفة القطع:</span><br><strong>${m.partsCost.toLocaleString()} ج</strong></div>
+      <div><span style="color:var(--text2)">الإجمالي:</span><br><strong style="color:var(--amber)">${(m.laborCost+m.partsCost).toLocaleString()} ج</strong></div>
+    </div>
+    <div style="margin-top:10px;background:var(--bg3);border-radius:8px;padding:12px;font-size:13px;color:var(--text2)">${m.desc}</div>`;
+  document.getElementById('modal').classList.add('open');
+}
+
+function deleteMaint(id){
+  if(!confirm('حذف سجل الصيانة؟')) return;
+  DB.maintenance=DB.maintenance.filter(m=>m.id!==id);
+  renderMaint(); toast('تم الحذف','e');
+}
+
+function saveSpare(){
+  const name=document.getElementById('sp-name').value.trim();
+  const mid=parseInt(document.getElementById('sp-machine').value);
+  const qty=parseInt(document.getElementById('sp-qty').value)||0;
+  if(!name||!mid) return toast('أدخل اسم القطعة واختر الماكينة','e');
+  DB.spares.push({id:DB.nextId.spare++,name,machineId:mid,qty,minQty:parseInt(document.getElementById('sp-min').value)||0,price:parseInt(document.getElementById('sp-price').value)||0});
+  ['sp-name','sp-qty','sp-min','sp-price'].forEach(id=>document.getElementById(id).value='');
+  renderSpares(); toast('تم إضافة قطعة الغيار ✓');
+}
+
+function deleteSpare(id){
+  DB.spares=DB.spares.filter(s=>s.id!==id);
+  renderSpares(); toast('تم الحذف','e');
+}
+
+function exportMaint(){
+  const rows=DB.maintenance.map(m=>{const mc=DB.machines.find(x=>x.id===m.machineId);return [mc?mc.name:'',m.type,m.date,m.tech,m.downtime,m.laborCost+m.partsCost,m.status].join(',');});
+  const csv=['الماكينة,النوع,التاريخ,الفني,الإيقاف,التكلفة,الحالة',...rows].join('\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'}));a.download='صيانة_مصر_ستيل.csv';a.click();
+  toast('تم التصدير ✓');
+}
+
+// ═══════════════════════════════════
+// OEE
+// ═══════════════════════════════════
+function calcOEE(d){
+  const A=d.avail>0?d.actual/d.avail:0;
+  const P=d.planned>0?d.produced/d.planned:0;
+  const Q=d.produced>0?d.good/d.produced:0;
+  return {A,P,Q,oee:A*P*Q};
+}
+
+function renderOEE(){
+  const tbody=document.getElementById('oee-tbody');
+  tbody.innerHTML=DB.oeeData.map(d=>{
+    const mc=DB.machines.find(x=>x.id===d.machineId);
+    const {A,P,Q,oee}=calcOEE(d);
+    const pct=Math.round(oee*100);
+    const col=pct>=85?'var(--green)':pct>=65?'var(--amber)':'var(--red)';
+    const cls=pct>=85?'bg':pct>=65?'ba':'br';
+    return `<tr>
+      <td><strong>${mc?mc.name:'—'}</strong><br><small style="color:var(--text3)">${mc?mc.code:''}</small></td>
+      <td>
+        <span class="mono" style="color:var(--steel)">${Math.round(A*100)}%</span>
+        <div class="pbar" style="width:70px"><div class="pfill" style="width:${Math.round(A*100)}%;background:var(--steel)"></div></div>
+      </td>
+      <td>
+        <span class="mono" style="color:var(--purple)">${Math.round(P*100)}%</span>
+        <div class="pbar" style="width:70px"><div class="pfill" style="width:${Math.round(P*100)}%;background:var(--purple)"></div></div>
+      </td>
+      <td>
+        <span class="mono" style="color:var(--teal)">${Math.round(Q*100)}%</span>
+        <div class="pbar" style="width:70px"><div class="pfill" style="width:${Math.round(Q*100)}%;background:var(--teal)"></div></div>
+      </td>
+      <td>
+        <span class="mono" style="color:${col};font-size:18px;font-weight:700">${pct}%</span>
+        <div class="pbar"><div class="pfill" style="width:${pct}%;background:${col}"></div></div>
+      </td>
+      <td class="mono">${d.avail} س</td>
+      <td class="mono">${d.actual} س</td>
+      <td><span class="badge ${cls}">${pct>=85?'ممتاز':pct>=65?'جيد':'يحتاج تحسين'}</span></td>
+    </tr>`;
+  }).join('');
+  updateOEEKPIs();
+}
+
+function updateOEEKPIs(){
+  const oees=DB.oeeData.map(d=>Math.round(calcOEE(d).oee*100));
+  const avg=(oees.reduce((s,v)=>s+v,0)/oees.length).toFixed(0)+'%';
+  const best=DB.machines.find(m=>m.id===DB.oeeData[oees.indexOf(Math.max(...oees))]?.machineId);
+  const worst=DB.machines.find(m=>m.id===DB.oeeData[oees.indexOf(Math.min(...oees))]?.machineId);
+  const downH=DB.oeeData.reduce((s,d)=>s+d.downtime,0);
+  document.getElementById('oee-avg').textContent=avg;
+  document.getElementById('oee-best').textContent=best?best.code:'—';
+  document.getElementById('oee-worst').textContent=worst?worst.code:'—';
+  document.getElementById('oee-down-h').textContent=downH.toFixed(1);
+}
+
+function saveOEE(){
+  const mid=parseInt(document.getElementById('oee-machine').value);
+  const avail=parseFloat(document.getElementById('oee-avail').value)||0;
+  const actual=parseFloat(document.getElementById('oee-actual').value)||0;
+  const down=parseFloat(document.getElementById('oee-down').value)||0;
+  const planned=parseInt(document.getElementById('oee-planned').value)||0;
+  const produced=parseInt(document.getElementById('oee-produced').value)||0;
+  const good=parseInt(document.getElementById('oee-good').value)||0;
+  if(!mid||!avail||!planned) return toast('أدخل كل البيانات','e');
+  const existing=DB.oeeData.findIndex(d=>d.machineId===mid);
+  const entry={machineId:mid,avail,actual,downtime:down,planned,produced,good,date:new Date().toISOString().split('T')[0]};
+  if(existing>=0) DB.oeeData[existing]=entry; else DB.oeeData.push(entry);
+  const pct=Math.round(calcOEE(entry).oee*100);
+  const mc=DB.machines.find(x=>x.id===mid);
+  if(mc) mc.oee=pct;
+  ['oee-avail','oee-actual','oee-down','oee-planned','oee-produced','oee-good'].forEach(id=>document.getElementById(id).value='');
+  renderOEE(); renderMachines(); toast(`OEE محسوب: ${pct}% ✓`);
+}
+
+// ═══════════════════════════════════
+// BREAKDOWNS
+// ═══════════════════════════════════
+function renderBreakdowns(){
+  const tbody=document.getElementById('bd-tbody');
+  tbody.innerHTML=DB.breakdowns.length?DB.breakdowns.map((b,i)=>{
+    const mc=DB.machines.find(x=>x.id===b.machineId);
+    const sc={تم الإصلاح:'bg','جاري الإصلاح':'bo','انتظار قطعة غيار':'br'}[b.status]||'ba';
+    return `<tr>
+      <td class="mono" style="color:var(--text3)">${i+1}</td>
+      <td><strong>${mc?mc.name:'—'}</strong><br><small style="color:var(--text3)">${mc?mc.code:''}</small></td>
+      <td><span class="badge br">${b.type}</span></td>
+      <td style="max-width:160px;font-size:12px;color:var(--text2)">${b.desc}</td>
+      <td style="color:var(--text2);font-size:12px">${b.date}</td>
+      <td class="mono">${b.repairH} س</td>
+      <td class="mono" style="color:var(--red)">${b.lossVal.toLocaleString()} ج</td>
+      <td><span class="badge ${sc}">${b.status}</span></td>
+      <td style="display:flex;gap:3px">
+        ${b.status!=='تم الإصلاح'?`<button class="btn btn-e btn-xs" onclick="resolveBreakdown(${b.id})">✓ حُل</button>`:''}
+        <button class="btn btn-d" onclick="deleteBreakdown(${b.id})">✕</button>
+      </td>
+    </tr>`;
+  }).join(''):'<tr><td colspan="9"><div class="empty">لا توجد أعطال مسجلة 👍</div></td></tr>';
+  updateBDKPIs();
+}
+
+function updateBDKPIs(){
+  const total=DB.breakdowns.length;
+  const avgRepair=total>0?(DB.breakdowns.reduce((s,b)=>s+b.repairH,0)/total).toFixed(1):0;
+  const totalLoss=DB.breakdowns.reduce((s,b)=>s+b.lossVal,0);
+  const mcCount={};
+  DB.breakdowns.forEach(b=>{mcCount[b.machineId]=(mcCount[b.machineId]||0)+1;});
+  const worstId=Object.entries(mcCount).sort((a,b)=>b[1]-a[1])[0]?.[0];
+  const worst=DB.machines.find(m=>m.id==worstId);
+  document.getElementById('bd-total').textContent=total;
+  document.getElementById('bd-mttr').textContent=avgRepair;
+  document.getElementById('bd-loss').textContent=totalLoss.toLocaleString();
+  document.getElementById('bd-worst-m').textContent=worst?worst.code:'—';
+}
+
+function renderBDAnalysis(){
+  const types={};
+  DB.breakdowns.forEach(b=>{types[b.type]=(types[b.type]||0)+1;});
+  const sorted=Object.entries(types).sort((a,b)=>b[1]-a[1]);
+  const max=sorted[0]?.[1]||1;
+  document.getElementById('bd-analysis').innerHTML=sorted.length?sorted.map(([t,c])=>`
+    <div style="margin-bottom:9px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px">
+        <span style="color:var(--text2)">${t}</span>
+        <span class="mono" style="color:var(--red)">${c}</span>
+      </div>
+      <div class="pbar"><div class="pfill" style="width:${c/max*100}%;background:var(--red)"></div></div>
+    </div>`).join(''):'<div style="color:var(--text3);text-align:center;padding:16px">لا بيانات</div>';
+}
+
+function saveBreakdown(){
+  const mid=parseInt(document.getElementById('bd-machine').value);
+  const desc=document.getElementById('bd-desc').value.trim();
+  if(!mid||!desc) return toast('اختر ماكينة وأدخل وصف العطل','e');
+  const status=document.getElementById('bd-status').value;
+  DB.breakdowns.push({id:DB.nextId.bd++,machineId:mid,type:document.getElementById('bd-type').value,desc,date:document.getElementById('bd-date').value||new Date().toISOString().split('T')[0],repairH:parseFloat(document.getElementById('bd-repair-h').value)||0,lossVal:parseInt(document.getElementById('bd-loss-val').value)||0,status});
+  if(status==='جاري الإصلاح'||status==='انتظار قطعة غيار'){const m=DB.machines.find(x=>x.id===mid);if(m)m.status='عطل';}
+  ['bd-desc','bd-repair-h','bd-loss-val'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('bd-machine').value='';
+  renderBreakdowns(); renderBDAnalysis(); renderMachines(); toast('تم تسجيل العطل ✓');
+}
+
+function resolveBreakdown(id){
+  const b=DB.breakdowns.find(x=>x.id===id);
+  if(!b) return;
+  b.status='تم الإصلاح';
+  const m=DB.machines.find(x=>x.id===b.machineId);
+  if(m&&m.status==='عطل') m.status='تعمل';
+  renderBreakdowns(); renderMachines(); toast(`تم حل العطل ✓`);
+}
+
+function deleteBreakdown(id){
+  if(!confirm('حذف سجل العطل؟')) return;
+  DB.breakdowns=DB.breakdowns.filter(b=>b.id!==id);
+  renderBreakdowns(); renderBDAnalysis(); toast('تم الحذف','e');
+}
+
+function exportBreakdowns(){
+  const rows=DB.breakdowns.map(b=>{const mc=DB.machines.find(x=>x.id===b.machineId);return [mc?mc.name:'',b.type,b.date,b.repairH,b.lossVal,b.status].join(',');});
+  const csv=['الماكينة,نوع العطل,التاريخ,وقت الإصلاح,الخسارة,الحالة',...rows].join('\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'}));a.download='أعطال_مصر_ستيل.csv';a.click();
+  toast('تم التصدير ✓');
+}
+
+// ═══════════════════════════════════
+// MODAL & TOAST
+// ═══════════════════════════════════
+function closeModal(){document.getElementById('modal').classList.remove('open');}
+
+function toast(msg,type='s'){
+  const c=document.getElementById('tc');
+  const el=document.createElement('div');
+  el.className=`toast ${type}`;
+  el.innerHTML=`<span>${type==='s'?'✓':'✕'}</span> ${msg}`;
+  c.appendChild(el);
+  setTimeout(()=>{el.style.opacity='0';el.style.transition='opacity .3s';setTimeout(()=>el.remove(),300);},2800);
+}
+
+// ═══════════════════════════════════
+// INIT
+// ═══════════════════════════════════
+const today=new Date().toISOString().split('T')[0];
+document.getElementById('h-date').value=today;
+document.getElementById('mt-date').value=today;
+document.getElementById('bd-date').value=today;
+
+renderMachines();
+updateMachineKPIs();
+populateMachineSelects();
+</script>
+</body>
+</html>

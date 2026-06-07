@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مصر ستيل — الإنتاج وشجرة المنتج</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0f1117;--bg2:#161922;--bg3:#1e2330;--card:#1a1f2e;
+    --border:#2a3045;--border2:#3a4260;
+    --teal:#00c9a7;--teal2:#00a388;--blue:#4f8ef7;--amber:#f4a942;
+    --red:#f05252;--green:#22c55e;--purple:#a78bfa;--orange:#fb923c;
+    --text:#e8ecf4;--text2:#8892aa;--text3:#4a5568;
+    --font:'Cairo',sans-serif;--mono:'JetBrains Mono',monospace;
+    --radius:10px;--shadow:0 4px 24px rgba(0,0,0,0.4);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;min-height:100vh;}
+
+  .header{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100;}
+  .header-logo{display:flex;align-items:center;gap:10px;}
+  .logo-dot{width:10px;height:10px;border-radius:50%;background:var(--orange);box-shadow:0 0 10px var(--orange);}
+  .header-tabs{display:flex;gap:4px;}
+  .htab{padding:6px 16px;border-radius:6px;border:none;background:transparent;color:var(--text2);font-family:var(--font);font-size:13px;cursor:pointer;transition:all .2s;}
+  .htab.active,.htab:hover{background:var(--bg3);color:var(--text);}
+  .htab.active{color:var(--orange);border-bottom:2px solid var(--orange);border-radius:6px 6px 0 0;}
+
+  .container{max-width:1300px;margin:0 auto;padding:24px;}
+  .section-title{font-size:22px;font-weight:700;margin-bottom:4px;}
+  .section-sub{font-size:13px;color:var(--text2);margin-bottom:24px;}
+
+  .kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:24px;}
+  .kpi{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;position:relative;overflow:hidden;}
+  .kpi::before{content:'';position:absolute;top:0;right:0;width:3px;height:100%;background:var(--accent,var(--orange));}
+  .kpi-label{font-size:11px;color:var(--text2);margin-bottom:6px;}
+  .kpi-value{font-size:24px;font-weight:700;font-family:var(--mono);}
+  .kpi-sub{font-size:11px;color:var(--text3);margin-top:3px;}
+
+  .main-grid{display:grid;grid-template-columns:1fr 380px;gap:20px;}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+  .card-header{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+  .card-title{font-weight:600;font-size:15px;display:flex;align-items:center;gap:8px;}
+
+  .tab-bar{display:flex;gap:2px;padding:14px 20px 0;border-bottom:1px solid var(--border);}
+  .tab{padding:8px 14px;border-radius:7px 7px 0 0;border:none;background:transparent;color:var(--text2);font-family:var(--font);font-size:13px;cursor:pointer;transition:all .2s;border-bottom:2px solid transparent;}
+  .tab.active{color:var(--orange);border-bottom-color:var(--orange);background:rgba(251,146,60,.05);}
+  .tab:hover:not(.active){color:var(--text);background:var(--bg3);}
+  .tab-content{display:none;}
+  .tab-content.active{display:block;}
+
+  .search-row{padding:12px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+  .search-box{position:relative;flex:1;}
+  .search-box input{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:7px 12px 7px 32px;color:var(--text);font-family:var(--font);font-size:13px;width:100%;outline:none;transition:border .2s;}
+  .search-box input:focus{border-color:var(--orange);}
+  .search-box::before{content:'⌕';position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:16px;}
+
+  .btn{padding:8px 14px;border-radius:7px;border:none;font-family:var(--font);font-size:13px;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:6px;font-weight:600;}
+  .btn-primary{background:var(--orange);color:#000;}
+  .btn-primary:hover{background:#ea7c1e;}
+  .btn-ghost{background:var(--bg3);color:var(--text2);border:1px solid var(--border);}
+  .btn-ghost:hover{color:var(--text);}
+  .btn-success{background:rgba(34,197,94,.15);color:var(--green);border:1px solid rgba(34,197,94,.3);}
+  .btn-danger{background:transparent;color:var(--red);border:1px solid transparent;padding:4px 8px;font-size:12px;}
+  .btn-danger:hover{background:rgba(240,82,82,.1);border-color:var(--red);}
+  .btn-edit{background:transparent;color:var(--blue);border:1px solid transparent;padding:4px 8px;font-size:12px;}
+  .btn-edit:hover{background:rgba(79,142,247,.1);border-color:var(--blue);}
+  .btn-sm{padding:5px 10px;font-size:12px;}
+  .btn-xs{padding:3px 8px;font-size:11px;}
+
+  table{width:100%;border-collapse:collapse;}
+  th{background:var(--bg3);color:var(--text2);font-size:11px;font-weight:600;letter-spacing:.5px;padding:10px 14px;text-align:right;border-bottom:1px solid var(--border);white-space:nowrap;}
+  td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text);font-size:13px;vertical-align:middle;}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:rgba(255,255,255,.02);}
+  .td-mono{font-family:var(--mono);font-size:12px;}
+
+  .badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;}
+  .badge-green{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.2);}
+  .badge-amber{background:rgba(244,169,66,.12);color:var(--amber);border:1px solid rgba(244,169,66,.2);}
+  .badge-red{background:rgba(240,82,82,.12);color:var(--red);border:1px solid rgba(240,82,82,.2);}
+  .badge-blue{background:rgba(79,142,247,.12);color:var(--blue);border:1px solid rgba(79,142,247,.2);}
+  .badge-orange{background:rgba(251,146,60,.12);color:var(--orange);border:1px solid rgba(251,146,60,.2);}
+  .badge-purple{background:rgba(167,139,250,.12);color:var(--purple);border:1px solid rgba(167,139,250,.2);}
+
+  /* sidebar */
+  .sidebar{display:flex;flex-direction:column;gap:16px;}
+  .form-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+  .form-card-header{padding:13px 18px;border-bottom:1px solid var(--border);font-weight:600;font-size:14px;color:var(--orange);display:flex;align-items:center;gap:8px;}
+  .form-body{padding:16px 18px;display:flex;flex-direction:column;gap:12px;}
+  .field{display:flex;flex-direction:column;gap:5px;}
+  .field label{font-size:12px;color:var(--text2);font-weight:600;}
+  .field input,.field select,.field textarea{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:8px 12px;color:var(--text);font-family:var(--font);font-size:13px;outline:none;transition:border .2s;width:100%;}
+  .field input:focus,.field select:focus{border-color:var(--orange);}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .field-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+  .form-actions{display:flex;gap:8px;padding:0 18px 16px;}
+
+  /* BOM tree */
+  .bom-tree{padding:16px 20px;}
+  .bom-product{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;margin-bottom:12px;overflow:hidden;}
+  .bom-product-header{padding:12px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:background .2s;}
+  .bom-product-header:hover{background:rgba(255,255,255,.03);}
+  .bom-product-name{font-weight:700;font-size:14px;display:flex;align-items:center;gap:8px;}
+  .bom-product-meta{display:flex;gap:12px;align-items:center;}
+  .bom-materials{padding:0 16px 14px;display:none;}
+  .bom-materials.open{display:block;}
+  .bom-mat-row{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 80px;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);align-items:center;font-size:13px;}
+  .bom-mat-row:last-child{border-bottom:none;}
+  .bom-mat-header{font-size:11px;color:var(--text2);font-weight:600;padding:6px 0;border-bottom:1px solid var(--border2);}
+
+  /* Production order card */
+  .po-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-bottom:10px;position:relative;overflow:hidden;}
+  .po-card::before{content:'';position:absolute;right:0;top:0;height:100%;width:3px;background:var(--accent,var(--orange));}
+  .po-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+  .po-card-num{font-family:var(--mono);font-size:12px;color:var(--orange);}
+  .po-card-body{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;color:var(--text2);}
+  .po-card-body strong{color:var(--text);font-size:13px;}
+  .po-progress{margin-top:10px;}
+  .po-progress-label{display:flex;justify-content:space-between;font-size:11px;color:var(--text2);margin-bottom:4px;}
+  .progress-bar{background:var(--bg);border-radius:4px;height:5px;overflow:hidden;}
+  .progress-fill{height:100%;border-radius:4px;transition:width .5s;}
+
+  /* stages timeline */
+  .stages-timeline{padding:14px 20px;display:flex;flex-direction:column;gap:10px;}
+  .stage-row{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--bg3);border-radius:8px;border:1px solid var(--border);}
+  .stage-num{width:28px;height:28px;border-radius:50%;background:var(--orange);color:#000;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .stage-num.done{background:var(--green);}
+  .stage-num.progress{background:var(--blue);}
+  .stage-info{flex:1;}
+  .stage-name{font-weight:600;font-size:13px;}
+  .stage-desc{font-size:11px;color:var(--text2);margin-top:2px;}
+  .stage-time{font-family:var(--mono);font-size:12px;color:var(--text2);}
+
+  /* waste log */
+  .waste-row{display:grid;grid-template-columns:auto 1fr 1fr 1fr 80px;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);align-items:center;font-size:13px;}
+  .waste-row:last-child{border-bottom:none;}
+
+  /* tooltip cost breakdown */
+  .cost-box{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-top:12px;}
+  .cost-row{display:flex;justify-content:space-between;padding:5px 0;font-size:13px;border-bottom:1px dashed var(--border);}
+  .cost-row:last-child{border-bottom:none;font-weight:700;color:var(--orange);padding-top:8px;}
+
+  /* modal */
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:999;align-items:center;justify-content:center;backdrop-filter:blur(3px);}
+  .modal-overlay.open{display:flex;}
+  .modal{background:var(--card);border:1px solid var(--border2);border-radius:14px;width:560px;max-width:95vw;box-shadow:var(--shadow);animation:slideUp .25s ease;}
+  @keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+  .modal-header{padding:18px 22px 14px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+  .modal-title{font-weight:700;font-size:16px;}
+  .modal-close{background:none;border:none;color:var(--text2);font-size:20px;cursor:pointer;border-radius:5px;padding:4px;}
+  .modal-close:hover{background:var(--bg3);color:var(--text);}
+  .modal-body{padding:20px 22px;display:flex;flex-direction:column;gap:12px;max-height:70vh;overflow-y:auto;}
+  .modal-footer{padding:14px 22px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end;}
+
+  /* toast */
+  .toast-container{position:fixed;bottom:24px;left:24px;z-index:9999;display:flex;flex-direction:column;gap:8px;}
+  .toast{background:var(--bg2);border:1px solid var(--border2);border-radius:8px;padding:11px 16px;font-size:13px;display:flex;align-items:center;gap:10px;animation:toastIn .3s ease;box-shadow:var(--shadow);min-width:220px;}
+  @keyframes toastIn{from{transform:translateX(-20px);opacity:0}to{transform:translateX(0);opacity:1}}
+  .toast.success{border-color:rgba(34,197,94,.3);}
+  .toast.error{border-color:rgba(240,82,82,.3);}
+
+  .empty{text-align:center;padding:36px 20px;color:var(--text2);}
+  .empty-icon{font-size:34px;margin-bottom:8px;opacity:.5;}
+
+  .divider{height:1px;background:var(--border);margin:8px 0;}
+
+  @media(max-width:900px){.main-grid{grid-template-columns:1fr;}.kpi-row{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-logo">
+    <div class="logo-dot"></div>
+    <div>
+      <span style="font-weight:700;font-size:16px">مصر ستيل</span>
+      <small style="font-size:11px;color:var(--text2);margin-right:4px">— تشكيل المعادن | كراسي وترابيزات</small>
+    </div>
+  </div>
+  <div class="header-tabs">
+    <button class="htab active" onclick="switchMain('production')">⚙️ الإنتاج</button>
+    <button class="htab" onclick="switchMain('bom')">🌳 شجرة المنتج BOM</button>
+    <button class="htab" onclick="switchMain('waste')">♻️ الهالك والفاقد</button>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <span style="font-size:12px;color:var(--text2)">القسم 2 من 6</span>
+    <div style="width:80px;height:4px;background:var(--bg3);border-radius:2px;overflow:hidden;">
+      <div style="width:33.3%;height:100%;background:var(--orange);border-radius:2px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ PRODUCTION ══════════ -->
+<div id="main-production" class="container">
+  <div class="section-title">⚙️ إدارة الإنتاج</div>
+  <div class="section-sub">أوامر الإنتاج · خطة الإنتاج · متابعة التنفيذ · مراحل التشغيل</div>
+
+  <div class="kpi-row">
+    <div class="kpi" style="--accent:var(--orange)">
+      <div class="kpi-label">أوامر إنتاج مفتوحة</div>
+      <div class="kpi-value" id="kpi-open-wo">0</div>
+      <div class="kpi-sub">جارية الآن</div>
+    </div>
+    <div class="kpi" style="--accent:var(--green)">
+      <div class="kpi-label">منتج اليوم</div>
+      <div class="kpi-value" id="kpi-today-prod">0</div>
+      <div class="kpi-sub">قطعة</div>
+    </div>
+    <div class="kpi" style="--accent:var(--blue)">
+      <div class="kpi-label">للتصدير</div>
+      <div class="kpi-value" id="kpi-export-qty">0</div>
+      <div class="kpi-sub">قطعة مطلوبة</div>
+    </div>
+    <div class="kpi" style="--accent:var(--amber)">
+      <div class="kpi-label">للبيع المحلي</div>
+      <div class="kpi-value" id="kpi-local-qty">0</div>
+      <div class="kpi-sub">قطعة مطلوبة</div>
+    </div>
+    <div class="kpi" style="--accent:var(--red)">
+      <div class="kpi-label">نسبة الهالك</div>
+      <div class="kpi-value" id="kpi-waste-pct">0%</div>
+      <div class="kpi-sub">هذا الشهر</div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+    <!-- LEFT: ORDERS TABLE + STAGES -->
+    <div style="display:flex;flex-direction:column;gap:16px;">
+
+      <!-- Work Orders -->
+      <div class="card">
+        <div class="tab-bar">
+          <button class="tab active" onclick="switchTab(this,'tab-wo-list')">أوامر الإنتاج</button>
+          <button class="tab" onclick="switchTab(this,'tab-wo-plan')">خطة الإنتاج</button>
+          <button class="tab" onclick="switchTab(this,'tab-wo-stages')">مراحل التشغيل</button>
+        </div>
+        <div class="search-row">
+          <div class="search-box">
+            <input type="text" id="wo-search" placeholder="بحث بالأمر أو المنتج..." oninput="renderWO()">
+          </div>
+          <select id="wo-status-filter" onchange="renderWO()" style="background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:7px 12px;color:var(--text);font-family:var(--font);font-size:13px;outline:none;">
+            <option value="">كل الحالات</option>
+            <option value="مفتوح">مفتوح</option>
+            <option value="جاري">جاري</option>
+            <option value="مكتمل">مكتمل</option>
+            <option value="موقوف">موقوف</option>
+          </select>
+          <button class="btn btn-ghost btn-sm" onclick="exportCSV()">↓ تصدير</button>
+        </div>
+
+        <div class="tab-content active" id="tab-wo-list">
+          <div style="overflow-x:auto"><table>
+            <thead><tr>
+              <th>رقم الأمر</th><th>المنتج</th><th>الوجهة</th>
+              <th>الكمية</th><th>المنتج</th><th>تاريخ البدء</th>
+              <th>التسليم</th><th>الحالة</th><th>التقدم</th><th>إجراء</th>
+            </tr></thead>
+            <tbody id="wo-tbody"></tbody>
+          </table></div>
+        </div>
+
+        <div class="tab-content" id="tab-wo-plan">
+          <div style="padding:16px 20px;">
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;" id="plan-cards"></div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-wo-stages">
+          <div style="padding:14px 20px 8px;display:flex;align-items:center;gap:10px;">
+            <label style="font-size:13px;color:var(--text2)">أمر الإنتاج:</label>
+            <select id="stage-wo-select" onchange="renderStages()" style="background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:7px 12px;color:var(--text);font-family:var(--font);font-size:13px;outline:none;min-width:200px;"></select>
+          </div>
+          <div class="stages-timeline" id="stages-timeline"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <!-- New Work Order Form -->
+      <div class="form-card">
+        <div class="form-card-header">➕ أمر إنتاج جديد</div>
+        <div class="form-body">
+          <div class="field">
+            <label>المنتج</label>
+            <select id="wo-product">
+              <option value="">— اختر منتج —</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>الوجهة</label>
+            <select id="wo-dest">
+              <option value="محلي">بيع محلي 🇪🇬</option>
+              <option value="تصدير">تصدير 🌍</option>
+            </select>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label>الكمية المطلوبة</label>
+              <input type="number" id="wo-qty" placeholder="0" min="1">
+            </div>
+            <div class="field">
+              <label>أولوية</label>
+              <select id="wo-priority">
+                <option value="عادي">عادي</option>
+                <option value="عاجل">عاجل</option>
+                <option value="حرج">حرج</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label>تاريخ البدء</label>
+              <input type="date" id="wo-start">
+            </div>
+            <div class="field">
+              <label>تاريخ التسليم</label>
+              <input type="date" id="wo-due">
+            </div>
+          </div>
+          <div class="field">
+            <label>ملاحظات</label>
+            <input type="text" id="wo-notes" placeholder="مواصفات خاصة، عميل...">
+          </div>
+
+          <!-- BOM preview -->
+          <div id="bom-preview" style="display:none">
+            <div class="divider"></div>
+            <div style="font-size:12px;color:var(--text2);margin-bottom:8px;font-weight:600;">📋 مكونات المنتج المطلوبة:</div>
+            <div id="bom-preview-items" style="font-size:12px;display:flex;flex-direction:column;gap:4px;"></div>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-primary" style="flex:1" onclick="saveWO()">🚀 إصدار الأمر</button>
+          <button class="btn btn-ghost" onclick="clearWOForm()">✕</button>
+        </div>
+      </div>
+
+      <!-- Update Progress -->
+      <div class="form-card">
+        <div class="form-card-header">📊 تحديث تقدم الإنتاج</div>
+        <div class="form-body">
+          <div class="field">
+            <label>أمر الإنتاج</label>
+            <select id="upd-wo" onchange="fillUpdateForm()">
+              <option value="">— اختر أمر —</option>
+            </select>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label>المنتج الفعلي</label>
+              <input type="number" id="upd-produced" placeholder="0" min="0">
+            </div>
+            <div class="field">
+              <label>الهالك</label>
+              <input type="number" id="upd-waste" placeholder="0" min="0">
+            </div>
+          </div>
+          <div class="field">
+            <label>المرحلة الحالية</label>
+            <select id="upd-stage">
+              <option>قطع وتشكيل</option>
+              <option>لحام</option>
+              <option>جلخ وتلميع</option>
+              <option>تشطيب</option>
+              <option>فحص جودة</option>
+              <option>تعبئة وشحن</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-success" style="flex:1" onclick="updateWOProgress()">تحديث</button>
+        </div>
+      </div>
+
+      <!-- Quick Cost Estimate -->
+      <div class="form-card">
+        <div class="form-card-header">💰 تكلفة الأمر التقديرية</div>
+        <div id="cost-preview" style="padding:14px 18px;">
+          <div style="text-align:center;color:var(--text3);font-size:13px;padding:10px 0;">اختر منتجاً وكمية لعرض التكلفة</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ BOM ══════════ -->
+<div id="main-bom" class="container" style="display:none">
+  <div class="section-title">🌳 شجرة المنتج — BOM</div>
+  <div class="section-sub">مكونات كل منتج · نسب الاستهلاك · زمن التشغيل · تكلفة الوحدة</div>
+
+  <div class="main-grid">
+    <div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">📋 منتجات مصر ستيل</div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-ghost btn-sm" onclick="expandAll()">توسيع الكل</button>
+            <button class="btn btn-ghost btn-sm" onclick="collapseAll()">طي الكل</button>
+          </div>
+        </div>
+        <div class="bom-tree" id="bom-tree"></div>
+      </div>
+    </div>
+
+    <!-- BOM Sidebar -->
+    <div class="sidebar">
+      <div class="form-card">
+        <div class="form-card-header">➕ منتج جديد</div>
+        <div class="form-body">
+          <div class="field-row">
+            <div class="field">
+              <label>كود المنتج</label>
+              <input type="text" id="b-code" placeholder="PRD-001">
+            </div>
+            <div class="field">
+              <label>النوع</label>
+              <select id="b-type">
+                <option>كرسي</option><option>ترابيزة</option>
+                <option>رف</option><option>أخرى</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label>اسم المنتج</label>
+            <input type="text" id="b-name" placeholder="مثال: كرسي ستانلس كافيه">
+          </div>
+          <div class="field">
+            <label>الخامة الأساسية</label>
+            <select id="b-material">
+              <option>ستانلس ستيل 304</option>
+              <option>ستانلس ستيل 316 (تصدير)</option>
+              <option>حديد مطلي</option>
+              <option>حديد + ستانلس</option>
+            </select>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label>سعر البيع محلي</label>
+              <input type="number" id="b-price-local" placeholder="0">
+            </div>
+            <div class="field">
+              <label>سعر التصدير ($)</label>
+              <input type="number" id="b-price-export" placeholder="0">
+            </div>
+          </div>
+          <div class="field">
+            <label>زمن التشغيل (دقيقة/قطعة)</label>
+            <input type="number" id="b-time" placeholder="0">
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-primary" style="flex:1" onclick="saveProduct()">💾 حفظ المنتج</button>
+          <button class="btn btn-ghost" onclick="clearProductForm()">✕</button>
+        </div>
+      </div>
+
+      <!-- Add material to product -->
+      <div class="form-card">
+        <div class="form-card-header">🔩 إضافة مكوّن للمنتج</div>
+        <div class="form-body">
+          <div class="field">
+            <label>المنتج</label>
+            <select id="bm-product"><option value="">— اختر منتج —</option></select>
+          </div>
+          <div class="field">
+            <label>المادة الخام</label>
+            <select id="bm-material"><option value="">— اختر مادة —</option></select>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label>الكمية لكل قطعة</label>
+              <input type="number" id="bm-qty" placeholder="0" step="0.01">
+            </div>
+            <div class="field">
+              <label>الوحدة</label>
+              <input type="text" id="bm-unit" placeholder="كجم" style="background:var(--bg3)">
+            </div>
+          </div>
+          <div class="field">
+            <label>ملاحظة</label>
+            <input type="text" id="bm-note" placeholder="مثال: أنبوب الرجل الأمامية">
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-primary" style="flex:1" onclick="addBOMMaterial()">إضافة المكوّن</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ WASTE ══════════ -->
+<div id="main-waste" class="container" style="display:none">
+  <div class="section-title">♻️ الهالك والفاقد</div>
+  <div class="section-sub">تسجيل الهالك · سبب الخسارة · تحليل المشاكل المتكررة</div>
+
+  <div class="kpi-row" style="grid-template-columns:repeat(4,1fr)">
+    <div class="kpi" style="--accent:var(--red)">
+      <div class="kpi-label">إجمالي هالك الشهر</div>
+      <div class="kpi-value" id="w-kpi-total">0</div>
+      <div class="kpi-sub">كجم / قطعة</div>
+    </div>
+    <div class="kpi" style="--accent:var(--amber)">
+      <div class="kpi-label">تكلفة الهالك</div>
+      <div class="kpi-value" id="w-kpi-cost">0</div>
+      <div class="kpi-sub">جنيه</div>
+    </div>
+    <div class="kpi" style="--accent:var(--orange)">
+      <div class="kpi-label">أكثر سبب متكرر</div>
+      <div class="kpi-value" id="w-kpi-reason" style="font-size:14px;padding-top:4px">—</div>
+      <div class="kpi-sub"> </div>
+    </div>
+    <div class="kpi" style="--accent:var(--purple)">
+      <div class="kpi-label">يمكن إعادة تدويره</div>
+      <div class="kpi-value" id="w-kpi-recycle">0</div>
+      <div class="kpi-sub">كجم خردة معدنية</div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">📋 سجل الهالك</div>
+        <button class="btn btn-ghost btn-sm" onclick="exportWasteCSV()">↓ تصدير</button>
+      </div>
+      <div style="overflow-x:auto"><table>
+        <thead><tr>
+          <th>#</th><th>التاريخ</th><th>أمر الإنتاج</th><th>المنتج</th>
+          <th>نوع الهالك</th><th>الكمية</th><th>سبب الهالك</th>
+          <th>إمكانية التدوير</th><th>التكلفة</th>
+        </tr></thead>
+        <tbody id="waste-tbody"></tbody>
+      </table></div>
+    </div>
+
+    <div class="sidebar">
+      <div class="form-card">
+        <div class="form-card-header">➕ تسجيل هالك</div>
+        <div class="form-body">
+          <div class="field">
+            <label>أمر الإنتاج</label>
+            <select id="w-wo"><option value="">— اختر أمر —</option></select>
+          </div>
+          <div class="field">
+            <label>نوع الهالك</label>
+            <select id="w-type">
+              <option>برادة ستانلس</option>
+              <option>برادة حديد</option>
+              <option>قطعة معيبة كاملة</option>
+              <option>تشوه في اللحام</option>
+              <option>خدش في التشطيب</option>
+              <option>كسر في التشكيل</option>
+              <option>فاقد لحام</option>
+            </select>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label>الكمية</label>
+              <input type="number" id="w-qty" placeholder="0" step="0.1" min="0">
+            </div>
+            <div class="field">
+              <label>الوحدة</label>
+              <select id="w-unit">
+                <option>كجم</option><option>قطعة</option><option>متر</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label>سبب الهالك</label>
+            <select id="w-reason">
+              <option>خطأ لحام</option>
+              <option>خطأ قطع وتشكيل</option>
+              <option>عيب في الخامة</option>
+              <option>خطأ تشطيب</option>
+              <option>تلف مناولة</option>
+              <option>مواصفات غير مطابقة</option>
+              <option>أخرى</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>إمكانية التدوير</label>
+            <select id="w-recycle">
+              <option value="نعم">نعم — خردة قابلة للبيع</option>
+              <option value="جزئي">جزئي</option>
+              <option value="لا">لا</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>تكلفة الهالك (جنيه)</label>
+            <input type="number" id="w-cost" placeholder="0" step="0.01">
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-primary" style="flex:1" onclick="saveWaste()">تسجيل الهالك</button>
+        </div>
+      </div>
+
+      <!-- Analysis -->
+      <div class="form-card">
+        <div class="form-card-header">📊 تحليل أسباب الهالك</div>
+        <div id="waste-analysis" style="padding:14px 18px;font-size:13px;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-title">تفاصيل</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal()">إغلاق</button>
+      <button class="btn btn-primary" id="modal-save" style="display:none" onclick="modalSave()">حفظ</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-container" id="toast-container"></div>
+
+<script>
+// ══════════════════════════════════
+// DATA
+// ══════════════════════════════════
+const RAW = [
+  {id:1,code:'MAT-001',name:'أنابيب ستانلس 304',unit:'كجم',price:185},
+  {id:2,code:'MAT-002',name:'صفائح ستانلس 2mm',unit:'كجم',price:210},
+  {id:3,code:'MAT-003',name:'مواسير حديد 40×40',unit:'كجم',price:62},
+  {id:4,code:'MAT-004',name:'حديد مسطح 30×3',unit:'كجم',price:58},
+  {id:5,code:'MAT-005',name:'بلاط ستانلس 316',unit:'كجم',price:265},
+  {id:6,code:'MAT-006',name:'بودرة لحام ستانلس',unit:'كجم',price:340},
+  {id:7,code:'MAT-007',name:'أسلاك لحام حديد',unit:'كجم',price:78},
+  {id:8,code:'MAT-008',name:'طلاء إيبوكسي',unit:'لتر',price:145},
+  {id:9,code:'MAT-009',name:'مسامير وبراغي ستانلس',unit:'قطعة',price:2.5},
+  {id:10,code:'MAT-010',name:'كفرات بلاستيك أرجل',unit:'قطعة',price:3.5},
+  {id:11,code:'MAT-011',name:'إسفنج مقاعد',unit:'قطعة',price:55},
+  {id:12,code:'MAT-012',name:'قماش تنجيد',unit:'متر',price:120},
+];
+
+let DB = {
+  products: [
+    {id:1, code:'PRD-001', name:'كرسي ستانلس كافيه', type:'كرسي', material:'ستانلس ستيل 304', priceLocal:1800, priceExport:95, timeMin:45,
+      bom:[
+        {matId:1, qty:3.2, unit:'كجم', note:'هيكل الكرسي والأرجل'},
+        {matId:6, qty:0.15, unit:'كجم', note:'لحام الهيكل'},
+        {matId:9, qty:8, unit:'قطعة', note:'براغي التثبيت'},
+        {matId:10, qty:4, unit:'قطعة', note:'كفرات الأرجل الأربعة'},
+      ]
+    },
+    {id:2, code:'PRD-002', name:'كرسي ستانلس منجد', type:'كرسي', material:'ستانلس ستيل 304', priceLocal:2400, priceExport:130, timeMin:65,
+      bom:[
+        {matId:1, qty:3.5, unit:'كجم', note:'هيكل الكرسي'},
+        {matId:6, qty:0.18, unit:'كجم', note:'لحام'},
+        {matId:9, qty:10, unit:'قطعة', note:'براغي'},
+        {matId:10, qty:4, unit:'قطعة', note:'كفرات'},
+        {matId:11, qty:1, unit:'قطعة', note:'إسفنج المقعد والظهر'},
+        {matId:12, qty:0.8, unit:'متر', note:'قماش التنجيد'},
+      ]
+    },
+    {id:3, code:'PRD-003', name:'ترابيزة ستانلس مستطيلة 120×60', type:'ترابيزة', material:'ستانلس ستيل 304', priceLocal:3200, priceExport:175, timeMin:80,
+      bom:[
+        {matId:1, qty:5.5, unit:'كجم', note:'هيكل وأرجل الترابيزة'},
+        {matId:2, qty:4.2, unit:'كجم', note:'سطح الترابيزة'},
+        {matId:6, qty:0.25, unit:'كجم', note:'لحام الهيكل والسطح'},
+        {matId:9, qty:12, unit:'قطعة', note:'براغي التثبيت'},
+        {matId:10, qty:4, unit:'قطعة', note:'كفرات الأرجل'},
+      ]
+    },
+    {id:4, code:'PRD-004', name:'كرسي حديد مطلي', type:'كرسي', material:'حديد مطلي', priceLocal:950, priceExport:0, timeMin:35,
+      bom:[
+        {matId:3, qty:2.8, unit:'كجم', note:'هيكل الكرسي'},
+        {matId:7, qty:0.12, unit:'كجم', note:'أسلاك اللحام'},
+        {matId:8, qty:0.4, unit:'لتر', note:'طلاء إيبوكسي'},
+        {matId:9, qty:8, unit:'قطعة', note:'براغي'},
+        {matId:10, qty:4, unit:'قطعة', note:'كفرات'},
+      ]
+    },
+    {id:5, code:'PRD-005', name:'ترابيزة تصدير 316 دائرية', type:'ترابيزة', material:'ستانلس ستيل 316 (تصدير)', priceLocal:0, priceExport:280, timeMin:110,
+      bom:[
+        {matId:5, qty:7.5, unit:'كجم', note:'هيكل وسطح ستانلس 316'},
+        {matId:6, qty:0.35, unit:'كجم', note:'لحام ستانلس عالي الجودة'},
+        {matId:9, qty:16, unit:'قطعة', note:'براغي ستانلس'},
+        {matId:10, qty:4, unit:'قطعة', note:'كفرات ربر'},
+      ]
+    },
+  ],
+  workOrders: [
+    {id:1, num:'WO-001', productId:1, dest:'تصدير', qty:50, produced:30, waste:1, start:'2025-06-01', due:'2025-06-15', status:'جاري', priority:'عاجل', stage:'لحام', notes:'طلبية أوروبا'},
+    {id:2, num:'WO-002', productId:3, dest:'تصدير', qty:20, produced:5, waste:0, start:'2025-06-03', due:'2025-06-20', status:'جاري', priority:'عادي', stage:'قطع وتشكيل', notes:''},
+    {id:3, num:'WO-003', productId:4, dest:'محلي', qty:30, produced:30, waste:2, start:'2025-05-25', due:'2025-06-05', status:'مكتمل', priority:'عادي', stage:'تعبئة وشحن', notes:''},
+    {id:4, num:'WO-004', productId:2, dest:'محلي', qty:15, produced:0, waste:0, start:'2025-06-08', due:'2025-06-25', status:'مفتوح', priority:'عادي', stage:'قطع وتشكيل', notes:'طلب فندق'},
+  ],
+  wasteLog: [
+    {id:1, date:'2025-06-01', woId:1, type:'برادة ستانلس', qty:0.8, unit:'كجم', reason:'خطأ قطع وتشكيل', recycle:'نعم', cost:148},
+    {id:2, date:'2025-06-02', woId:1, type:'قطعة معيبة كاملة', qty:1, unit:'قطعة', reason:'خطأ لحام', recycle:'جزئي', cost:1800},
+    {id:3, date:'2025-06-03', woId:3, type:'برادة حديد', qty:1.2, unit:'كجم', reason:'خطأ قطع وتشكيل', recycle:'نعم', cost:74},
+    {id:4, date:'2025-06-04', woId:3, type:'خدش في التشطيب', qty:2, unit:'قطعة', reason:'خطأ تشطيب', recycle:'لا', cost:1900},
+  ],
+  nextId: {wo:5, waste:5, product:6}
+};
+
+const STAGES = ['قطع وتشكيل','لحام','جلخ وتلميع','تشطيب','فحص جودة','تعبئة وشحن'];
+
+// ══════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════
+function switchMain(s){
+  ['production','bom','waste'].forEach(k=>{
+    document.getElementById('main-'+k).style.display=k===s?'':'none';
+  });
+  document.querySelectorAll('.htab').forEach((b,i)=>{
+    b.classList.toggle('active',['production','bom','waste'][i]===s);
+  });
+  if(s==='production'){renderWO();renderPlanCards();updateProductionKPIs();populateWOSelects();}
+  if(s==='bom'){renderBOM();populateBOMSelects();}
+  if(s==='waste'){renderWaste();renderWasteAnalysis();}
+}
+
+function switchTab(btn,id){
+  const card=btn.closest('.card');
+  card.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  card.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  const el=document.getElementById(id);
+  if(el) el.classList.add('active');
+  if(id==='tab-wo-stages') renderStages();
+}
+
+// ══════════════════════════════════
+// WORK ORDERS
+// ══════════════════════════════════
+function renderWO(){
+  const search=document.getElementById('wo-search').value.toLowerCase();
+  const statusF=document.getElementById('wo-status-filter').value;
+  const items=DB.workOrders.filter(w=>{
+    const p=DB.products.find(x=>x.id===w.productId);
+    const ms=!search||(w.num.toLowerCase().includes(search)||(p&&p.name.toLowerCase().includes(search)));
+    const mst=!statusF||w.status===statusF;
+    return ms&&mst;
+  });
+  const tbody=document.getElementById('wo-tbody');
+  tbody.innerHTML=items.length?items.map(w=>{
+    const p=DB.products.find(x=>x.id===w.productId);
+    const pct=Math.round(w.produced/w.qty*100);
+    const stClass={مفتوح:'badge-blue',جاري:'badge-orange',مكتمل:'badge-green',موقوف:'badge-red'}[w.status]||'badge-blue';
+    const priClass={عادي:'badge-blue',عاجل:'badge-amber',حرج:'badge-red'}[w.priority]||'badge-blue';
+    const destIcon=w.dest==='تصدير'?'🌍':'🇪🇬';
+    return `<tr>
+      <td class="td-mono" style="color:var(--orange)">${w.num}</td>
+      <td><strong>${p?p.name:'—'}</strong><br><small style="color:var(--text3)">${p?p.material:''}</small></td>
+      <td><span>${destIcon} ${w.dest}</span></td>
+      <td class="td-mono">${w.qty}</td>
+      <td class="td-mono" style="color:var(--green)">${w.produced}</td>
+      <td style="color:var(--text2);font-size:12px">${w.start}</td>
+      <td style="color:var(--text2);font-size:12px">${w.due}</td>
+      <td><span class="badge ${stClass}">${w.status}</span></td>
+      <td style="min-width:100px">
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text2);margin-bottom:3px"><span>${w.stage}</span><span>${pct}%</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${pct===100?'var(--green)':'var(--orange)'}"></div></div>
+      </td>
+      <td style="display:flex;gap:4px;flex-wrap:wrap">
+        ${w.status==='مفتوح'?`<button class="btn btn-edit btn-xs" onclick="startWO(${w.id})">▶ بدء</button>`:''}
+        ${w.status==='جاري'?`<button class="btn btn-success btn-xs" onclick="completeWO(${w.id})">✓ إنهاء</button>`:''}
+        <button class="btn btn-edit btn-xs" onclick="viewWO(${w.id})">👁</button>
+        <button class="btn btn-danger" onclick="deleteWO(${w.id})">✕</button>
+      </td>
+    </tr>`;
+  }).join(''):'<tr><td colspan="10"><div class="empty"><div class="empty-icon">⚙️</div><p>لا توجد أوامر إنتاج</p></div></td></tr>';
+  updateProductionKPIs();
+}
+
+function renderPlanCards(){
+  const open=DB.workOrders.filter(w=>w.status!=='مكتمل');
+  document.getElementById('plan-cards').innerHTML=open.length?open.map(w=>{
+    const p=DB.products.find(x=>x.id===w.productId);
+    const pct=Math.round(w.produced/w.qty*100);
+    const stColor={مفتوح:'var(--blue)',جاري:'var(--orange)',موقوف:'var(--red)'}[w.status]||'var(--blue)';
+    return `<div class="po-card" style="--accent:${stColor}">
+      <div class="po-card-header">
+        <span class="po-card-num">${w.num}</span>
+        <span class="badge ${w.priority==='عاجل'?'badge-amber':w.priority==='حرج'?'badge-red':'badge-blue'}">${w.priority}</span>
+      </div>
+      <div style="font-weight:600;font-size:14px;margin-bottom:10px">${p?p.name:'—'}</div>
+      <div class="po-card-body">
+        <div>الكمية: <strong>${w.qty} قطعة</strong></div>
+        <div>الوجهة: <strong>${w.dest==='تصدير'?'🌍 تصدير':'🇪🇬 محلي'}</strong></div>
+        <div>المرحلة: <strong>${w.stage}</strong></div>
+        <div>التسليم: <strong>${w.due}</strong></div>
+      </div>
+      <div class="po-progress">
+        <div class="po-progress-label"><span>التقدم</span><span>${pct}%</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${stColor}"></div></div>
+      </div>
+    </div>`;
+  }).join(''):'<div style="text-align:center;color:var(--text3);padding:30px">لا توجد أوامر مفتوحة</div>';
+}
+
+function updateProductionKPIs(){
+  const open=DB.workOrders.filter(w=>w.status==='جاري'||w.status==='مفتوح').length;
+  const todayProd=DB.workOrders.reduce((s,w)=>s+w.produced,0);
+  const exportQty=DB.workOrders.filter(w=>w.dest==='تصدير'&&w.status!=='مكتمل').reduce((s,w)=>s+(w.qty-w.produced),0);
+  const localQty=DB.workOrders.filter(w=>w.dest==='محلي'&&w.status!=='مكتمل').reduce((s,w)=>s+(w.qty-w.produced),0);
+  const totalProd=DB.workOrders.reduce((s,w)=>s+w.qty,0);
+  const totalWaste=DB.workOrders.reduce((s,w)=>s+w.waste,0);
+  const wastePct=totalProd>0?((totalWaste/totalProd)*100).toFixed(1)+'%':'0%';
+  document.getElementById('kpi-open-wo').textContent=open;
+  document.getElementById('kpi-today-prod').textContent=todayProd;
+  document.getElementById('kpi-export-qty').textContent=exportQty;
+  document.getElementById('kpi-local-qty').textContent=localQty;
+  document.getElementById('kpi-waste-pct').textContent=wastePct;
+}
+
+function populateWOSelects(){
+  const pOpts='<option value="">— اختر منتج —</option>'+DB.products.map(p=>`<option value="${p.id}">${p.code} — ${p.name}</option>`).join('');
+  document.getElementById('wo-product').innerHTML=pOpts;
+  const woOpts='<option value="">— اختر أمر —</option>'+DB.workOrders.filter(w=>w.status!=='مكتمل').map(w=>`<option value="${w.id}">${w.num} — ${(DB.products.find(p=>p.id===w.productId)||{}).name||''}</option>`).join('');
+  document.getElementById('upd-wo').innerHTML=woOpts;
+  document.getElementById('stage-wo-select').innerHTML=DB.workOrders.map(w=>`<option value="${w.id}">${w.num} — ${(DB.products.find(p=>p.id===w.productId)||{}).name||''}</option>`).join('');
+  document.getElementById('w-wo').innerHTML='<option value="">— اختر أمر —</option>'+DB.workOrders.map(w=>`<option value="${w.id}">${w.num}</option>`).join('');
+}
+
+function saveWO(){
+  const productId=parseInt(document.getElementById('wo-product').value);
+  const qty=parseInt(document.getElementById('wo-qty').value)||0;
+  const start=document.getElementById('wo-start').value;
+  const due=document.getElementById('wo-due').value;
+  if(!productId||!qty) return toast('اختر منتج وأدخل الكمية','error');
+  const num=`WO-${String(DB.nextId.wo).padStart(3,'0')}`;
+  DB.workOrders.push({id:DB.nextId.wo++,num,productId,dest:document.getElementById('wo-dest').value,qty,produced:0,waste:0,start:start||new Date().toISOString().split('T')[0],due:due||'',status:'مفتوح',priority:document.getElementById('wo-priority').value,stage:'قطع وتشكيل',notes:document.getElementById('wo-notes').value});
+  clearWOForm();renderWO();renderPlanCards();populateWOSelects();
+  toast(`تم إصدار أمر الإنتاج ${num} ✓`);
+}
+
+function clearWOForm(){
+  ['wo-qty','wo-start','wo-due','wo-notes'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('wo-product').value='';
+  document.getElementById('bom-preview').style.display='none';
+  document.getElementById('cost-preview').innerHTML='<div style="text-align:center;color:var(--text3);font-size:13px;padding:10px 0">اختر منتجاً وكمية لعرض التكلفة</div>';
+}
+
+document.getElementById('wo-product').addEventListener('change',function(){
+  const pid=parseInt(this.value);
+  const qty=parseInt(document.getElementById('wo-qty').value)||1;
+  showBOMPreview(pid,qty);
+  showCostPreview(pid,qty);
+});
+document.getElementById('wo-qty').addEventListener('input',function(){
+  const pid=parseInt(document.getElementById('wo-product').value);
+  showBOMPreview(pid,parseInt(this.value)||1);
+  showCostPreview(pid,parseInt(this.value)||1);
+});
+
+function showBOMPreview(pid,qty){
+  const prod=DB.products.find(p=>p.id===pid);
+  const box=document.getElementById('bom-preview');
+  if(!prod){box.style.display='none';return;}
+  box.style.display='block';
+  document.getElementById('bom-preview-items').innerHTML=prod.bom.map(b=>{
+    const mat=RAW.find(r=>r.id===b.matId);
+    const total=(b.qty*qty).toFixed(2);
+    return `<div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid var(--border)">
+      <span style="color:var(--text2)">${mat?mat.name:''}</span>
+      <span style="color:var(--teal);font-family:var(--mono)">${total} ${b.unit}</span>
+    </div>`;
+  }).join('');
+}
+
+function showCostPreview(pid,qty){
+  const prod=DB.products.find(p=>p.id===pid);
+  if(!prod||!qty){document.getElementById('cost-preview').innerHTML='<div style="text-align:center;color:var(--text3);font-size:13px;padding:10px 0">اختر منتجاً وكمية لعرض التكلفة</div>';return;}
+  const matCost=prod.bom.reduce((s,b)=>{const mat=RAW.find(r=>r.id===b.matId);return s+(mat?mat.price*b.qty*qty:0);},0);
+  const laborCost=prod.timeMin/60*qty*85;
+  const overheadCost=matCost*0.12;
+  const total=matCost+laborCost+overheadCost;
+  const priceLocal=prod.priceLocal*qty;
+  const profit=priceLocal-total;
+  document.getElementById('cost-preview').innerHTML=`<div class="cost-box">
+    <div class="cost-row"><span>تكلفة الخامات</span><span style="font-family:var(--mono)">${matCost.toFixed(0).toLocaleString()} ج</span></div>
+    <div class="cost-row"><span>تكلفة العمالة</span><span style="font-family:var(--mono)">${laborCost.toFixed(0).toLocaleString()} ج</span></div>
+    <div class="cost-row"><span>مصاريف عامة (12%)</span><span style="font-family:var(--mono)">${overheadCost.toFixed(0).toLocaleString()} ج</span></div>
+    <div class="cost-row"><span>إجمالي التكلفة</span><span style="font-family:var(--mono)">${total.toFixed(0).toLocaleString()} ج</span></div>
+    <div class="cost-row" style="color:var(--green)"><span>هامش الربح المتوقع</span><span style="font-family:var(--mono)">${profit.toFixed(0).toLocaleString()} ج</span></div>
+  </div>`;
+}
+
+function startWO(id){
+  const w=DB.workOrders.find(x=>x.id===id);
+  if(w){w.status='جاري';renderWO();renderPlanCards();toast(`بدأ تنفيذ ${w.num} ✓`);}
+}
+
+function completeWO(id){
+  const w=DB.workOrders.find(x=>x.id===id);
+  if(w){w.status='مكتمل';w.stage='تعبئة وشحن';w.produced=w.qty;renderWO();renderPlanCards();toast(`اكتمل ${w.num} ✓`);}
+}
+
+function deleteWO(id){
+  if(!confirm('حذف أمر الإنتاج؟')) return;
+  DB.workOrders=DB.workOrders.filter(w=>w.id!==id);
+  renderWO();renderPlanCards();toast('تم الحذف','error');
+}
+
+function viewWO(id){
+  const w=DB.workOrders.find(x=>x.id===id);
+  const p=DB.products.find(x=>x.id===w.productId);
+  document.getElementById('modal-title').textContent=`تفاصيل ${w.num}`;
+  const matCost=p?p.bom.reduce((s,b)=>{const mat=RAW.find(r=>r.id===b.matId);return s+(mat?mat.price*b.qty*w.qty:0);},0):0;
+  document.getElementById('modal-body').innerHTML=`
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:13px">
+      <div><span style="color:var(--text2)">المنتج:</span><br><strong>${p?p.name:'—'}</strong></div>
+      <div><span style="color:var(--text2)">الخامة:</span><br><strong>${p?p.material:'—'}</strong></div>
+      <div><span style="color:var(--text2)">الوجهة:</span><br><strong>${w.dest==='تصدير'?'🌍 تصدير':'🇪🇬 محلي'}</strong></div>
+      <div><span style="color:var(--text2)">الكمية:</span><br><strong>${w.qty} قطعة</strong></div>
+      <div><span style="color:var(--text2)">المنتج:</span><br><strong style="color:var(--green)">${w.produced} قطعة</strong></div>
+      <div><span style="color:var(--text2)">الهالك:</span><br><strong style="color:var(--red)">${w.waste} قطعة</strong></div>
+      <div><span style="color:var(--text2)">المرحلة الحالية:</span><br><strong>${w.stage}</strong></div>
+      <div><span style="color:var(--text2)">الأولوية:</span><br><strong>${w.priority}</strong></div>
+      <div><span style="color:var(--text2)">تاريخ البدء:</span><br><strong>${w.start}</strong></div>
+      <div><span style="color:var(--text2)">تاريخ التسليم:</span><br><strong>${w.due}</strong></div>
+    </div>
+    <div class="divider"></div>
+    <div style="font-size:13px;color:var(--text2);margin-bottom:6px;font-weight:600">تكلفة الخامات التقديرية</div>
+    <div style="font-family:var(--mono);font-size:18px;color:var(--orange)">${matCost.toLocaleString()} ج</div>
+    ${w.notes?`<div class="divider"></div><div style="font-size:13px;color:var(--text2)">ملاحظات: ${w.notes}</div>`:''}
+  `;
+  document.getElementById('modal').classList.add('open');
+}
+
+function fillUpdateForm(){
+  const wid=parseInt(document.getElementById('upd-wo').value);
+  const w=DB.workOrders.find(x=>x.id===wid);
+  if(w){document.getElementById('upd-produced').value=w.produced;document.getElementById('upd-stage').value=w.stage;}
+}
+
+function updateWOProgress(){
+  const wid=parseInt(document.getElementById('upd-wo').value);
+  const produced=parseInt(document.getElementById('upd-produced').value)||0;
+  const waste=parseInt(document.getElementById('upd-waste').value)||0;
+  const stage=document.getElementById('upd-stage').value;
+  if(!wid) return toast('اختر أمر الإنتاج','error');
+  const w=DB.workOrders.find(x=>x.id===wid);
+  if(!w) return;
+  w.produced=produced;w.waste=waste;w.stage=stage;
+  if(produced>=w.qty) w.status='مكتمل';
+  else if(produced>0) w.status='جاري';
+  renderWO();renderPlanCards();toast(`تم تحديث ${w.num} ✓`);
+}
+
+function renderStages(){
+  const wid=parseInt(document.getElementById('stage-wo-select').value);
+  const w=DB.workOrders.find(x=>x.id===wid);
+  const tl=document.getElementById('stages-timeline');
+  if(!w){tl.innerHTML='<div class="empty"><p>اختر أمر إنتاج</p></div>';return;}
+  const curIdx=STAGES.indexOf(w.stage);
+  tl.innerHTML=STAGES.map((s,i)=>{
+    const done=i<curIdx||(i===curIdx&&w.status==='مكتمل');
+    const inprog=i===curIdx&&w.status!=='مكتمل';
+    const times={0:'2 ساعة',1:'3 ساعات',2:'1.5 ساعة',3:'1 ساعة',4:'30 دقيقة',5:'45 دقيقة'};
+    return `<div class="stage-row">
+      <div class="stage-num ${done?'done':inprog?'progress':''}">${done?'✓':inprog?'▶':(i+1)}</div>
+      <div class="stage-info">
+        <div class="stage-name">${s}</div>
+        <div class="stage-desc">${['قطع الأنابيب والحديد وتشكيله','لحام هيكل القطعة','جلخ اللحامات وتلميع السطح','طلاء أو صقل نهائي','مراجعة الأبعاد والجودة','تغليف وتجهيز للشحن'][i]}</div>
+      </div>
+      <div class="stage-time">${times[i]}</div>
+      <span class="badge ${done?'badge-green':inprog?'badge-orange':'badge-blue'}">${done?'مكتمل':inprog?'جاري':'انتظار'}</span>
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════
+// BOM
+// ══════════════════════════════════
+function renderBOM(){
+  const tree=document.getElementById('bom-tree');
+  tree.innerHTML=DB.products.map(p=>{
+    const totalMat=p.bom.reduce((s,b)=>{const mat=RAW.find(r=>r.id===b.matId);return s+(mat?mat.price*b.qty:0);},0);
+    const profit=p.priceLocal>0?((p.priceLocal-totalMat)/p.priceLocal*100).toFixed(0):0;
+    return `<div class="bom-product">
+      <div class="bom-product-header" onclick="toggleBOM(${p.id})">
+        <div class="bom-product-name">
+          <span style="color:var(--orange)">${p.code}</span>
+          ${p.name}
+          <span class="badge ${p.material.includes('316')?'badge-purple':p.material.includes('حديد')?'badge-amber':'badge-blue'}">${p.material.split(' ')[0]+' '+p.material.split(' ')[1]}</span>
+        </div>
+        <div class="bom-product-meta">
+          ${p.priceLocal>0?`<span style="font-size:12px;color:var(--text2)">محلي: <strong style="color:var(--green)">${p.priceLocal.toLocaleString()} ج</strong></span>`:''}
+          ${p.priceExport>0?`<span style="font-size:12px;color:var(--text2)">تصدير: <strong style="color:var(--blue)">$${p.priceExport}</strong></span>`:''}
+          <span style="font-size:12px;color:var(--text2)">⏱ ${p.timeMin} دقيقة</span>
+          <span class="badge ${profit>40?'badge-green':profit>20?'badge-amber':'badge-red'}">هامش ${profit}%</span>
+          <span style="font-size:18px;color:var(--text3);margin-right:6px" id="bom-arrow-${p.id}">▾</span>
+        </div>
+      </div>
+      <div class="bom-materials" id="bom-mat-${p.id}">
+        <div class="bom-mat-row bom-mat-header">
+          <span>المادة الخام</span><span>الكمية/قطعة</span><span>الوحدة</span><span>التكلفة/قطعة</span><span>ملاحظة</span>
+        </div>
+        ${p.bom.map((b,bi)=>{
+          const mat=RAW.find(r=>r.id===b.matId);
+          return `<div class="bom-mat-row">
+            <span>${mat?mat.name:'—'}</span>
+            <span class="td-mono" style="color:var(--teal)">${b.qty}</span>
+            <span style="color:var(--text2)">${b.unit}</span>
+            <span class="td-mono" style="color:var(--amber)">${mat?(mat.price*b.qty).toFixed(1):0} ج</span>
+            <span style="display:flex;align-items:center;gap:6px;">
+              <small style="color:var(--text3)">${b.note}</small>
+              <button class="btn btn-danger" style="padding:2px 6px;font-size:11px" onclick="removeBOMItem(${p.id},${bi})">✕</button>
+            </span>
+          </div>`;
+        }).join('')}
+        <div style="padding:10px 0;display:flex;justify-content:space-between;font-size:13px;border-top:1px solid var(--border);margin-top:4px">
+          <span style="color:var(--text2)">إجمالي تكلفة الخامات/قطعة</span>
+          <strong style="color:var(--orange)">${totalMat.toFixed(1)} ج</strong>
+        </div>
+        <div style="display:flex;gap:8px;padding-bottom:10px">
+          <button class="btn btn-danger btn-sm" onclick="deleteProduct(${p.id})">🗑 حذف المنتج</button>
+          <button class="btn btn-edit btn-sm" onclick="editProduct(${p.id})">✎ تعديل</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('')||'<div class="empty"><div class="empty-icon">🌳</div><p>لا توجد منتجات</p></div>';
+}
+
+function toggleBOM(id){
+  const el=document.getElementById('bom-mat-'+id);
+  const arr=document.getElementById('bom-arrow-'+id);
+  el.classList.toggle('open');
+  if(arr) arr.textContent=el.classList.contains('open')?'▴':'▾';
+}
+function expandAll(){DB.products.forEach(p=>{const el=document.getElementById('bom-mat-'+p.id);const arr=document.getElementById('bom-arrow-'+p.id);if(el){el.classList.add('open');if(arr)arr.textContent='▴';}});}
+function collapseAll(){DB.products.forEach(p=>{const el=document.getElementById('bom-mat-'+p.id);const arr=document.getElementById('bom-arrow-'+p.id);if(el){el.classList.remove('open');if(arr)arr.textContent='▾';}});}
+
+function populateBOMSelects(){
+  const pOpts='<option value="">— اختر منتج —</option>'+DB.products.map(p=>`<option value="${p.id}">${p.code} — ${p.name}</option>`).join('');
+  document.getElementById('bm-product').innerHTML=pOpts;
+  const mOpts='<option value="">— اختر مادة —</option>'+RAW.map(r=>`<option value="${r.id}">${r.code} — ${r.name}</option>`).join('');
+  document.getElementById('bm-material').innerHTML=mOpts;
+}
+
+function saveProduct(){
+  const name=document.getElementById('b-name').value.trim();
+  if(!name) return toast('أدخل اسم المنتج','error');
+  const code=document.getElementById('b-code').value.trim()||`PRD-${String(DB.nextId.product).padStart(3,'0')}`;
+  DB.products.push({id:DB.nextId.product++,code,name,type:document.getElementById('b-type').value,material:document.getElementById('b-material').value,priceLocal:parseFloat(document.getElementById('b-price-local').value)||0,priceExport:parseFloat(document.getElementById('b-price-export').value)||0,timeMin:parseInt(document.getElementById('b-time').value)||0,bom:[]});
+  clearProductForm();renderBOM();populateBOMSelects();toast('تم إضافة المنتج ✓');
+}
+
+function clearProductForm(){
+  ['b-code','b-name','b-price-local','b-price-export','b-time'].forEach(id=>document.getElementById(id).value='');
+}
+
+function addBOMMaterial(){
+  const pid=parseInt(document.getElementById('bm-product').value);
+  const mid=parseInt(document.getElementById('bm-material').value);
+  const qty=parseFloat(document.getElementById('bm-qty').value)||0;
+  const unit=document.getElementById('bm-unit').value.trim();
+  const note=document.getElementById('bm-note').value.trim();
+  if(!pid||!mid||!qty) return toast('اختر المنتج والمادة وأدخل الكمية','error');
+  const prod=DB.products.find(p=>p.id===pid);
+  if(!prod) return;
+  prod.bom.push({matId:mid,qty,unit:unit||RAW.find(r=>r.id===mid)?.unit||'',note});
+  ['bm-qty','bm-unit','bm-note'].forEach(id=>document.getElementById(id).value='');
+  renderBOM();toast('تم إضافة المكوّن ✓');
+}
+
+function removeBOMItem(pid,bi){
+  const prod=DB.products.find(p=>p.id===pid);
+  if(prod){prod.bom.splice(bi,1);renderBOM();toast('تم حذف المكوّن','error');}
+}
+
+function deleteProduct(id){
+  if(!confirm('هتحذف المنتج ده؟')) return;
+  DB.products=DB.products.filter(p=>p.id!==id);
+  renderBOM();populateBOMSelects();toast('تم الحذف','error');
+}
+
+function editProduct(id){
+  const p=DB.products.find(x=>x.id===id);
+  if(!p) return;
+  document.getElementById('b-code').value=p.code;
+  document.getElementById('b-name').value=p.name;
+  document.getElementById('b-type').value=p.type;
+  document.getElementById('b-material').value=p.material;
+  document.getElementById('b-price-local').value=p.priceLocal;
+  document.getElementById('b-price-export').value=p.priceExport;
+  document.getElementById('b-time').value=p.timeMin;
+  toast('عدّل البيانات واضغط حفظ');
+}
+
+// ══════════════════════════════════
+// WASTE
+// ══════════════════════════════════
+function renderWaste(){
+  const tbody=document.getElementById('waste-tbody');
+  const totalCost=DB.wasteLog.reduce((s,w)=>s+w.cost,0);
+  const totalKg=DB.wasteLog.filter(w=>w.unit==='كجم').reduce((s,w)=>s+w.qty,0);
+  const recycleKg=DB.wasteLog.filter(w=>w.unit==='كجم'&&w.recycle==='نعم').reduce((s,w)=>s+w.qty,0);
+  const reasons=DB.wasteLog.reduce((acc,w)=>{acc[w.reason]=(acc[w.reason]||0)+1;return acc;},{});
+  const topReason=Object.entries(reasons).sort((a,b)=>b[1]-a[1])[0]?.[0]||'—';
+  document.getElementById('w-kpi-total').textContent=totalKg.toFixed(1);
+  document.getElementById('w-kpi-cost').textContent=totalCost.toLocaleString();
+  document.getElementById('w-kpi-reason').textContent=topReason;
+  document.getElementById('w-kpi-recycle').textContent=recycleKg.toFixed(1);
+  tbody.innerHTML=DB.wasteLog.length?DB.wasteLog.map((w,i)=>{
+    const wo=DB.workOrders.find(x=>x.id===w.woId);
+    const prod=wo?DB.products.find(p=>p.id===wo.productId):null;
+    const rcClass=w.recycle==='نعم'?'badge-green':w.recycle==='جزئي'?'badge-amber':'badge-red';
+    return `<tr>
+      <td class="td-mono" style="color:var(--text3)">${i+1}</td>
+      <td style="color:var(--text2);font-size:12px">${w.date}</td>
+      <td class="td-mono" style="color:var(--orange)">${wo?wo.num:'—'}</td>
+      <td style="font-size:13px">${prod?prod.name:'—'}</td>
+      <td><span class="badge badge-red">${w.type}</span></td>
+      <td class="td-mono">${w.qty} ${w.unit}</td>
+      <td style="color:var(--text2)">${w.reason}</td>
+      <td><span class="badge ${rcClass}">${w.recycle}</span></td>
+      <td class="td-mono" style="color:var(--red)">${w.cost.toLocaleString()} ج</td>
+    </tr>`;
+  }).join(''):'<tr><td colspan="9"><div class="empty"><div class="empty-icon">♻️</div><p>لا يوجد هالك مسجل</p></div></td></tr>';
+  renderWasteAnalysis();
+}
+
+function renderWasteAnalysis(){
+  const reasons=DB.wasteLog.reduce((acc,w)=>{acc[w.reason]=(acc[w.reason]||0)+1;return acc;},{});
+  const sorted=Object.entries(reasons).sort((a,b)=>b[1]-a[1]);
+  const max=sorted[0]?.[1]||1;
+  document.getElementById('waste-analysis').innerHTML=sorted.length?sorted.map(([r,c])=>`
+    <div style="margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+        <span style="color:var(--text2)">${r}</span>
+        <span class="td-mono" style="color:var(--amber)">${c} مرة</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${c/max*100}%;background:var(--red)"></div></div>
+    </div>`).join(''):'<div style="color:var(--text3);text-align:center;padding:20px">لا بيانات بعد</div>';
+}
+
+function saveWaste(){
+  const woId=parseInt(document.getElementById('w-wo').value);
+  const qty=parseFloat(document.getElementById('w-qty').value)||0;
+  const cost=parseFloat(document.getElementById('w-cost').value)||0;
+  if(!woId||!qty) return toast('اختر أمر وأدخل الكمية','error');
+  const w=DB.workOrders.find(x=>x.id===woId);
+  if(w) w.waste+=qty;
+  DB.wasteLog.push({id:DB.nextId.waste++,date:new Date().toISOString().split('T')[0],woId,type:document.getElementById('w-type').value,qty,unit:document.getElementById('w-unit').value,reason:document.getElementById('w-reason').value,recycle:document.getElementById('w-recycle').value,cost});
+  ['w-qty','w-cost'].forEach(id=>document.getElementById(id).value='');
+  renderWaste();toast('تم تسجيل الهالك ✓');
+}
+
+function exportWasteCSV(){
+  const rows=DB.wasteLog.map(w=>{const wo=DB.workOrders.find(x=>x.id===w.woId);return [w.date,wo?wo.num:'',w.type,w.qty,w.unit,w.reason,w.recycle,w.cost].join(',');});
+  const csv=['التاريخ,أمر الإنتاج,نوع الهالك,الكمية,الوحدة,السبب,التدوير,التكلفة',...rows].join('\n');
+  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='هالك_مصر_ستيل.csv';a.click();
+  toast('تم تصدير سجل الهالك ✓');
+}
+
+function exportCSV(){
+  const rows=DB.workOrders.map(w=>{const p=DB.products.find(x=>x.id===w.productId);return [w.num,p?p.name:'',w.dest,w.qty,w.produced,w.waste,w.status,w.stage,w.start,w.due].join(',');});
+  const csv=['رقم الأمر,المنتج,الوجهة,الكمية,المنتج,الهالك,الحالة,المرحلة,البدء,التسليم',...rows].join('\n');
+  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='أوامر_إنتاج_مصر_ستيل.csv';a.click();
+  toast('تم تصدير الأوامر ✓');
+}
+
+// ══════════════════════════════════
+// MODAL & TOAST
+// ══════════════════════════════════
+function closeModal(){document.getElementById('modal').classList.remove('open');}
+function modalSave(){closeModal();}
+
+function toast(msg,type='success'){
+  const c=document.getElementById('toast-container');
+  const el=document.createElement('div');
+  el.className=`toast ${type}`;
+  el.innerHTML=`<span>${type==='success'?'✓':'✕'}</span> ${msg}`;
+  c.appendChild(el);
+  setTimeout(()=>{el.style.opacity='0';el.style.transition='opacity .3s';setTimeout(()=>el.remove(),300);},2800);
+}
+
+// ══════════════════════════════════
+// INIT
+// ══════════════════════════════════
+renderWO();
+renderPlanCards();
+updateProductionKPIs();
+populateWOSelects();
+
+// set today as default date
+const today=new Date().toISOString().split('T')[0];
+document.getElementById('wo-start').value=today;
+</script>
+</body>
+</html>

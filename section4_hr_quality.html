@@ -1,0 +1,1783 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مصر ستيل — الموارد البشرية والجودة</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0e1118;--bg2:#141920;--bg3:#1b2130;--card:#181d2b;
+  --border:#242d40;--border2:#344060;
+  --violet:#7c6af7;--violet2:#5d4ee0;
+  --green:#22c55e;--amber:#f59e0b;--red:#ef4444;
+  --blue:#4f8ef7;--teal:#14b8a6;--orange:#f97316;--pink:#ec4899;
+  --text:#dde3f0;--text2:#7a87a0;--text3:#3a4560;
+  --font:'Cairo',sans-serif;--mono:'JetBrains Mono',monospace;--r:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;min-height:100vh;}
+
+.header{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100;}
+.logo-dot{width:10px;height:10px;border-radius:50%;background:var(--violet);box-shadow:0 0 12px var(--violet);}
+.htab{padding:6px 14px;border-radius:6px;border:none;background:transparent;color:var(--text2);font-family:var(--font);font-size:13px;cursor:pointer;transition:all .2s;border-bottom:2px solid transparent;}
+.htab.active{color:var(--violet);border-bottom-color:var(--violet);background:rgba(124,106,247,.07);border-radius:6px 6px 0 0;}
+.htab:hover:not(.active){background:var(--bg3);color:var(--text);}
+
+.page{max-width:1320px;margin:0 auto;padding:22px 24px;}
+.pg-title{font-size:21px;font-weight:700;margin-bottom:3px;}
+.pg-sub{font-size:13px;color:var(--text2);margin-bottom:22px;}
+
+.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:22px;}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;position:relative;overflow:hidden;}
+.kpi::before{content:'';position:absolute;top:0;right:0;width:3px;height:100%;background:var(--a,var(--violet));}
+.kpi-label{font-size:11px;color:var(--text2);margin-bottom:5px;}
+.kpi-value{font-size:23px;font-weight:700;font-family:var(--mono);}
+.kpi-sub{font-size:11px;color:var(--text3);margin-top:3px;}
+
+.main-grid{display:grid;grid-template-columns:1fr 370px;gap:18px;}
+.sidebar{display:flex;flex-direction:column;gap:14px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;}
+.card-hd{padding:13px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.card-title{font-weight:600;font-size:14px;display:flex;align-items:center;gap:7px;}
+
+.tab-bar{display:flex;gap:2px;padding:12px 18px 0;border-bottom:1px solid var(--border);}
+.tab{padding:7px 13px;border-radius:7px 7px 0 0;border:none;background:transparent;color:var(--text2);font-family:var(--font);font-size:13px;cursor:pointer;transition:all .2s;border-bottom:2px solid transparent;}
+.tab.active{color:var(--violet);border-bottom-color:var(--violet);background:rgba(124,106,247,.06);}
+.tab:hover:not(.active){color:var(--text);background:var(--bg3);}
+.tab-content{display:none;}
+.tab-content.active{display:block;}
+
+.search-row{padding:11px 18px;border-bottom:1px solid var(--border);display:flex;gap:9px;align-items:center;}
+.sbox{position:relative;flex:1;}
+.sbox input{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:7px 11px 7px 30px;color:var(--text);font-family:var(--font);font-size:13px;width:100%;outline:none;transition:border .2s;}
+.sbox input:focus{border-color:var(--violet);}
+.sbox::before{content:'⌕';position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:15px;}
+
+table{width:100%;border-collapse:collapse;}
+th{background:var(--bg3);color:var(--text2);font-size:11px;font-weight:600;letter-spacing:.4px;padding:9px 14px;text-align:right;border-bottom:1px solid var(--border);white-space:nowrap;}
+td{padding:10px 14px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.018);}
+.mono{font-family:var(--mono);font-size:12px;}
+
+.badge{display:inline-flex;align-items:center;gap:3px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;}
+.bg{background:rgba(34,197,94,.11);color:var(--green);border:1px solid rgba(34,197,94,.2);}
+.ba{background:rgba(245,158,11,.11);color:var(--amber);border:1px solid rgba(245,158,11,.2);}
+.br{background:rgba(239,68,68,.11);color:var(--red);border:1px solid rgba(239,68,68,.2);}
+.bb{background:rgba(79,142,247,.11);color:var(--blue);border:1px solid rgba(79,142,247,.2);}
+.bv{background:rgba(124,106,247,.11);color:var(--violet);border:1px solid rgba(124,106,247,.2);}
+.bt{background:rgba(20,184,166,.11);color:var(--teal);border:1px solid rgba(20,184,166,.2);}
+.bo{background:rgba(249,115,22,.11);color:var(--orange);border:1px solid rgba(249,115,22,.2);}
+.bp{background:rgba(236,72,153,.11);color:var(--pink);border:1px solid rgba(236,72,153,.2);}
+
+.fc{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;}
+.fc-hd{padding:12px 16px;border-bottom:1px solid var(--border);font-weight:600;font-size:13px;color:var(--violet);display:flex;align-items:center;gap:7px;}
+.fc-body{padding:14px 16px;display:flex;flex-direction:column;gap:11px;}
+.field{display:flex;flex-direction:column;gap:4px;}
+.field label{font-size:11px;color:var(--text2);font-weight:600;}
+.field input,.field select,.field textarea{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:8px 11px;color:var(--text);font-family:var(--font);font-size:13px;outline:none;transition:border .2s;width:100%;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--violet);}
+.fr2{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.fc-actions{display:flex;gap:8px;padding:0 16px 14px;}
+
+.btn{padding:7px 13px;border-radius:7px;border:none;font-family:var(--font);font-size:13px;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:5px;font-weight:600;}
+.btn-p{background:var(--violet);color:#fff;}
+.btn-p:hover{background:var(--violet2);}
+.btn-g{background:var(--bg3);color:var(--text2);border:1px solid var(--border);}
+.btn-g:hover{color:var(--text);}
+.btn-d{background:transparent;color:var(--red);border:1px solid transparent;padding:3px 7px;font-size:12px;}
+.btn-d:hover{background:rgba(239,68,68,.1);border-color:var(--red);}
+.btn-e{background:transparent;color:var(--blue);border:1px solid transparent;padding:3px 7px;font-size:12px;}
+.btn-e:hover{background:rgba(79,142,247,.1);border-color:var(--blue);}
+.btn-sm{padding:5px 10px;font-size:12px;}
+.btn-xs{padding:3px 7px;font-size:11px;}
+.btn-success{background:rgba(34,197,94,.15);color:var(--green);border:1px solid rgba(34,197,94,.3);}
+
+.pbar{background:var(--bg);border-radius:4px;height:5px;overflow:hidden;margin-top:3px;}
+.pfill{height:100%;border-radius:4px;transition:width .5s;}
+
+/* EMPLOYEE CARD */
+.emp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;padding:16px;}
+.ecard{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:16px;position:relative;overflow:hidden;transition:border .2s;}
+.ecard:hover{border-color:var(--border2);}
+.ecard::before{content:'';position:absolute;top:0;right:0;width:100%;height:3px;background:var(--ec,var(--violet));}
+.ecard-avatar{width:44px;height:44px;border-radius:50%;background:var(--ec,var(--violet));display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff;flex-shrink:0;}
+.ecard-top{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px;}
+.ecard-info{flex:1;}
+.ecard-name{font-weight:700;font-size:14px;}
+.ecard-role{font-size:12px;color:var(--text2);margin-top:2px;}
+.ecard-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.estat{background:var(--bg);border-radius:7px;padding:7px 10px;}
+.estat-label{font-size:10px;color:var(--text3);margin-bottom:2px;}
+.estat-val{font-family:var(--mono);font-size:13px;font-weight:600;}
+.ecard-actions{display:flex;gap:6px;margin-top:12px;}
+
+/* ATTENDANCE CALENDAR */
+.att-cal{padding:16px;display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+.att-day{height:32px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:11px;font-family:var(--mono);}
+.att-present{background:rgba(34,197,94,.15);color:var(--green);border:1px solid rgba(34,197,94,.2);}
+.att-absent{background:rgba(239,68,68,.1);color:var(--red);border:1px solid rgba(239,68,68,.15);}
+.att-late{background:rgba(245,158,11,.1);color:var(--amber);border:1px solid rgba(245,158,11,.15);}
+.att-holiday{background:var(--bg3);color:var(--text3);border:1px solid var(--border);}
+.att-header{background:transparent;color:var(--text2);border:none;font-weight:600;}
+
+/* SHIFT BADGE */
+.shift-1{color:var(--blue);}
+.shift-2{color:var(--orange);}
+.shift-3{color:var(--purple,#a78bfa);}
+
+/* SALARY SLIP */
+.slip{background:var(--bg3);border-radius:8px;padding:14px;font-size:13px;}
+.slip-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed var(--border);}
+.slip-row:last-child{border-bottom:none;font-weight:700;color:var(--violet);padding-top:8px;}
+
+/* QUALITY */
+.qcard{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px;}
+.qcard-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.qcard-num{font-family:var(--mono);font-size:12px;color:var(--violet);}
+.q-result-pass{color:var(--green);font-weight:700;}
+.q-result-fail{color:var(--red);font-weight:700;}
+
+/* DEFECT CHART */
+.defect-bar{display:flex;align-items:center;gap:10px;padding:6px 0;}
+.defect-name{flex:1;font-size:12px;color:var(--text2);}
+.defect-track{flex:2;background:var(--bg);border-radius:4px;height:6px;overflow:hidden;}
+.defect-fill{height:100%;border-radius:4px;background:var(--red);}
+.defect-count{font-family:var(--mono);font-size:12px;color:var(--red);min-width:28px;text-align:left;}
+
+/* MODAL */
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:999;align-items:center;justify-content:center;backdrop-filter:blur(3px);}
+.modal-ov.open{display:flex;}
+.modal{background:var(--card);border:1px solid var(--border2);border-radius:14px;width:560px;max-width:95vw;animation:su .25s ease;}
+@keyframes su{from{transform:translateY(18px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal-hd{padding:16px 22px 12px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.modal-title{font-weight:700;font-size:15px;}
+.modal-x{background:none;border:none;color:var(--text2);font-size:20px;cursor:pointer;border-radius:5px;padding:3px;}
+.modal-x:hover{background:var(--bg3);}
+.modal-body{padding:18px 22px;display:flex;flex-direction:column;gap:12px;max-height:72vh;overflow-y:auto;}
+.modal-ft{padding:12px 22px;border-top:1px solid var(--border);display:flex;gap:9px;justify-content:flex-end;}
+
+.toast-c{position:fixed;bottom:22px;left:22px;z-index:9999;display:flex;flex-direction:column;gap:7px;}
+.toast{background:var(--bg2);border:1px solid var(--border2);border-radius:8px;padding:10px 15px;font-size:13px;display:flex;align-items:center;gap:9px;animation:ti .3s ease;min-width:210px;}
+@keyframes ti{from{transform:translateX(-18px);opacity:0}to{transform:translateX(0);opacity:1}}
+.toast.s{border-color:rgba(34,197,94,.3);}
+.toast.e{border-color:rgba(239,68,68,.3);}
+.empty{text-align:center;padding:32px;color:var(--text2);}
+.divider{height:1px;background:var(--border);margin:8px 0;}
+
+@media(max-width:900px){.main-grid{grid-template-columns:1fr;}.kpi-row{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div style="display:flex;align-items:center;gap:10px;">
+    <div class="logo-dot"></div>
+    <div>
+      <span style="font-weight:700;font-size:16px">مصر ستيل</span>
+      <small style="font-size:11px;color:var(--text2);margin-right:4px">— تشكيل المعادن | كراسي وترابيزات</small>
+    </div>
+  </div>
+  <div style="display:flex;gap:3px;">
+    <button class="htab active" onclick="nav('hr')">👷 الموارد البشرية</button>
+    <button class="htab" onclick="nav('attendance')">📅 الحضور والانصراف</button>
+    <button class="htab" onclick="nav('fingerprint')">📤 رفع البصمة</button>
+    <button class="htab" onclick="nav('salary')">💵 الرواتب</button>
+    <button class="htab" onclick="nav('quality')">✅ الجودة</button>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <span style="font-size:12px;color:var(--text2)">القسم 4 من 6</span>
+    <div style="width:80px;height:4px;background:var(--bg3);border-radius:2px;overflow:hidden;">
+      <div style="width:66.6%;height:100%;background:var(--violet);border-radius:2px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ HR ══ -->
+<div id="pg-hr" class="page">
+  <div class="pg-title">👷 الموارد البشرية</div>
+  <div class="pg-sub">بيانات العمال · الأقسام · الورديات · الإنتاجية</div>
+
+  <div class="kpi-row">
+    <div class="kpi" style="--a:var(--violet)"><div class="kpi-label">إجمالي العمال</div><div class="kpi-value" id="k-total-emp">0</div><div class="kpi-sub">موظف نشط</div></div>
+    <div class="kpi" style="--a:var(--green)"><div class="kpi-label">حاضرون اليوم</div><div class="kpi-value" id="k-present">0</div><div class="kpi-sub">من الكل</div></div>
+    <div class="kpi" style="--a:var(--red)"><div class="kpi-label">غائبون اليوم</div><div class="kpi-value" id="k-absent">0</div><div class="kpi-sub">موظف</div></div>
+    <div class="kpi" style="--a:var(--amber)"><div class="kpi-label">إجمالي الرواتب</div><div class="kpi-value" id="k-total-sal">0</div><div class="kpi-sub">جنيه شهرياً</div></div>
+    <div class="kpi" style="--a:var(--blue)"><div class="kpi-label">متوسط الإنتاجية</div><div class="kpi-value" id="k-avg-prod">0%</div><div class="kpi-sub">هذا الشهر</div></div>
+  </div>
+
+  <div class="main-grid">
+    <div>
+      <div class="card">
+        <div class="card-hd">
+          <div class="card-title">👷 قائمة العمال</div>
+          <div style="display:flex;gap:7px;">
+            <button class="btn btn-g btn-sm" id="emp-view-btn" onclick="toggleEmpView()">🔲 كروت</button>
+            <button class="btn btn-g btn-sm" onclick="exportEmp()">↓ تصدير</button>
+          </div>
+        </div>
+        <div class="search-row">
+          <div class="sbox"><input type="text" id="emp-search" placeholder="بحث بالاسم أو الكود..." oninput="renderEmp()"></div>
+          <select id="emp-dept-f" onchange="renderEmp()" style="background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:7px 11px;color:var(--text);font-family:var(--font);font-size:13px;outline:none;">
+            <option value="">كل الأقسام</option>
+            <option>قسم القطع</option><option>قسم اللحام</option>
+            <option>قسم الجلخ والتشطيب</option><option>قسم التشكيل</option><option>الإدارة</option>
+          </select>
+        </div>
+        <div id="emp-view"></div>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <div class="fc">
+        <div class="fc-hd">➕ إضافة / تعديل موظف</div>
+        <div class="fc-body">
+          <div class="fr2">
+            <div class="field"><label>كود الموظف</label><input type="text" id="e-code" placeholder="EMP-001"></div>
+            <div class="field"><label>القسم</label>
+              <select id="e-dept">
+                <option>قسم القطع</option><option>قسم اللحام</option>
+                <option>قسم الجلخ والتشطيب</option><option>قسم التشكيل</option><option>الإدارة</option>
+              </select>
+            </div>
+          </div>
+          <div class="field"><label>الاسم الكامل</label><input type="text" id="e-name" placeholder="اسم العامل"></div>
+          <div class="field"><label>الوظيفة</label>
+            <select id="e-role">
+              <option>مشغل CNC</option><option>لحام ستانلس</option><option>لحام حديد</option>
+              <option>فني جلخ وتشطيب</option><option>فني تشكيل</option><option>مراقب جودة</option>
+              <option>مشرف إنتاج</option><option>محاسب</option><option>أخرى</option>
+            </select>
+          </div>
+          <div class="fr2">
+            <div class="field"><label>الوردية</label>
+              <select id="e-shift">
+                <option value="1">الأولى (8ص-4م)</option>
+                <option value="2">الثانية (4م-12م)</option>
+                <option value="3">ليلي (12م-8ص)</option>
+              </select>
+            </div>
+            <div class="field"><label>الراتب الأساسي</label><input type="number" id="e-salary" placeholder="0" min="0"></div>
+          </div>
+          <div class="fr2">
+            <div class="field"><label>رقم الهاتف</label><input type="text" id="e-phone" placeholder="01xxxxxxxxx"></div>
+            <div class="field"><label>تاريخ التعيين</label><input type="date" id="e-hire"></div>
+          </div>
+          <div class="field"><label>الحالة</label>
+            <select id="e-status"><option>نشط</option><option>إجازة</option><option>موقوف</option></select>
+          </div>
+        </div>
+        <div class="fc-actions">
+          <button class="btn btn-p" style="flex:1" onclick="saveEmp()">💾 حفظ</button>
+          <button class="btn btn-g" onclick="clearEmpForm()">✕</button>
+        </div>
+      </div>
+
+      <!-- productivity -->
+      <div class="fc">
+        <div class="fc-hd">📊 تحديث إنتاجية موظف</div>
+        <div class="fc-body">
+          <div class="field"><label>الموظف</label><select id="prod-emp"><option value="">— اختر —</option></select></div>
+          <div class="fr2">
+            <div class="field"><label>قطع منتجة</label><input type="number" id="prod-qty" placeholder="0" min="0"></div>
+            <div class="field"><label>المستهدف</label><input type="number" id="prod-target" placeholder="0" min="0"></div>
+          </div>
+        </div>
+        <div class="fc-actions">
+          <button class="btn btn-p" style="flex:1" onclick="updateProductivity()">تحديث</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ATTENDANCE ══ -->
+<div id="pg-attendance" class="page" style="display:none">
+  <div class="pg-title">📅 الحضور والانصراف</div>
+  <div class="pg-sub">تسجيل يومي · متابعة الغياب والتأخير · الورديات</div>
+
+  <div class="kpi-row" style="grid-template-columns:repeat(4,1fr)">
+    <div class="kpi" style="--a:var(--green)"><div class="kpi-label">حاضر اليوم</div><div class="kpi-value" id="att-present">0</div><div class="kpi-sub">موظف</div></div>
+    <div class="kpi" style="--a:var(--red)"><div class="kpi-label">غائب</div><div class="kpi-value" id="att-absent">0</div><div class="kpi-sub">موظف</div></div>
+    <div class="kpi" style="--a:var(--amber)"><div class="kpi-label">متأخر</div><div class="kpi-value" id="att-late">0</div><div class="kpi-sub">موظف</div></div>
+    <div class="kpi" style="--a:var(--violet)"><div class="kpi-label">نسبة الحضور</div><div class="kpi-value" id="att-pct">0%</div><div class="kpi-sub">هذا الشهر</div></div>
+  </div>
+
+  <div class="main-grid">
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <!-- today attendance -->
+      <div class="card">
+        <div class="card-hd">
+          <div class="card-title">📋 حضور اليوم</div>
+          <div style="display:flex;gap:7px;">
+            <button class="btn btn-success btn-sm" onclick="markAllPresent()">✓ تسجيل الكل حاضر</button>
+            <button class="btn btn-g btn-sm" onclick="exportAtt()">↓ تصدير</button>
+          </div>
+        </div>
+        <div style="overflow-x:auto"><table>
+          <thead><tr><th>الموظف</th><th>القسم</th><th>الوردية</th><th>وقت الحضور</th><th>وقت الانصراف</th><th>الحالة</th><th>إجراء</th></tr></thead>
+          <tbody id="att-tbody"></tbody>
+        </table></div>
+      </div>
+
+      <!-- monthly summary -->
+      <div class="card">
+        <div class="card-hd"><div class="card-title">📊 ملخص الشهر</div></div>
+        <div style="overflow-x:auto"><table>
+          <thead><tr><th>الموظف</th><th>أيام حضور</th><th>أيام غياب</th><th>أيام تأخير</th><th>ساعات إضافية</th><th>نسبة الحضور</th></tr></thead>
+          <tbody id="att-monthly-tbody"></tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <div class="fc">
+        <div class="fc-hd">✏️ تسجيل حضور / غياب</div>
+        <div class="fc-body">
+          <div class="field"><label>الموظف</label><select id="att-emp"><option value="">— اختر —</option></select></div>
+          <div class="field"><label>الحالة</label>
+            <select id="att-status">
+              <option value="حاضر">حاضر ✓</option>
+              <option value="غائب">غائب ✕</option>
+              <option value="متأخر">متأخر ⚠</option>
+              <option value="إجازة">إجازة 🏖</option>
+            </select>
+          </div>
+          <div class="fr2">
+            <div class="field"><label>وقت الحضور</label><input type="time" id="att-in" value="08:00"></div>
+            <div class="field"><label>وقت الانصراف</label><input type="time" id="att-out" value="16:00"></div>
+          </div>
+          <div class="field"><label>ساعات إضافية</label><input type="number" id="att-ot" placeholder="0" min="0" step="0.5"></div>
+          <div class="field"><label>ملاحظة</label><input type="text" id="att-note" placeholder="سبب الغياب..."></div>
+        </div>
+        <div class="fc-actions">
+          <button class="btn btn-p" style="flex:1" onclick="saveAttendance()">تسجيل</button>
+        </div>
+      </div>
+
+      <!-- shifts -->
+      <div class="fc">
+        <div class="fc-hd">🕐 توزيع الورديات اليوم</div>
+        <div style="padding:12px 16px;display:flex;flex-direction:column;gap:8px;" id="shift-summary"></div>
+      </div>
+
+      <!-- late alerts -->
+      <div class="fc">
+        <div class="fc-hd">⚠️ تنبيهات الغياب</div>
+        <div style="padding:12px 16px;" id="absence-alerts"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SALARY ══ -->
+<div id="pg-salary" class="page" style="display:none">
+  <div class="pg-title">💵 الرواتب</div>
+  <div class="pg-sub">مسير الرواتب الشهري · الحوافز · الخصومات · صافي الراتب</div>
+
+  <div class="kpi-row" style="grid-template-columns:repeat(4,1fr)">
+    <div class="kpi" style="--a:var(--violet)"><div class="kpi-label">إجمالي الرواتب</div><div class="kpi-value" id="s-total">0</div><div class="kpi-sub">جنيه هذا الشهر</div></div>
+    <div class="kpi" style="--a:var(--green)"><div class="kpi-label">إجمالي الحوافز</div><div class="kpi-value" id="s-bonus">0</div><div class="kpi-sub">جنيه</div></div>
+    <div class="kpi" style="--a:var(--red)"><div class="kpi-label">إجمالي الخصومات</div><div class="kpi-value" id="s-deduct">0</div><div class="kpi-sub">جنيه</div></div>
+    <div class="kpi" style="--a:var(--amber)"><div class="kpi-label">صافي المدفوع</div><div class="kpi-value" id="s-net">0</div><div class="kpi-sub">جنيه</div></div>
+  </div>
+
+  <div class="main-grid">
+    <div class="card">
+      <div class="card-hd">
+        <div class="card-title">💵 مسير الرواتب — يونيو 2025</div>
+        <button class="btn btn-g btn-sm" onclick="exportSalary()">↓ تصدير</button>
+      </div>
+      <div style="overflow-x:auto"><table>
+        <thead><tr>
+          <th>الموظف</th><th>الوظيفة</th><th>الأساسي</th>
+          <th>بدل إنتاج</th><th>ساعات إضافية</th><th>حوافز</th>
+          <th>خصم غياب</th><th>خصم تأخير</th><th>صافي الراتب</th><th>إجراء</th>
+        </tr></thead>
+        <tbody id="sal-tbody"></tbody>
+      </table></div>
+    </div>
+
+    <div class="sidebar">
+      <div class="fc">
+        <div class="fc-hd">✏️ تعديل راتب موظف</div>
+        <div class="fc-body">
+          <div class="field"><label>الموظف</label><select id="sal-emp"><option value="">— اختر —</option></select></div>
+          <div class="fr2">
+            <div class="field"><label>حوافز (ج)</label><input type="number" id="sal-bonus" placeholder="0" min="0"></div>
+            <div class="field"><label>خصم (ج)</label><input type="number" id="sal-deduct" placeholder="0" min="0"></div>
+          </div>
+          <div class="field"><label>سبب</label><input type="text" id="sal-reason" placeholder="تميز في العمل / غياب..."></div>
+        </div>
+        <div class="fc-actions">
+          <button class="btn btn-p" style="flex:1" onclick="updateSalary()">تحديث الراتب</button>
+        </div>
+      </div>
+
+      <!-- salary slip preview -->
+      <div class="fc">
+        <div class="fc-hd">🧾 معاينة قسيمة راتب</div>
+        <div style="padding:12px 16px;">
+          <div class="field" style="margin-bottom:10px;">
+            <label>اختر موظف</label>
+            <select id="slip-emp" onchange="renderSlip()"><option value="">— اختر —</option></select>
+          </div>
+          <div id="slip-preview"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ QUALITY ══ -->
+<div id="pg-quality" class="page" style="display:none">
+  <div class="pg-title">✅ إدارة الجودة</div>
+  <div class="pg-sub">فحص الخامات · فحص التشغيل · فحص المنتج النهائي · تقارير العيوب</div>
+
+  <div class="kpi-row">
+    <div class="kpi" style="--a:var(--green)"><div class="kpi-label">فحوصات مكتملة</div><div class="kpi-value" id="q-total">0</div><div class="kpi-sub">هذا الشهر</div></div>
+    <div class="kpi" style="--a:var(--green)"><div class="kpi-label">معدل النجاح</div><div class="kpi-value" id="q-pass-rate">0%</div><div class="kpi-sub">مطابق للمواصفات</div></div>
+    <div class="kpi" style="--a:var(--red)"><div class="kpi-label">مرفوضات</div><div class="kpi-value" id="q-fail">0</div><div class="kpi-sub">قطعة مرفوضة</div></div>
+    <div class="kpi" style="--a:var(--amber)"><div class="kpi-label">عيوب مفتوحة</div><div class="kpi-value" id="q-open-defects">0</div><div class="kpi-sub">تحتاج متابعة</div></div>
+    <div class="kpi" style="--a:var(--blue)"><div class="kpi-label">فحص تصدير</div><div class="kpi-value" id="q-export-pass">0%</div><div class="kpi-sub">مطابق معايير تصدير</div></div>
+  </div>
+
+  <div class="main-grid">
+    <div>
+      <div class="card">
+        <div class="tab-bar">
+          <button class="tab active" onclick="switchTab(this,'qt-inspections')">سجل الفحوصات</button>
+          <button class="tab" onclick="switchTab(this,'qt-defects')">تقارير العيوب</button>
+          <button class="tab" onclick="switchTab(this,'qt-analysis')">تحليل الجودة</button>
+        </div>
+        <div class="search-row">
+          <div class="sbox"><input type="text" id="q-search" placeholder="بحث..." oninput="renderQuality()"></div>
+          <select id="q-stage-f" onchange="renderQuality()" style="background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:7px 11px;color:var(--text);font-family:var(--font);font-size:13px;outline:none;">
+            <option value="">كل المراحل</option>
+            <option>فحص خامات</option><option>فحص تشغيل</option><option>فحص نهائي</option><option>فحص تصدير</option>
+          </select>
+          <button class="btn btn-g btn-sm" onclick="exportQuality()">↓ تصدير</button>
+        </div>
+
+        <div class="tab-content active" id="qt-inspections">
+          <div style="overflow-x:auto"><table>
+            <thead><tr>
+              <th>رقم الفحص</th><th>المنتج / الخامة</th><th>مرحلة الفحص</th>
+              <th>الكمية</th><th>مقبول</th><th>مرفوض</th><th>المفتش</th><th>التاريخ</th><th>النتيجة</th><th>إجراء</th>
+            </tr></thead>
+            <tbody id="q-tbody"></tbody>
+          </table></div>
+        </div>
+
+        <div class="tab-content" id="qt-defects">
+          <div style="overflow-x:auto"><table>
+            <thead><tr>
+              <th>رقم البلاغ</th><th>المنتج</th><th>نوع العيب</th><th>الخطورة</th>
+              <th>الكمية</th><th>السبب الجذري</th><th>الإجراء</th><th>الحالة</th><th>إجراء</th>
+            </tr></thead>
+            <tbody id="defect-tbody"></tbody>
+          </table></div>
+        </div>
+
+        <div class="tab-content" id="qt-analysis">
+          <div style="padding:18px;display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <div>
+              <div style="font-weight:600;font-size:13px;margin-bottom:12px;color:var(--violet)">أكثر أنواع العيوب</div>
+              <div id="defect-chart"></div>
+            </div>
+            <div>
+              <div style="font-weight:600;font-size:13px;margin-bottom:12px;color:var(--violet)">معدل النجاح بالمرحلة</div>
+              <div id="stage-chart"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <div class="fc">
+        <div class="fc-hd">➕ تسجيل فحص جودة</div>
+        <div class="fc-body">
+          <div class="fr2">
+            <div class="field"><label>مرحلة الفحص</label>
+              <select id="qi-stage">
+                <option>فحص خامات</option><option>فحص تشغيل</option>
+                <option>فحص نهائي</option><option>فحص تصدير</option>
+              </select>
+            </div>
+            <div class="field"><label>المنتج / الخامة</label>
+              <select id="qi-product"><option value="">— اختر —</option></select>
+            </div>
+          </div>
+          <div class="fr3">
+            <div class="field"><label>الكمية الكلية</label><input type="number" id="qi-total" placeholder="0" min="0"></div>
+            <div class="field"><label>مقبول</label><input type="number" id="qi-pass" placeholder="0" min="0"></div>
+            <div class="field"><label>مرفوض</label><input type="number" id="qi-fail" placeholder="0" min="0"></div>
+          </div>
+          <div class="field"><label>المفتش</label><select id="qi-inspector"><option value="">— اختر —</option></select></div>
+          <div class="field"><label>ملاحظات</label><textarea id="qi-notes" placeholder="نتائج الفحص..." style="min-height:50px;resize:vertical"></textarea></div>
+        </div>
+        <div class="fc-actions">
+          <button class="btn btn-p" style="flex:1" onclick="saveInspection()">💾 تسجيل الفحص</button>
+        </div>
+      </div>
+
+      <!-- defect report -->
+      <div class="fc">
+        <div class="fc-hd">🚨 بلاغ عيب</div>
+        <div class="fc-body">
+          <div class="field"><label>المنتج</label><select id="def-product"><option value="">— اختر —</option></select></div>
+          <div class="field"><label>نوع العيب</label>
+            <select id="def-type">
+              <option>عيب لحام</option><option>خدش سطحي</option>
+              <option>عدم مطابقة مقاس</option><option>تشوه في التشكيل</option>
+              <option>عيب في الطلاء</option><option>كسر</option><option>أخرى</option>
+            </select>
+          </div>
+          <div class="fr2">
+            <div class="field"><label>الخطورة</label>
+              <select id="def-severity">
+                <option value="طفيف">طفيف</option>
+                <option value="متوسط">متوسط</option>
+                <option value="حرج">حرج</option>
+              </select>
+            </div>
+            <div class="field"><label>عدد القطع</label><input type="number" id="def-qty" placeholder="0" min="1"></div>
+          </div>
+          <div class="field"><label>السبب الجذري</label><input type="text" id="def-cause" placeholder="لماذا حدث العيب؟"></div>
+          <div class="field"><label>الإجراء التصحيحي</label><input type="text" id="def-action" placeholder="ما تم / سيتم عمله؟"></div>
+        </div>
+        <div class="fc-actions">
+          <button class="btn btn-p" style="flex:1" onclick="saveDefect()">🚨 إرسال البلاغ</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ FINGERPRINT IMPORT ══ -->
+<div id="pg-fingerprint" class="page" style="display:none">
+  <div class="pg-title">📤 رفع شيت البصمة</div>
+  <div class="pg-sub">ارفع ملف Excel اليومي من جهاز البصمة وسيستورد البرنامج الحضور تلقائياً</div>
+
+  <!-- HOW IT WORKS -->
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;">
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px;text-align:center;">
+      <div style="font-size:28px;margin-bottom:8px;">🖐️</div>
+      <div style="font-weight:600;font-size:13px;margin-bottom:4px;">1. بصمة العامل</div>
+      <div style="font-size:12px;color:var(--text2)">العامل يسجل دخوله وخروجه بالبصمة</div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px;text-align:center;">
+      <div style="font-size:28px;margin-bottom:8px;">💾</div>
+      <div style="font-weight:600;font-size:13px;margin-bottom:4px;">2. جهاز البصمة يصدر Excel</div>
+      <div style="font-size:12px;color:var(--text2)">تصدير ملف Excel يومي من برنامج البصمة</div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px;text-align:center;">
+      <div style="font-size:28px;margin-bottom:8px;">📤</div>
+      <div style="font-weight:600;font-size:13px;margin-bottom:4px;">3. ترفع الشيت هنا</div>
+      <div style="font-size:12px;color:var(--text2)">اسحب الملف أو اضغط لاختياره</div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px;text-align:center;">
+      <div style="font-size:28px;margin-bottom:8px;">✅</div>
+      <div style="font-weight:600;font-size:13px;margin-bottom:4px;">4. يتسجل تلقائياً</div>
+      <div style="font-size:12px;color:var(--text2)">الحضور والانصراف يتحدث للكل</div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+    <div style="display:flex;flex-direction:column;gap:16px;">
+
+      <!-- UPLOAD ZONE -->
+      <div class="card">
+        <div class="card-hd"><div class="card-title">📂 رفع ملف البصمة</div></div>
+        <div style="padding:24px;">
+          <!-- DROP ZONE -->
+          <div id="drop-zone"
+            style="border:2px dashed var(--border2);border-radius:12px;padding:48px 24px;text-align:center;cursor:pointer;transition:all .2s;position:relative;"
+            onclick="document.getElementById('fp-file-input').click()"
+            ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropFile(event)">
+            <input type="file" id="fp-file-input" accept=".xlsx,.xls,.csv" style="display:none" onchange="handleFile(this.files[0])">
+            <div id="drop-icon" style="font-size:48px;margin-bottom:12px;opacity:.5;">📊</div>
+            <div style="font-weight:700;font-size:16px;margin-bottom:6px;color:var(--text)">اسحب ملف Excel هنا</div>
+            <div style="font-size:13px;color:var(--text2)">أو اضغط لاختيار الملف</div>
+            <div style="font-size:12px;color:var(--text3);margin-top:8px;">يدعم: .xlsx · .xls · .csv</div>
+          </div>
+
+          <!-- FORMAT GUIDE ZKTeco -->
+          <div style="margin-top:20px;background:var(--bg3);border-radius:10px;padding:16px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+              <div style="font-weight:700;font-size:13px;color:var(--violet);">📋 أعمدة ZKTeco الافتراضية</div>
+              <span class="badge bb">تلقائي</span>
+            </div>
+            <!-- ZKTeco typical export layout -->
+            <div style="background:var(--bg);border-radius:8px;overflow:hidden;border:1px solid var(--border);margin-bottom:12px;">
+              <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:0;">
+                <div style="padding:7px 10px;background:var(--bg2);font-size:11px;font-weight:700;color:var(--violet);border-bottom:1px solid var(--border);">No.</div>
+                <div style="padding:7px 10px;background:var(--bg2);font-size:11px;font-weight:700;color:var(--text2);border-bottom:1px solid var(--border);">Name</div>
+                <div style="padding:7px 10px;background:var(--bg2);font-size:11px;font-weight:700;color:var(--violet);border-bottom:1px solid var(--border);">Date</div>
+                <div style="padding:7px 10px;background:var(--bg2);font-size:11px;font-weight:700;color:var(--violet);border-bottom:1px solid var(--border);">Check In</div>
+                <div style="padding:7px 10px;background:var(--bg2);font-size:11px;font-weight:700;color:var(--violet);border-bottom:1px solid var(--border);">Check Out</div>
+                <div style="padding:7px 10px;background:var(--bg2);font-size:11px;font-weight:700;color:var(--text2);border-bottom:1px solid var(--border);">Late</div>
+                <div style="padding:7px 10px;background:var(--bg2);font-size:11px;font-weight:700;color:var(--text2);border-bottom:1px solid var(--border);">OT</div>
+                <div style="padding:7px 10px;font-size:11px;color:var(--text2);border-left:none;">1</div>
+                <div style="padding:7px 10px;font-size:11px;color:var(--text2);">محمد أحمد</div>
+                <div style="padding:7px 10px;font-size:11px;color:var(--text2);">2025-06-07</div>
+                <div style="padding:7px 10px;font-size:11px;color:var(--green);">07:55</div>
+                <div style="padding:7px 10px;font-size:11px;color:var(--text2);">16:05</div>
+                <div style="padding:7px 10px;font-size:11px;color:var(--amber);">0:00</div>
+                <div style="padding:7px 10px;font-size:11px;color:var(--blue);">0:05</div>
+              </div>
+            </div>
+            <div style="font-size:12px;color:var(--text2);display:flex;flex-direction:column;gap:5px;">
+              <div style="display:flex;gap:6px;align-items:center;"><span style="color:var(--violet);font-weight:700;min-width:80px;font-family:var(--mono);font-size:11px;">No.</span><span>رقم الموظف في ZKTeco — البرنامج يطابقه بكود الموظف</span></div>
+              <div style="display:flex;gap:6px;align-items:center;"><span style="color:var(--violet);font-weight:700;min-width:80px;font-family:var(--mono);font-size:11px;">Date</span><span>التاريخ — بيسحبه تلقائياً</span></div>
+              <div style="display:flex;gap:6px;align-items:center;"><span style="color:var(--violet);font-weight:700;min-width:80px;font-family:var(--mono);font-size:11px;">Check In</span><span>وقت البصمة الأولى (الحضور)</span></div>
+              <div style="display:flex;gap:6px;align-items:center;"><span style="color:var(--violet);font-weight:700;min-width:80px;font-family:var(--mono);font-size:11px;">Check Out</span><span>وقت البصمة الأخيرة (الانصراف)</span></div>
+              <div style="display:flex;gap:6px;align-items:center;"><span style="color:var(--text3);font-weight:700;min-width:80px;font-family:var(--mono);font-size:11px;">Late / OT</span><span style="color:var(--text3);">بيقرأهم لو موجودين — مش إلزامي</span></div>
+            </div>
+            <div style="margin-top:10px;background:rgba(124,106,247,.08);border-radius:7px;padding:10px;font-size:12px;color:var(--text2);">
+              💡 <strong style="color:var(--violet)">ربط ZKTeco بالنظام:</strong> في ZKTeco افتح Reports ← Attendance Report ← اختر التاريخ ← Export to Excel — ارفع الملف هنا مباشرةً
+            </div>
+          </div>
+
+          <!-- SAMPLE DOWNLOAD -->
+          <div style="margin-top:14px;display:flex;gap:10px;align-items:center;">
+            <button class="btn btn-g btn-sm" onclick="downloadSample()">⬇️ تنزيل ملف نموذج (CSV)</button>
+            <span style="font-size:12px;color:var(--text3)">اطلع على الشكل المطلوب للملف</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PREVIEW TABLE -->
+      <div class="card" id="preview-card" style="display:none">
+        <div class="card-hd">
+          <div class="card-title" id="preview-title">📋 معاينة البيانات</div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-g btn-sm" onclick="clearPreview()">✕ إلغاء</button>
+            <button class="btn btn-p btn-sm" id="import-btn" onclick="importAttendance()">✅ استيراد الحضور</button>
+          </div>
+        </div>
+        <div style="padding:14px 18px;display:flex;gap:12px;flex-wrap:wrap;" id="preview-stats"></div>
+        <div style="overflow-x:auto"><table>
+          <thead id="preview-thead"></thead>
+          <tbody id="preview-tbody"></tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+
+      <!-- IMPORT HISTORY -->
+      <div class="fc">
+        <div class="fc-hd">📜 سجل الاستيراد</div>
+        <div style="padding:12px 16px;display:flex;flex-direction:column;gap:8px;" id="import-history">
+          <div style="font-size:13px;color:var(--text3);text-align:center;padding:12px 0">لا يوجد استيراد سابق</div>
+        </div>
+      </div>
+
+      <!-- MAPPING CONFIG -->
+      <div class="fc">
+        <div class="fc-hd">⚙️ إعدادات تعيين الأعمدة</div>
+        <div class="fc-body">
+          <div style="font-size:12px;color:var(--text2);margin-bottom:4px">لو الملف بتاعك بأسماء أعمدة مختلفة</div>
+          <div style="background:rgba(91,155,213,.08);border:1px solid rgba(91,155,213,.2);border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:12px;color:var(--text2);">
+            ✅ تم ضبط الإعدادات تلقائياً لـ <strong style="color:var(--violet)">ZKTeco Attendance Management</strong>
+          </div>
+          <div class="field"><label>عمود كود / رقم الموظف</label>
+            <select id="map-empcode-preset" onchange="applyPreset()" style="background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:8px 11px;color:var(--text);font-family:var(--font);font-size:13px;outline:none;width:100%;margin-bottom:6px;">
+              <option value="No.">No. (الأكثر شيوعاً في ZKTeco)</option>
+              <option value="ID">ID</option>
+              <option value="Employee ID">Employee ID</option>
+              <option value="AC No.">AC No.</option>
+            </select>
+            <input type="text" id="map-empcode" placeholder="أو اكتب اسم العمود يدوياً" value="No.">
+          </div>
+          <div class="field"><label>عمود وقت الحضور (Check In)</label>
+            <select id="map-checkin-preset" onchange="applyPreset()" style="background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:8px 11px;color:var(--text);font-family:var(--font);font-size:13px;outline:none;width:100%;margin-bottom:6px;">
+              <option value="Check In">Check In (الافتراضي في ZKTeco)</option>
+              <option value="Time In">Time In</option>
+              <option value="In">In</option>
+              <option value="Attendance Time">Attendance Time</option>
+            </select>
+            <input type="text" id="map-checkin" placeholder="أو اكتب اسم العمود يدوياً" value="Check In">
+          </div>
+          <div class="field"><label>عمود وقت الانصراف (Check Out)</label>
+            <select id="map-checkout-preset" onchange="applyPreset()" style="background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:8px 11px;color:var(--text);font-family:var(--font);font-size:13px;outline:none;width:100%;margin-bottom:6px;">
+              <option value="Check Out">Check Out (الافتراضي في ZKTeco)</option>
+              <option value="Time Out">Time Out</option>
+              <option value="Out">Out</option>
+              <option value="Off Time">Off Time</option>
+            </select>
+            <input type="text" id="map-checkout" placeholder="أو اكتب اسم العمود يدوياً" value="Check Out">
+          </div>
+          <div class="field"><label>عمود التاريخ</label>
+            <select id="map-date-preset" onchange="applyPreset()" style="background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:8px 11px;color:var(--text);font-family:var(--font);font-size:13px;outline:none;width:100%;margin-bottom:6px;">
+              <option value="Date">Date (الافتراضي في ZKTeco)</option>
+              <option value="Attendance Date">Attendance Date</option>
+              <option value="التاريخ">التاريخ</option>
+            </select>
+            <input type="text" id="map-date" placeholder="أو اكتب اسم العمود يدوياً" value="Date">
+          </div>
+          <div class="field"><label>وقت التأخير (بعد كام دقيقة يُعد متأخر)</label>
+            <input type="number" id="late-threshold" value="15" min="0" max="60">
+          </div>
+        </div>
+      </div>
+
+      <div class="fc">
+        <div class="fc-hd">🤖 المطابقة الذكية مع ZKTeco</div>
+        <div style="padding:12px 16px;font-size:13px;color:var(--text2);line-height:1.7">
+          <div style="margin-bottom:8px">البرنامج يطابق رقم ZKTeco بالموظف بـ:</div>
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            <div style="display:flex;align-items:center;gap:7px;"><span style="color:var(--green)">✓</span> رقم ZKTeco = رقم من كود الموظف<br><small style="color:var(--text3);margin-right:18px">مثال: ZKTeco No.=3 → EMP-003</small></div>
+            <div style="display:flex;align-items:center;gap:7px;"><span style="color:var(--green)">✓</span> اسم ZKTeco يتطابق مع اسم الموظف</div>
+            <div style="display:flex;align-items:center;gap:7px;"><span style="color:var(--green)">✓</span> عمود Late من ZKTeco للتأخير</div>
+            <div style="display:flex;align-items:center;gap:7px;"><span style="color:var(--green)">✓</span> عمود OT من ZKTeco للإضافي</div>
+            <div style="display:flex;align-items:center;gap:7px;"><span style="color:var(--red)">✕</span> مش مطابق → يُحفظ كـ "غير معروف"</div>
+          </div>
+          <div style="margin-top:10px;padding:10px;background:var(--bg3);border-radius:7px;font-size:12px;">
+            ⚡ <strong style="color:var(--violet)">نصيحة:</strong> تأكد إن رقم الموظف في ZKTeco بيتطابق مع رقمه في البرنامج. مثلاً لو في ZKTeco رقمه 3، كوده في البرنامج يكون EMP-003
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-ov" id="modal">
+  <div class="modal">
+    <div class="modal-hd"><div class="modal-title" id="modal-title">تفاصيل</div><button class="modal-x" onclick="closeModal()">✕</button></div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-ft"><button class="btn btn-g" onclick="closeModal()">إغلاق</button></div>
+  </div>
+</div>
+<div class="toast-c" id="tc"></div>
+
+<script>
+// ══════════════════════════════════
+// DATA
+// ══════════════════════════════════
+const PRODUCTS = [
+  {id:1,name:'كرسي ستانلس كافيه'},{id:2,name:'كرسي ستانلس منجد'},
+  {id:3,name:'ترابيزة ستانلس 120×60'},{id:4,name:'كرسي حديد مطلي'},{id:5,name:'ترابيزة تصدير 316'}
+];
+const DEPT_COLORS = {'قسم القطع':'var(--blue)','قسم اللحام':'var(--orange)','قسم الجلخ والتشطيب':'var(--teal)','قسم التشكيل':'var(--violet)','الإدارة':'var(--pink)'};
+
+let DB = {
+  employees: [
+    {id:1,code:'EMP-001',name:'محمد أحمد سالم',dept:'قسم اللحام',role:'لحام ستانلس',shift:'1',salary:4500,phone:'01001000001',hire:'2020-03-15',status:'نشط',productivity:88,bonus:0,deduction:0,produced:0,target:0},
+    {id:2,code:'EMP-002',name:'كريم محمود علي',dept:'قسم القطع',role:'مشغل CNC',shift:'1',salary:5200,phone:'01001000002',hire:'2019-07-01',status:'نشط',productivity:92,bonus:500,deduction:0,produced:0,target:0},
+    {id:3,code:'EMP-003',name:'أحمد حسن إبراهيم',dept:'قسم الجلخ والتشطيب',role:'فني جلخ وتشطيب',shift:'2',salary:3800,phone:'01001000003',hire:'2021-01-10',status:'نشط',productivity:75,bonus:0,deduction:200,produced:0,target:0},
+    {id:4,code:'EMP-004',name:'سامي يوسف عبد الله',dept:'قسم التشكيل',role:'فني تشكيل',shift:'1',salary:4200,phone:'01001000004',hire:'2022-05-20',status:'نشط',productivity:81,bonus:300,deduction:0,produced:0,target:0},
+    {id:5,code:'EMP-005',name:'طارق محمد فؤاد',dept:'قسم اللحام',role:'لحام حديد',shift:'2',salary:3600,phone:'01001000005',hire:'2023-02-01',status:'نشط',productivity:79,bonus:0,deduction:0,produced:0,target:0},
+    {id:6,code:'EMP-006',name:'عمر سعد الدين',dept:'الإدارة',role:'مراقب جودة',shift:'1',salary:4800,phone:'01001000006',hire:'2020-11-15',status:'نشط',productivity:95,bonus:600,deduction:0,produced:0,target:0},
+    {id:7,code:'EMP-007',name:'إسلام رضا حسين',dept:'قسم القطع',role:'فني تشكيل',shift:'3',salary:4000,phone:'01001000007',hire:'2021-08-01',status:'إجازة',productivity:70,bonus:0,deduction:0,produced:0,target:0},
+  ],
+  attendance: [
+    {id:1,empId:1,date:'2025-06-07',status:'حاضر',inTime:'07:55',outTime:'16:05',overtime:0,note:''},
+    {id:2,empId:2,date:'2025-06-07',status:'حاضر',inTime:'07:50',outTime:'17:00',overtime:1,note:''},
+    {id:3,empId:3,date:'2025-06-07',status:'متأخر',inTime:'08:45',outTime:'16:00',overtime:0,note:''},
+    {id:4,empId:4,date:'2025-06-07',status:'حاضر',inTime:'07:58',outTime:'16:10',overtime:0,note:''},
+    {id:5,empId:5,date:'2025-06-07',status:'غائب',inTime:'',outTime:'',overtime:0,note:'مرض'},
+    {id:6,empId:6,date:'2025-06-07',status:'حاضر',inTime:'08:00',outTime:'16:00',overtime:0,note:''},
+    {id:7,empId:7,date:'2025-06-07',status:'إجازة',inTime:'',outTime:'',overtime:0,note:'إجازة سنوية'},
+  ],
+  inspections: [
+    {id:1,num:'QC-001',productId:1,stage:'فحص نهائي',total:50,pass:48,fail:2,inspector:6,date:'2025-06-05',notes:'عيب لحام بسيط في قطعتين'},
+    {id:2,num:'QC-002',productId:3,stage:'فحص تصدير',total:20,pass:19,fail:1,inspector:6,date:'2025-06-06',notes:'خدش سطحي رفيع'},
+    {id:3,num:'QC-003',productId:5,stage:'فحص تصدير',total:10,pass:10,fail:0,inspector:6,date:'2025-06-06',notes:'مطابق بالكامل للمواصفات الأوروبية'},
+    {id:4,num:'QC-004',productId:4,stage:'فحص نهائي',total:30,pass:27,fail:3,inspector:6,date:'2025-06-07',notes:'مشاكل في الطلاء'},
+  ],
+  defects: [
+    {id:1,num:'DEF-001',productId:1,type:'عيب لحام',severity:'متوسط',qty:2,cause:'ضغط غاز خاطئ في ماكينة MIG',action:'إعادة لحام وتلميع',status:'محلول'},
+    {id:2,num:'DEF-002',productId:3,type:'خدش سطحي',severity:'طفيف',qty:1,cause:'تلامس أثناء النقل',action:'معالجة تلميع يدوي',status:'مفتوح'},
+    {id:3,num:'DEF-003',productId:4,type:'عيب في الطلاء',severity:'متوسط',qty:3,cause:'سطح غير نظيف قبل الطلاء',action:'إزالة الطلاء وإعادة رش',status:'مفتوح'},
+  ],
+  nextId:{emp:8,att:8,insp:5,def:4}
+};
+
+let empViewMode = 'table';
+let editEmpId = null;
+
+// ══════════════════════════════════
+// NAV
+// ══════════════════════════════════
+function nav(p){
+  ['hr','attendance','fingerprint','salary','quality'].forEach(k=>{
+    document.getElementById('pg-'+k).style.display=k===p?'':'none';
+  });
+  document.querySelectorAll('.htab').forEach((b,i)=>{
+    b.classList.toggle('active',['hr','attendance','fingerprint','salary','quality'][i]===p);
+  });
+  if(p==='hr'){renderEmp();updateHRKPIs();populateEmpSelects();}
+  if(p==='attendance'){renderAttendance();renderShiftSummary();renderAbsenceAlerts();updateAttKPIs();}
+  if(p==='salary'){renderSalary();updateSalaryKPIs();populateEmpSelects();}
+  if(p==='quality'){renderQuality();updateQualityKPIs();populateQualitySelects();}
+}
+
+function switchTab(btn,id){
+  const card=btn.closest('.card');
+  card.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  card.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(id)?.classList.add('active');
+  if(id==='qt-analysis') renderAnalysis();
+  if(id==='qt-defects') renderDefects();
+}
+
+// ══════════════════════════════════
+// HR
+// ══════════════════════════════════
+function renderEmp(){
+  const search=document.getElementById('emp-search').value.toLowerCase();
+  const deptF=document.getElementById('emp-dept-f').value;
+  const items=DB.employees.filter(e=>{
+    const ms=!search||e.name.toLowerCase().includes(search)||e.code.toLowerCase().includes(search);
+    const md=!deptF||e.dept===deptF;
+    return ms&&md;
+  });
+  const color=e=>DEPT_COLORS[e.dept]||'var(--violet)';
+  const initial=e=>e.name.charAt(0);
+  const shiftLabel=s=>({'1':'الأولى','2':'الثانية','3':'ليلي'}[s]||s);
+  const shiftClass=s=>({'1':'shift-1','2':'shift-2','3':'shift-3'}[s]||'');
+
+  if(empViewMode==='cards'){
+    document.getElementById('emp-view').innerHTML=`<div class="emp-grid">${items.map(e=>`
+      <div class="ecard" style="--ec:${color(e)}">
+        <div class="ecard-top">
+          <div class="ecard-avatar">${initial(e)}</div>
+          <div class="ecard-info">
+            <div class="ecard-name">${e.name}</div>
+            <div class="ecard-role">${e.role}</div>
+            <div style="margin-top:5px;display:flex;gap:5px;flex-wrap:wrap">
+              <span class="badge ${e.status==='نشط'?'bg':e.status==='إجازة'?'ba':'br'}">${e.status}</span>
+              <span class="badge bb">${e.dept}</span>
+            </div>
+          </div>
+        </div>
+        <div class="ecard-stats">
+          <div class="estat"><div class="estat-label">الراتب الأساسي</div><div class="estat-val" style="color:var(--violet)">${e.salary.toLocaleString()} ج</div></div>
+          <div class="estat"><div class="estat-label">الوردية</div><div class="estat-val ${shiftClass(e.shift)}">${shiftLabel(e.shift)}</div></div>
+          <div class="estat"><div class="estat-label">الإنتاجية</div><div class="estat-val" style="color:${e.productivity>=85?'var(--green)':e.productivity>=70?'var(--amber)':'var(--red)'}">${e.productivity}%</div></div>
+          <div class="estat"><div class="estat-label">منذ</div><div class="estat-val" style="font-size:11px;color:var(--text2)">${e.hire}</div></div>
+        </div>
+        <div class="ecard-actions">
+          <button class="btn btn-e btn-xs" onclick="editEmp(${e.id})">✎ تعديل</button>
+          <button class="btn btn-d" onclick="deleteEmp(${e.id})">✕</button>
+        </div>
+      </div>`).join('')}</div>`;
+  } else {
+    document.getElementById('emp-view').innerHTML=`<div style="overflow-x:auto"><table>
+      <thead><tr><th>الكود</th><th>الاسم</th><th>الوظيفة</th><th>القسم</th><th>الوردية</th><th>الراتب</th><th>الإنتاجية</th><th>الحالة</th><th>إجراء</th></tr></thead>
+      <tbody>${items.length?items.map(e=>{
+        const pColor=e.productivity>=85?'var(--green)':e.productivity>=70?'var(--amber)':'var(--red)';
+        return `<tr>
+          <td class="mono" style="color:var(--violet)">${e.code}</td>
+          <td>
+            <div style="display:flex;align-items:center;gap:9px;">
+              <div style="width:32px;height:32px;border-radius:50%;background:${color(e)};display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#fff;flex-shrink:0">${initial(e)}</div>
+              <div><strong>${e.name}</strong><br><small style="color:var(--text3)">${e.phone}</small></div>
+            </div>
+          </td>
+          <td style="color:var(--text2);font-size:12px">${e.role}</td>
+          <td><span class="badge bb">${e.dept}</span></td>
+          <td><span class="${'shift-'+e.shift}">${{'1':'🌅 الأولى','2':'🌆 الثانية','3':'🌙 ليلي'}[e.shift]}</span></td>
+          <td class="mono">${e.salary.toLocaleString()} ج</td>
+          <td>
+            <span class="mono" style="color:${pColor}">${e.productivity}%</span>
+            <div class="pbar" style="width:70px"><div class="pfill" style="width:${e.productivity}%;background:${pColor}"></div></div>
+          </td>
+          <td><span class="badge ${e.status==='نشط'?'bg':e.status==='إجازة'?'ba':'br'}">${e.status}</span></td>
+          <td style="display:flex;gap:3px">
+            <button class="btn btn-e" onclick="editEmp(${e.id})">✎</button>
+            <button class="btn btn-d" onclick="deleteEmp(${e.id})">✕</button>
+          </td>
+        </tr>`;
+      }).join(''):'<tr><td colspan="9"><div class="empty">لا توجد موظفين</div></td></tr>'}</tbody>
+    </table></div>`;
+  }
+  updateHRKPIs();
+}
+
+function toggleEmpView(){
+  empViewMode=empViewMode==='table'?'cards':'table';
+  document.getElementById('emp-view-btn').textContent=empViewMode==='table'?'🔲 كروت':'📋 جدول';
+  renderEmp();
+}
+
+function updateHRKPIs(){
+  const today=DB.attendance.filter(a=>a.date===new Date().toISOString().split('T')[0]);
+  const present=today.filter(a=>a.status==='حاضر').length;
+  const absent=today.filter(a=>a.status==='غائب').length;
+  const totalSal=DB.employees.reduce((s,e)=>s+e.salary,0);
+  const avgProd=DB.employees.length?(DB.employees.reduce((s,e)=>s+e.productivity,0)/DB.employees.length).toFixed(0)+'%':'0%';
+  document.getElementById('k-total-emp').textContent=DB.employees.length;
+  document.getElementById('k-present').textContent=present||DB.employees.filter(e=>e.status==='نشط').length;
+  document.getElementById('k-absent').textContent=absent;
+  document.getElementById('k-total-sal').textContent=totalSal.toLocaleString();
+  document.getElementById('k-avg-prod').textContent=avgProd;
+}
+
+function populateEmpSelects(){
+  const opts='<option value="">— اختر —</option>'+DB.employees.map(e=>`<option value="${e.id}">${e.code} — ${e.name}</option>`).join('');
+  ['prod-emp','att-emp','sal-emp','slip-emp','qi-inspector'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=opts;});
+}
+
+function saveEmp(){
+  const name=document.getElementById('e-name').value.trim();
+  if(!name) return toast('أدخل اسم الموظف','e');
+  const data={
+    code:document.getElementById('e-code').value.trim()||`EMP-${String(DB.nextId.emp).padStart(3,'0')}`,
+    name,dept:document.getElementById('e-dept').value,
+    role:document.getElementById('e-role').value,
+    shift:document.getElementById('e-shift').value,
+    salary:parseInt(document.getElementById('e-salary').value)||0,
+    phone:document.getElementById('e-phone').value,
+    hire:document.getElementById('e-hire').value||new Date().toISOString().split('T')[0],
+    status:document.getElementById('e-status').value,
+    productivity:75,bonus:0,deduction:0,produced:0,target:0
+  };
+  if(editEmpId){Object.assign(DB.employees.find(e=>e.id===editEmpId),data);editEmpId=null;toast('تم تعديل بيانات الموظف ✓');}
+  else{DB.employees.push({id:DB.nextId.emp++,...data});toast('تم إضافة الموظف ✓');}
+  clearEmpForm();renderEmp();populateEmpSelects();
+}
+
+function clearEmpForm(){
+  ['e-code','e-name','e-phone','e-hire','e-salary'].forEach(id=>document.getElementById(id).value='');
+  editEmpId=null;
+}
+
+function editEmp(id){
+  const e=DB.employees.find(x=>x.id===id);
+  if(!e) return;
+  document.getElementById('e-code').value=e.code;
+  document.getElementById('e-name').value=e.name;
+  document.getElementById('e-dept').value=e.dept;
+  document.getElementById('e-role').value=e.role;
+  document.getElementById('e-shift').value=e.shift;
+  document.getElementById('e-salary').value=e.salary;
+  document.getElementById('e-phone').value=e.phone;
+  document.getElementById('e-hire').value=e.hire;
+  document.getElementById('e-status').value=e.status;
+  editEmpId=id;toast('جاهز للتعديل');
+}
+
+function deleteEmp(id){
+  if(!confirm('حذف الموظف؟')) return;
+  DB.employees=DB.employees.filter(e=>e.id!==id);
+  renderEmp();populateEmpSelects();toast('تم الحذف','e');
+}
+
+function updateProductivity(){
+  const eid=parseInt(document.getElementById('prod-emp').value);
+  const qty=parseInt(document.getElementById('prod-qty').value)||0;
+  const target=parseInt(document.getElementById('prod-target').value)||0;
+  if(!eid||!target) return toast('اختر موظف وأدخل المستهدف','e');
+  const e=DB.employees.find(x=>x.id===eid);
+  if(e){e.produced=qty;e.target=target;e.productivity=Math.min(100,Math.round(qty/target*100));}
+  renderEmp();toast('تم تحديث الإنتاجية ✓');
+}
+
+function exportEmp(){
+  const rows=DB.employees.map(e=>[e.code,e.name,e.dept,e.role,e.shift,e.salary,e.productivity+'%',e.status].join(','));
+  const csv=['الكود,الاسم,القسم,الوظيفة,الوردية,الراتب,الإنتاجية,الحالة',...rows].join('\n');
+  dl(csv,'موظفين_مصر_ستيل.csv');toast('تم التصدير ✓');
+}
+
+// ══════════════════════════════════
+// ATTENDANCE
+// ══════════════════════════════════
+function renderAttendance(){
+  const today=new Date().toISOString().split('T')[0];
+  const todayAtt=DB.attendance.filter(a=>a.date===today);
+  const tbody=document.getElementById('att-tbody');
+  tbody.innerHTML=DB.employees.map(e=>{
+    const a=todayAtt.find(x=>x.empId===e.id);
+    const status=a?a.status:'غير مسجل';
+    const sc={حاضر:'bg',غائب:'br',متأخر:'ba',إجازة:'bb','غير مسجل':'bv'}[status]||'bv';
+    const shiftLabel={'1':'🌅 الأولى','2':'🌆 الثانية','3':'🌙 ليلي'}[e.shift];
+    return `<tr>
+      <td>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="width:30px;height:30px;border-radius:50%;background:${DEPT_COLORS[e.dept]||'var(--violet)'};display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:#fff">${e.name.charAt(0)}</div>
+          <strong>${e.name}</strong>
+        </div>
+      </td>
+      <td style="font-size:12px;color:var(--text2)">${e.dept}</td>
+      <td style="font-size:12px">${shiftLabel}</td>
+      <td class="mono" style="color:var(--green)">${a&&a.inTime?a.inTime:'—'}</td>
+      <td class="mono" style="color:var(--text2)">${a&&a.outTime?a.outTime:'—'}</td>
+      <td><span class="badge ${sc}">${status}</span></td>
+      <td style="display:flex;gap:4px">
+        ${status==='غير مسجل'||status==='غائب'?`<button class="btn btn-success btn-xs" onclick="quickPresent(${e.id})">✓ حاضر</button>`:''}
+        <button class="btn btn-e btn-xs" onclick="editAtt(${e.id})">✎</button>
+      </td>
+    </tr>`;
+  }).join('');
+  renderMonthly();
+  updateAttKPIs();
+}
+
+function renderMonthly(){
+  const tbody=document.getElementById('att-monthly-tbody');
+  tbody.innerHTML=DB.employees.map(e=>{
+    const empAtt=DB.attendance.filter(a=>a.empId===e.id);
+    const present=empAtt.filter(a=>a.status==='حاضر').length;
+    const absent=empAtt.filter(a=>a.status==='غائب').length;
+    const late=empAtt.filter(a=>a.status==='متأخر').length;
+    const ot=empAtt.reduce((s,a)=>s+a.overtime,0);
+    const workDays=22;
+    const pct=Math.round((present+late)/workDays*100);
+    return `<tr>
+      <td><strong>${e.name}</strong></td>
+      <td class="mono" style="color:var(--green)">${present}</td>
+      <td class="mono" style="color:var(--red)">${absent}</td>
+      <td class="mono" style="color:var(--amber)">${late}</td>
+      <td class="mono" style="color:var(--blue)">${ot}</td>
+      <td>
+        <span class="mono" style="color:${pct>=90?'var(--green)':pct>=75?'var(--amber)':'var(--red)'}">${pct}%</span>
+        <div class="pbar" style="width:80px"><div class="pfill" style="width:${pct}%;background:${pct>=90?'var(--green)':pct>=75?'var(--amber)':'var(--red)'}"></div></div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function updateAttKPIs(){
+  const today=new Date().toISOString().split('T')[0];
+  const todayAtt=DB.attendance.filter(a=>a.date===today);
+  const present=todayAtt.filter(a=>a.status==='حاضر').length;
+  const absent=todayAtt.filter(a=>a.status==='غائب').length;
+  const late=todayAtt.filter(a=>a.status==='متأخر').length;
+  const pct=DB.employees.length?Math.round((present+late)/DB.employees.length*100):0;
+  document.getElementById('att-present').textContent=present;
+  document.getElementById('att-absent').textContent=absent;
+  document.getElementById('att-late').textContent=late;
+  document.getElementById('att-pct').textContent=pct+'%';
+}
+
+function renderShiftSummary(){
+  const shifts={'1':{label:'🌅 الأولى (8ص-4م)',color:'var(--blue)'},'2':{label:'🌆 الثانية (4م-12م)',color:'var(--orange)'},'3':{label:'🌙 ليلي',color:'var(--purple,#a78bfa)'}};
+  const div=document.getElementById('shift-summary');
+  div.innerHTML=Object.entries(shifts).map(([s,info])=>{
+    const emps=DB.employees.filter(e=>e.shift===s&&e.status==='نشط');
+    return `<div style="background:var(--bg3);border-radius:8px;padding:10px 12px;border-right:3px solid ${info.color}">
+      <div style="font-weight:600;font-size:13px;color:${info.color};margin-bottom:6px">${info.label}</div>
+      <div style="font-size:12px;color:var(--text2)">${emps.map(e=>e.name.split(' ')[0]).join(' · ')||'لا يوجد'}</div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--text3);margin-top:4px">${emps.length} موظف</div>
+    </div>`;
+  }).join('');
+}
+
+function renderAbsenceAlerts(){
+  const today=new Date().toISOString().split('T')[0];
+  const absent=DB.attendance.filter(a=>a.date===today&&a.status==='غائب').map(a=>DB.employees.find(e=>e.id===a.empId)).filter(Boolean);
+  const div=document.getElementById('absence-alerts');
+  div.innerHTML=absent.length?absent.map(e=>`<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border)">
+    <span style="color:var(--red)">✕</span>
+    <span style="font-size:13px;flex:1">${e.name}</span>
+    <span class="badge br">غائب</span>
+  </div>`).join(''):'<div style="color:var(--text3);font-size:13px;padding:8px 0">لا غيابات اليوم 👍</div>';
+}
+
+function saveAttendance(){
+  const eid=parseInt(document.getElementById('att-emp').value);
+  const status=document.getElementById('att-status').value;
+  if(!eid) return toast('اختر موظف','e');
+  const today=new Date().toISOString().split('T')[0];
+  const existing=DB.attendance.findIndex(a=>a.empId===eid&&a.date===today);
+  const entry={id:existing>=0?DB.attendance[existing].id:DB.nextId.att++,empId:eid,date:today,status,inTime:document.getElementById('att-in').value,outTime:document.getElementById('att-out').value,overtime:parseFloat(document.getElementById('att-ot').value)||0,note:document.getElementById('att-note').value};
+  if(existing>=0) DB.attendance[existing]=entry; else DB.attendance.push(entry);
+  document.getElementById('att-emp').value='';
+  document.getElementById('att-note').value='';
+  renderAttendance();renderShiftSummary();renderAbsenceAlerts();toast('تم تسجيل الحضور ✓');
+}
+
+function quickPresent(eid){
+  const today=new Date().toISOString().split('T')[0];
+  const existing=DB.attendance.findIndex(a=>a.empId===eid&&a.date===today);
+  const entry={id:existing>=0?DB.attendance[existing].id:DB.nextId.att++,empId:eid,date:today,status:'حاضر',inTime:'08:00',outTime:'16:00',overtime:0,note:''};
+  if(existing>=0) DB.attendance[existing]=entry; else DB.attendance.push(entry);
+  renderAttendance();toast('تم تسجيل الحضور ✓');
+}
+
+function markAllPresent(){
+  const today=new Date().toISOString().split('T')[0];
+  DB.employees.filter(e=>e.status==='نشط').forEach(e=>{
+    const existing=DB.attendance.findIndex(a=>a.empId===e.id&&a.date===today);
+    const entry={id:existing>=0?DB.attendance[existing].id:DB.nextId.att++,empId:e.id,date:today,status:'حاضر',inTime:'08:00',outTime:'16:00',overtime:0,note:''};
+    if(existing>=0) DB.attendance[existing]=entry; else DB.attendance.push(entry);
+  });
+  renderAttendance();toast('تم تسجيل كل الموظفين حاضرين ✓');
+}
+
+function editAtt(eid){
+  document.getElementById('att-emp').value=eid;
+  toast('اختر الحالة واضغط تسجيل');
+}
+
+function exportAtt(){
+  const rows=DB.attendance.map(a=>{const e=DB.employees.find(x=>x.id===a.empId);return [a.date,e?e.name:'',a.status,a.inTime,a.outTime,a.overtime].join(',');});
+  dl(['التاريخ,الموظف,الحالة,الحضور,الانصراف,إضافي',...rows].join('\n'),'حضور_مصر_ستيل.csv');toast('تم التصدير ✓');
+}
+
+// ══════════════════════════════════
+// SALARY
+// ══════════════════════════════════
+function renderSalary(){
+  const tbody=document.getElementById('sal-tbody');
+  tbody.innerHTML=DB.employees.map(e=>{
+    const absent=DB.attendance.filter(a=>a.empId===e.id&&a.status==='غائب').length;
+    const late=DB.attendance.filter(a=>a.empId===e.id&&a.status==='متأخر').length;
+    const ot=DB.attendance.filter(a=>a.empId===e.id).reduce((s,a)=>s+a.overtime,0);
+    const dailyRate=e.salary/22;
+    const prodBonus=Math.round(e.salary*0.1*(e.productivity/100));
+    const otPay=Math.round(ot*dailyRate/8*1.5);
+    const absentDeduct=Math.round(absent*dailyRate);
+    const lateDeduct=Math.round(late*dailyRate/8);
+    const net=e.salary+prodBonus+otPay+e.bonus-absentDeduct-lateDeduct-e.deduction;
+    return `<tr>
+      <td>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="width:28px;height:28px;border-radius:50%;background:${DEPT_COLORS[e.dept]||'var(--violet)'};display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;color:#fff">${e.name.charAt(0)}</div>
+          <div><strong>${e.name}</strong><br><small style="color:var(--text3)">${e.role}</small></div>
+        </div>
+      </td>
+      <td class="mono">${e.salary.toLocaleString()}</td>
+      <td class="mono" style="color:var(--teal)">${prodBonus.toLocaleString()}</td>
+      <td class="mono" style="color:var(--blue)">${otPay.toLocaleString()}</td>
+      <td class="mono" style="color:var(--green)">${e.bonus.toLocaleString()}</td>
+      <td class="mono" style="color:var(--red)">${absentDeduct.toLocaleString()}</td>
+      <td class="mono" style="color:var(--amber)">${lateDeduct.toLocaleString()}</td>
+      <td class="mono" style="color:var(--violet);font-size:15px;font-weight:700">${net.toLocaleString()}</td>
+      <td>
+        <button class="btn btn-e btn-xs" onclick="viewSlip(${e.id})">🧾 قسيمة</button>
+      </td>
+    </tr>`;
+  }).join('');
+  updateSalaryKPIs();
+}
+
+function updateSalaryKPIs(){
+  const totalBase=DB.employees.reduce((s,e)=>s+e.salary,0);
+  const totalBonus=DB.employees.reduce((s,e)=>s+e.bonus,0);
+  const totalDeduct=DB.employees.reduce((s,e)=>s+e.deduction,0);
+  document.getElementById('s-total').textContent=totalBase.toLocaleString();
+  document.getElementById('s-bonus').textContent=totalBonus.toLocaleString();
+  document.getElementById('s-deduct').textContent=totalDeduct.toLocaleString();
+  document.getElementById('s-net').textContent=(totalBase+totalBonus-totalDeduct).toLocaleString();
+}
+
+function updateSalary(){
+  const eid=parseInt(document.getElementById('sal-emp').value);
+  if(!eid) return toast('اختر موظف','e');
+  const e=DB.employees.find(x=>x.id===eid);
+  if(e){
+    e.bonus+=parseInt(document.getElementById('sal-bonus').value)||0;
+    e.deduction+=parseInt(document.getElementById('sal-deduct').value)||0;
+  }
+  ['sal-bonus','sal-deduct','sal-reason'].forEach(id=>document.getElementById(id).value='');
+  renderSalary();toast('تم تحديث الراتب ✓');
+}
+
+function viewSlip(eid){
+  document.getElementById('slip-emp').value=eid;
+  renderSlip();
+}
+
+function renderSlip(){
+  const eid=parseInt(document.getElementById('slip-emp').value);
+  const e=DB.employees.find(x=>x.id===eid);
+  const div=document.getElementById('slip-preview');
+  if(!e){div.innerHTML='';return;}
+  const absent=DB.attendance.filter(a=>a.empId===e.id&&a.status==='غائب').length;
+  const late=DB.attendance.filter(a=>a.empId===e.id&&a.status==='متأخر').length;
+  const ot=DB.attendance.filter(a=>a.empId===e.id).reduce((s,a)=>s+a.overtime,0);
+  const dailyRate=e.salary/22;
+  const prodBonus=Math.round(e.salary*0.1*(e.productivity/100));
+  const otPay=Math.round(ot*dailyRate/8*1.5);
+  const absentDeduct=Math.round(absent*dailyRate);
+  const lateDeduct=Math.round(late*dailyRate/8);
+  const net=e.salary+prodBonus+otPay+e.bonus-absentDeduct-lateDeduct-e.deduction;
+  div.innerHTML=`<div class="slip">
+    <div style="text-align:center;margin-bottom:10px;font-weight:700;color:var(--violet)">مصر ستيل — قسيمة راتب يونيو 2025</div>
+    <div style="text-align:center;font-size:12px;color:var(--text2);margin-bottom:10px">${e.name} · ${e.role}</div>
+    <div class="slip-row"><span>الراتب الأساسي</span><span class="mono">${e.salary.toLocaleString()} ج</span></div>
+    <div class="slip-row"><span>بدل إنتاجية</span><span class="mono" style="color:var(--teal)">${prodBonus.toLocaleString()} ج</span></div>
+    <div class="slip-row"><span>ساعات إضافية (${ot}س)</span><span class="mono" style="color:var(--blue)">${otPay.toLocaleString()} ج</span></div>
+    <div class="slip-row"><span>حوافز</span><span class="mono" style="color:var(--green)">${e.bonus.toLocaleString()} ج</span></div>
+    <div class="slip-row"><span style="color:var(--red)">خصم غياب (${absent} أيام)</span><span class="mono" style="color:var(--red)">- ${absentDeduct.toLocaleString()} ج</span></div>
+    <div class="slip-row"><span style="color:var(--amber)">خصم تأخير (${late} مرة)</span><span class="mono" style="color:var(--amber)">- ${lateDeduct.toLocaleString()} ج</span></div>
+    <div class="slip-row"><span>صافي الراتب</span><span class="mono" style="font-size:16px">${net.toLocaleString()} ج</span></div>
+  </div>`;
+}
+
+function exportSalary(){
+  const rows=DB.employees.map(e=>{
+    const net=e.salary+e.bonus-e.deduction;
+    return [e.name,e.role,e.salary,e.bonus,e.deduction,net].join(',');
+  });
+  dl(['الموظف,الوظيفة,الأساسي,حوافز,خصومات,الصافي',...rows].join('\n'),'رواتب_مصر_ستيل.csv');
+  toast('تم تصدير مسير الرواتب ✓');
+}
+
+// ══════════════════════════════════
+// QUALITY
+// ══════════════════════════════════
+function populateQualitySelects(){
+  const pOpts='<option value="">— اختر —</option>'+PRODUCTS.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
+  ['qi-product','def-product'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=pOpts;});
+}
+
+function renderQuality(){
+  const search=document.getElementById('q-search').value.toLowerCase();
+  const stageF=document.getElementById('q-stage-f').value;
+  const items=DB.inspections.filter(i=>{
+    const p=PRODUCTS.find(x=>x.id===i.productId);
+    const ms=!search||(p&&p.name.toLowerCase().includes(search))||i.num.toLowerCase().includes(search);
+    const mst=!stageF||i.stage===stageF;
+    return ms&&mst;
+  });
+  const tbody=document.getElementById('q-tbody');
+  tbody.innerHTML=items.length?items.map(i=>{
+    const p=PRODUCTS.find(x=>x.id===i.productId);
+    const inspector=DB.employees.find(e=>e.id===i.inspector);
+    const passRate=Math.round(i.pass/i.total*100);
+    const passed=i.fail===0;
+    const stageClass={فحص خامات:'bt',فحص تشغيل:'bb','فحص نهائي':'bv','فحص تصدير':'bp'}[i.stage]||'bv';
+    return `<tr>
+      <td class="mono" style="color:var(--violet)">${i.num}</td>
+      <td><strong>${p?p.name:'—'}</strong></td>
+      <td><span class="badge ${stageClass}">${i.stage}</span></td>
+      <td class="mono">${i.total}</td>
+      <td class="mono" style="color:var(--green)">${i.pass}</td>
+      <td class="mono" style="color:var(--red)">${i.fail}</td>
+      <td style="font-size:12px;color:var(--text2)">${inspector?inspector.name.split(' ')[0]:'-'}</td>
+      <td style="font-size:12px;color:var(--text2)">${i.date}</td>
+      <td>
+        <div class="${passed?'q-result-pass':'q-result-fail'}">${passed?'✓ اجتاز':'✕ مرفوض جزئياً'}</div>
+        <div class="pbar" style="width:70px"><div class="pfill" style="width:${passRate}%;background:${passRate===100?'var(--green)':passRate>=85?'var(--amber)':'var(--red)'}"></div></div>
+      </td>
+      <td>
+        <button class="btn btn-e" onclick="viewInspection(${i.id})">👁</button>
+        <button class="btn btn-d" onclick="deleteInspection(${i.id})">✕</button>
+      </td>
+    </tr>`;
+  }).join(''):'<tr><td colspan="10"><div class="empty">لا توجد فحوصات</div></td></tr>';
+  updateQualityKPIs();
+  renderDefects();
+}
+
+function updateQualityKPIs(){
+  const total=DB.inspections.length;
+  const totalPass=DB.inspections.reduce((s,i)=>s+i.pass,0);
+  const totalItems=DB.inspections.reduce((s,i)=>s+i.total,0);
+  const failCount=DB.inspections.reduce((s,i)=>s+i.fail,0);
+  const openDefects=DB.defects.filter(d=>d.status==='مفتوح').length;
+  const exportInsp=DB.inspections.filter(i=>i.stage==='فحص تصدير');
+  const exportPass=exportInsp.length?Math.round(exportInsp.reduce((s,i)=>s+i.pass,0)/exportInsp.reduce((s,i)=>s+i.total,0)*100):0;
+  document.getElementById('q-total').textContent=total;
+  document.getElementById('q-pass-rate').textContent=totalItems>0?Math.round(totalPass/totalItems*100)+'%':'0%';
+  document.getElementById('q-fail').textContent=failCount;
+  document.getElementById('q-open-defects').textContent=openDefects;
+  document.getElementById('q-export-pass').textContent=exportPass+'%';
+}
+
+function saveInspection(){
+  const productId=parseInt(document.getElementById('qi-product').value);
+  const total=parseInt(document.getElementById('qi-total').value)||0;
+  const pass=parseInt(document.getElementById('qi-pass').value)||0;
+  const fail=parseInt(document.getElementById('qi-fail').value)||0;
+  if(!productId||!total) return toast('اختر المنتج وأدخل الكمية','e');
+  const num=`QC-${String(DB.nextId.insp).padStart(3,'0')}`;
+  DB.inspections.push({id:DB.nextId.insp++,num,productId,stage:document.getElementById('qi-stage').value,total,pass:pass||(total-fail),fail,inspector:parseInt(document.getElementById('qi-inspector').value)||0,date:new Date().toISOString().split('T')[0],notes:document.getElementById('qi-notes').value});
+  ['qi-total','qi-pass','qi-fail','qi-notes'].forEach(id=>document.getElementById(id).value='');
+  renderQuality();toast(`تم تسجيل الفحص ${num} ✓`);
+}
+
+function saveDefect(){
+  const productId=parseInt(document.getElementById('def-product').value);
+  const qty=parseInt(document.getElementById('def-qty').value)||0;
+  if(!productId||!qty) return toast('اختر المنتج وأدخل الكمية','e');
+  const num=`DEF-${String(DB.nextId.def).padStart(3,'0')}`;
+  DB.defects.push({id:DB.nextId.def++,num,productId,type:document.getElementById('def-type').value,severity:document.getElementById('def-severity').value,qty,cause:document.getElementById('def-cause').value,action:document.getElementById('def-action').value,status:'مفتوح'});
+  ['def-qty','def-cause','def-action'].forEach(id=>document.getElementById(id).value='');
+  renderDefects();updateQualityKPIs();toast(`تم إرسال البلاغ ${num} ✓`);
+}
+
+function renderDefects(){
+  const tbody=document.getElementById('defect-tbody');
+  if(!tbody) return;
+  tbody.innerHTML=DB.defects.map((d,i)=>{
+    const p=PRODUCTS.find(x=>x.id===d.productId);
+    const sevClass={طفيف:'bt',متوسط:'ba',حرج:'br'}[d.severity]||'ba';
+    const stClass=d.status==='محلول'?'bg':'br';
+    return `<tr>
+      <td class="mono" style="color:var(--violet)">${d.num}</td>
+      <td>${p?p.name:'—'}</td>
+      <td><span class="badge br">${d.type}</span></td>
+      <td><span class="badge ${sevClass}">${d.severity}</span></td>
+      <td class="mono">${d.qty}</td>
+      <td style="font-size:12px;color:var(--text2);max-width:120px">${d.cause}</td>
+      <td style="font-size:12px;color:var(--teal);max-width:120px">${d.action}</td>
+      <td><span class="badge ${stClass}">${d.status}</span></td>
+      <td style="display:flex;gap:3px">
+        ${d.status==='مفتوح'?`<button class="btn btn-success btn-xs" onclick="resolveDefect(${d.id})">✓ حُل</button>`:''}
+        <button class="btn btn-d" onclick="deleteDefect(${d.id})">✕</button>
+      </td>
+    </tr>`;
+  }).join('')||'<tr><td colspan="9"><div class="empty">لا توجد بلاغات عيوب 👍</div></td></tr>';
+}
+
+function resolveDefect(id){
+  const d=DB.defects.find(x=>x.id===id);
+  if(d){d.status='محلول';renderDefects();updateQualityKPIs();toast('تم حل البلاغ ✓');}
+}
+
+function deleteDefect(id){
+  DB.defects=DB.defects.filter(d=>d.id!==id);
+  renderDefects();updateQualityKPIs();toast('تم الحذف','e');
+}
+
+function deleteInspection(id){
+  DB.inspections=DB.inspections.filter(i=>i.id!==id);
+  renderQuality();toast('تم الحذف','e');
+}
+
+function viewInspection(id){
+  const i=DB.inspections.find(x=>x.id===id);
+  const p=PRODUCTS.find(x=>x.id===i.productId);
+  const inspector=DB.employees.find(e=>e.id===i.inspector);
+  const passRate=Math.round(i.pass/i.total*100);
+  document.getElementById('modal-title').textContent=`تفاصيل الفحص ${i.num}`;
+  document.getElementById('modal-body').innerHTML=`
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13px">
+      <div><span style="color:var(--text2)">المنتج:</span><br><strong>${p?p.name:'—'}</strong></div>
+      <div><span style="color:var(--text2)">مرحلة الفحص:</span><br><strong>${i.stage}</strong></div>
+      <div><span style="color:var(--text2)">إجمالي الكمية:</span><br><strong class="mono">${i.total}</strong></div>
+      <div><span style="color:var(--text2)">مقبول:</span><br><strong class="mono" style="color:var(--green)">${i.pass}</strong></div>
+      <div><span style="color:var(--text2)">مرفوض:</span><br><strong class="mono" style="color:var(--red)">${i.fail}</strong></div>
+      <div><span style="color:var(--text2)">المفتش:</span><br><strong>${inspector?inspector.name:'—'}</strong></div>
+      <div><span style="color:var(--text2)">التاريخ:</span><br><strong>${i.date}</strong></div>
+      <div><span style="color:var(--text2)">معدل النجاح:</span><br><strong style="color:${passRate===100?'var(--green)':passRate>=85?'var(--amber)':'var(--red)'};font-size:20px;font-family:var(--mono)">${passRate}%</strong></div>
+    </div>
+    <div style="margin-top:10px;background:var(--bg3);border-radius:8px;padding:12px;font-size:13px;color:var(--text2)">${i.notes||'لا توجد ملاحظات'}</div>`;
+  document.getElementById('modal').classList.add('open');
+}
+
+function renderAnalysis(){
+  const types={};
+  DB.defects.forEach(d=>{types[d.type]=(types[d.type]||0)+d.qty;});
+  const sortedTypes=Object.entries(types).sort((a,b)=>b[1]-a[1]);
+  const maxT=sortedTypes[0]?.[1]||1;
+  document.getElementById('defect-chart').innerHTML=sortedTypes.length?sortedTypes.map(([t,c])=>`
+    <div class="defect-bar">
+      <div class="defect-name">${t}</div>
+      <div class="defect-track"><div class="defect-fill" style="width:${c/maxT*100}%"></div></div>
+      <div class="defect-count">${c}</div>
+    </div>`).join(''):'<div style="color:var(--text3);text-align:center;padding:16px">لا بيانات</div>';
+
+  const stages=['فحص خامات','فحص تشغيل','فحص نهائي','فحص تصدير'];
+  document.getElementById('stage-chart').innerHTML=stages.map(s=>{
+    const stageInsp=DB.inspections.filter(i=>i.stage===s);
+    if(!stageInsp.length) return `<div class="defect-bar"><div class="defect-name">${s}</div><div class="defect-track"></div><div class="defect-count" style="color:var(--text3)">—</div></div>`;
+    const total=stageInsp.reduce((x,i)=>x+i.total,0);
+    const pass=stageInsp.reduce((x,i)=>x+i.pass,0);
+    const pct=Math.round(pass/total*100);
+    const col=pct===100?'var(--green)':pct>=85?'var(--amber)':'var(--red)';
+    return `<div class="defect-bar">
+      <div class="defect-name">${s}</div>
+      <div class="defect-track"><div class="defect-fill" style="width:${pct}%;background:${col}"></div></div>
+      <div class="defect-count" style="color:${col}">${pct}%</div>
+    </div>`;
+  }).join('');
+}
+
+function exportQuality(){
+  const rows=DB.inspections.map(i=>{const p=PRODUCTS.find(x=>x.id===i.productId);return [i.num,p?p.name:'',i.stage,i.total,i.pass,i.fail,i.date].join(',');});
+  dl(['رقم الفحص,المنتج,المرحلة,الكمية,مقبول,مرفوض,التاريخ',...rows].join('\n'),'جودة_مصر_ستيل.csv');toast('تم التصدير ✓');
+}
+
+// ══════════════════════════════════
+// FINGERPRINT IMPORT
+// ══════════════════════════════════
+let parsedRows = [];
+let importHistory = [];
+
+function dragOver(e){
+  e.preventDefault();
+  const dz=document.getElementById('drop-zone');
+  dz.style.borderColor='var(--violet)';
+  dz.style.background='rgba(124,106,247,.05)';
+  document.getElementById('drop-icon').textContent='📂';
+}
+function dragLeave(e){
+  const dz=document.getElementById('drop-zone');
+  dz.style.borderColor='var(--border2)';
+  dz.style.background='';
+  document.getElementById('drop-icon').textContent='📊';
+}
+function dropFile(e){
+  e.preventDefault();
+  dragLeave(e);
+  const file=e.dataTransfer.files[0];
+  if(file) handleFile(file);
+}
+
+function handleFile(file){
+  if(!file) return;
+  const ext=file.name.split('.').pop().toLowerCase();
+  const dz=document.getElementById('drop-zone');
+  dz.innerHTML=`<div style="font-size:36px;margin-bottom:8px">⏳</div><div style="font-weight:600;color:var(--text)">جاري قراءة الملف...</div><div style="font-size:13px;color:var(--text2);margin-top:4px">${file.name}</div>`;
+  if(ext==='csv'){
+    const reader=new FileReader();
+    reader.onload=e=>parseCSV(e.target.result,file.name);
+    reader.readAsText(file,'UTF-8');
+  } else if(ext==='xlsx'||ext==='xls'){
+    const reader=new FileReader();
+    reader.onload=e=>parseXLSX(e.target.result,file.name);
+    reader.readAsArrayBuffer(file);
+  } else {
+    restoreDropZone();
+    toast('صيغة الملف غير مدعومة. استخدم xlsx أو csv','e');
+  }
+}
+
+function parseCSV(text,filename){
+  const lines=text.split('\n').map(l=>l.trim()).filter(l=>l);
+  if(lines.length<2){restoreDropZone();toast('الملف فارغ','e');return;}
+  const sep=lines[0].includes('\t')?'\t':',';
+  const headers=lines[0].split(sep).map(h=>h.trim().replace(/"/g,''));
+  const rows=lines.slice(1).map(l=>{
+    const vals=l.split(sep).map(v=>v.trim().replace(/"/g,''));
+    const obj={};headers.forEach((h,i)=>obj[h]=vals[i]||'');
+    return obj;
+  });
+  processRows(rows,headers,filename);
+}
+
+function parseXLSX(buffer,filename){
+  try{
+    const uint8=new Uint8Array(buffer);
+    const isZip=uint8[0]===0x50&&uint8[1]===0x4B;
+    if(!isZip){parseCSV(new TextDecoder('utf-8').decode(uint8),filename);return;}
+    const files=readZipEntries(uint8);
+    const sharedStringsXml=files['xl/sharedStrings.xml']||'';
+    const sheetXml=files['xl/worksheets/sheet1.xml']||'';
+    if(!sheetXml){restoreDropZone();toast('تعذر قراءة الشيت — جرب CSV','e');return;}
+    const strings=[];
+    for(const m of sharedStringsXml.matchAll(/<si[^>]*>([\s\S]*?)<\/si>/g)){
+      strings.push(m[1].replace(/<[^>]+>/g,'').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').trim());
+    }
+    const rowsRaw=[];
+    for(const rowM of sheetXml.matchAll(/<row[^>]*>([\s\S]*?)<\/row>/g)){
+      const rowCells={};
+      for(const cM of rowM[1].matchAll(/<c[^>]*r="([A-Z]+)\d+"[^>]*(?:t="([^"]*)")?[^>]*>[\s\S]*?<v>([\s\S]*?)<\/v>/g)){
+        const col=cM[1],type=cM[2]||'',val=cM[3]||'';
+        rowCells[col]=type==='s'?(strings[parseInt(val)]||''):fmtXlsx(val,type);
+      }
+      rowsRaw.push(rowCells);
+    }
+    if(rowsRaw.length<2){restoreDropZone();toast('الشيت لا يحتوي على بيانات','e');return;}
+    const colLetters=Object.keys(rowsRaw[0]).sort();
+    const headers=colLetters.map(c=>rowsRaw[0][c]||c);
+    const dataRows=rowsRaw.slice(1).map(r=>{const o={};colLetters.forEach((c,i)=>o[headers[i]]=r[c]||'');return o;}).filter(r=>Object.values(r).some(v=>v));
+    processRows(dataRows,headers,filename);
+  }catch(e){restoreDropZone();toast('خطأ في قراءة XLSX — جرب CSV','e');}
+}
+
+function readZipEntries(uint8){
+  const files={};const view=new DataView(uint8.buffer);let i=0;
+  while(i<uint8.length-4){
+    if(view.getUint32(i,true)===0x04034b50){
+      const fnLen=view.getUint16(i+26,true);const extraLen=view.getUint16(i+28,true);
+      const compSize=view.getUint32(i+18,true);
+      const fn=new TextDecoder().decode(uint8.slice(i+30,i+30+fnLen));
+      const dataStart=i+30+fnLen+extraLen;
+      if(fn.endsWith('.xml')&&view.getUint16(i+8,true)===0){
+        try{files[fn]=new TextDecoder().decode(uint8.slice(dataStart,dataStart+compSize));}catch(e){}
+      }
+      i=dataStart+compSize;
+    }else{i++;}
+  }
+  return files;
+}
+
+function fmtXlsx(val,type){
+  if(type===''&&val&&!isNaN(val)){
+    const num=parseFloat(val);
+    if(num>25000&&num<60000){const d=new Date((num-25569)*86400*1000);return d.toISOString().split('T')[0];}
+    if(num>0&&num<1){const m=Math.round(num*1440);return `${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;}
+  }
+  return val;
+}
+
+function applyPreset(){
+  document.getElementById('map-empcode').value=document.getElementById('map-empcode-preset').value;
+  document.getElementById('map-checkin').value=document.getElementById('map-checkin-preset').value;
+  document.getElementById('map-checkout').value=document.getElementById('map-checkout-preset').value;
+  document.getElementById('map-date').value=document.getElementById('map-date-preset').value;
+}
+
+function processRows(rows,headers,filename){
+  const mapCode=document.getElementById('map-empcode').value;
+  const mapIn=document.getElementById('map-checkin').value;
+  const mapOut=document.getElementById('map-checkout').value;
+  const mapDate=document.getElementById('map-date').value;
+
+  // ZKTeco-aware column finder — checks exact match first, then partial
+  const findCol=(pref,alts)=>{
+    const all=[pref,...alts];
+    // Exact match first
+    let found=headers.find(h=>all.some(a=>h.trim().toLowerCase()===a.trim().toLowerCase()));
+    if(found) return found;
+    // Partial match
+    found=headers.find(h=>all.some(a=>h.toLowerCase().includes(a.toLowerCase())||a.toLowerCase().includes(h.toLowerCase())));
+    return found||null;
+  };
+
+  // ZKTeco standard columns
+  const codeCol=findCol(mapCode,['No.','No','AC No.','Employee ID','EmpID','ID','رقم','موظف','الكود','emp_id']);
+  const nameCol=findCol('Name',['الاسم','Employee Name','Emp Name']);
+  const inCol=findCol(mapIn,['Check In','Time In','In','Attendance Time','TimeIn','دخول','حضور','وقت الدخول']);
+  const outCol=findCol(mapOut,['Check Out','Time Out','Out','Off Time','TimeOut','خروج','انصراف','وقت الخروج']);
+  const dateCol=findCol(mapDate,['Date','Attendance Date','يوم','التاريخ']);
+  const lateCol=findCol('Late',['Late (min)','تأخير','Late Time']);
+  const otCol=findCol('OT',['Over Time','Overtime','إضافي','ساعات إضافية','OT Hours']);
+
+  if(!codeCol||!inCol){
+    restoreDropZone();
+    toast('تعذر العثور على أعمدة الكود أو وقت الحضور — تحقق من إعدادات تعيين الأعمدة','e');
+    return;
+  }
+
+  const lateThreshold=parseInt(document.getElementById('late-threshold').value)||15;
+  const today=new Date().toISOString().split('T')[0];
+
+  parsedRows=rows.map((r,idx)=>{
+    const rawCode=(r[codeCol]||'').toString().trim();
+    const inTime=normalizeTime((r[inCol]||'').toString().trim());
+    const outTime=outCol?normalizeTime((r[outCol]||'').toString().trim()):'';
+    const date=dateCol&&r[dateCol]?normalizeDate(r[dateCol].toString().trim()):today;
+    const zkName=nameCol?(r[nameCol]||'').toString().trim():'';
+
+    // ZKTeco No. is usually a number — match to EMP-XXX code
+    const emp=DB.employees.find(e=>{
+      const empNum=e.code.replace(/\D/g,''); // extract number from EMP-001 → 001
+      return e.code.toLowerCase()===rawCode.toLowerCase()
+        || parseInt(empNum)===parseInt(rawCode)
+        || (zkName && e.name.toLowerCase().includes(zkName.split(' ')[0].toLowerCase()))
+        || (zkName && zkName.toLowerCase().includes(e.name.split(' ')[0].toLowerCase()));
+    });
+
+    // Status determination
+    let status='حاضر';
+    if(!inTime){status='غائب';}
+    else{
+      // ZKTeco Late column takes priority if present
+      if(lateCol&&r[lateCol]){
+        const lateMin=parseFloat(r[lateCol])||0;
+        if(lateMin>lateThreshold) status='متأخر';
+      } else {
+        const [h,m]=(inTime||'08:00').split(':').map(Number);
+        const shiftStart=emp?.shift==='2'?16*60:emp?.shift==='3'?0:8*60;
+        const inMins=h*60+m;
+        // For night shift (shift 3), don't flag late
+        if(emp?.shift!=='3'&&inMins-shiftStart>lateThreshold) status='متأخر';
+      }
+    }
+
+    // Overtime — use ZKTeco OT column if available, else calculate
+    let overtime=0;
+    if(otCol&&r[otCol]){
+      const otVal=r[otCol].toString().trim();
+      // ZKTeco OT format: "1:30" or "1.5"
+      if(otVal.includes(':')){ const [oh,om]=otVal.split(':').map(Number); overtime=oh+(om/60); }
+      else overtime=parseFloat(otVal)||0;
+    } else if(inTime&&outTime){
+      const [ih,im]=inTime.split(':').map(Number);
+      const [oh,om]=outTime.split(':').map(Number);
+      let mins=(oh*60+om)-(ih*60+im);
+      if(mins<0) mins+=1440;
+      overtime=Math.max(0,(mins-480)/60);
+    }
+
+    return{
+      rowNum:idx+1,
+      code:rawCode,
+      zkName,
+      empId:emp?.id||null,
+      empName:emp?.name||(zkName?`❓ ${zkName}`:'❓ غير مطابق'),
+      inTime,outTime,date,status,
+      overtime:parseFloat(overtime.toFixed(1)),
+      matched:!!emp
+    };
+  }).filter(r=>r.code&&r.code!=='No.'&&r.code!=='رقم');// filter header rows
+
+  showPreview(parsedRows,headers,filename);
+}
+
+// Normalize time formats from ZKTeco (08:05, 8:05 AM, 08:05:00)
+function normalizeTime(t){
+  if(!t) return '';
+  // Remove seconds: 08:05:00 → 08:05
+  t=t.replace(/:\d{2}$/,'').trim();
+  // Handle AM/PM
+  const ampm=t.match(/(\d+:\d+)\s*(AM|PM)/i);
+  if(ampm){
+    let [hh,mm]=ampm[1].split(':').map(Number);
+    if(ampm[2].toUpperCase()==='PM'&&hh<12) hh+=12;
+    if(ampm[2].toUpperCase()==='AM'&&hh===12) hh=0;
+    return `${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}`;
+  }
+  // Already HH:MM
+  if(/^\d{1,2}:\d{2}$/.test(t)){
+    const [h,m]=t.split(':');
+    return `${String(parseInt(h)).padStart(2,'0')}:${m}`;
+  }
+  // Excel time fraction (0.333 = 08:00)
+  if(!isNaN(t)&&parseFloat(t)>0&&parseFloat(t)<1){
+    const totalMin=Math.round(parseFloat(t)*1440);
+    return `${String(Math.floor(totalMin/60)).padStart(2,'0')}:${String(totalMin%60).padStart(2,'0')}`;
+  }
+  return t;
+}
+
+// Normalize date formats from ZKTeco
+function normalizeDate(d){
+  if(!d) return new Date().toISOString().split('T')[0];
+  // Already YYYY-MM-DD
+  if(/^\d{4}-\d{2}-\d{2}$/.test(d)) return d;
+  // DD/MM/YYYY or MM/DD/YYYY
+  const parts=d.split(/[\/\-\.]/);
+  if(parts.length===3){
+    if(parseInt(parts[0])>31) return `${parts[0]}-${parts[1].padStart(2,'0')}-${parts[2].padStart(2,'0')}`;
+    if(parseInt(parts[2])>31) return `${parts[2]}-${parts[1].padStart(2,'0')}-${parts[0].padStart(2,'0')}`;
+  }
+  // Excel serial date
+  if(!isNaN(d)&&parseInt(d)>25000){
+    return new Date((parseInt(d)-25569)*86400*1000).toISOString().split('T')[0];
+  }
+  return d;
+}
+
+function showPreview(rows,headers,filename){
+  restoreDropZone();
+  document.getElementById('preview-card').style.display='';
+  const matched=rows.filter(r=>r.matched).length;
+  const unmatched=rows.filter(r=>!r.matched).length;
+  const late=rows.filter(r=>r.status==='متأخر').length;
+  const absent=rows.filter(r=>r.status==='غائب').length;
+  document.getElementById('preview-title').textContent=`📋 معاينة: ${filename} — ${rows.length} سجل`;
+  document.getElementById('preview-stats').innerHTML=`
+    <span class="badge bg">✓ ${matched} مطابق</span>
+    <span class="badge ${unmatched>0?'br':'bg'}">${unmatched>0?'⚠ ':''} ${unmatched} غير مطابق</span>
+    <span class="badge ba">⚠ ${late} متأخر</span>
+    <span class="badge br">${absent} غائب</span>
+    <span class="badge bb">${rows.length} إجمالي</span>`;
+  document.getElementById('preview-thead').innerHTML=`<tr><th>#</th><th>الكود</th><th>الموظف</th><th>التاريخ</th><th>وقت الحضور</th><th>وقت الانصراف</th><th>الحالة</th><th>إضافي</th></tr>`;
+  document.getElementById('preview-tbody').innerHTML=rows.map(r=>{
+    const sc={حاضر:'bg',متأخر:'ba',غائب:'br'}[r.status]||'bb';
+    return `<tr>
+      <td class="mono" style="color:var(--text3)">${r.rowNum}</td>
+      <td class="mono" style="color:var(--violet)">${r.code}</td>
+      <td style="${r.matched?'':'color:var(--red);font-style:italic'}">${r.empName}</td>
+      <td style="font-size:12px;color:var(--text2)">${r.date}</td>
+      <td class="mono" style="color:var(--green)">${r.inTime||'—'}</td>
+      <td class="mono" style="color:var(--text2)">${r.outTime||'—'}</td>
+      <td><span class="badge ${sc}">${r.status}</span></td>
+      <td class="mono" style="color:${r.overtime>0?'var(--blue)':'var(--text3)'}">${r.overtime>0?r.overtime+'س':'—'}</td>
+    </tr>`;
+  }).join('');
+}
+
+function importAttendance(){
+  if(!parsedRows.length) return;
+  let imported=0,skipped=0;
+  parsedRows.forEach(r=>{
+    if(!r.empId){skipped++;return;}
+    const existing=DB.attendance.findIndex(a=>a.empId===r.empId&&a.date===r.date);
+    const entry={id:existing>=0?DB.attendance[existing].id:DB.nextId.att++,empId:r.empId,date:r.date,status:r.status,inTime:r.inTime,outTime:r.outTime,overtime:r.overtime,note:'مستورد من البصمة'};
+    if(existing>=0)DB.attendance[existing]=entry;else DB.attendance.push(entry);
+    imported++;
+  });
+  const now=new Date();
+  importHistory.unshift({date:now.toLocaleDateString('ar'),time:now.toLocaleTimeString('ar'),imported,skipped,total:parsedRows.length});
+  renderImportHistory();
+  clearPreview();
+  toast(`✅ تم استيراد ${imported} سجل حضور${skipped>0?' · '+skipped+' غير مطابق':''}`);
+  setTimeout(()=>toast('اضغط "الحضور والانصراف" لمراجعة البيانات'),1500);
+}
+
+function renderImportHistory(){
+  const div=document.getElementById('import-history');
+  div.innerHTML=importHistory.length?importHistory.slice(0,5).map(h=>`
+    <div style="background:var(--bg3);border-radius:8px;padding:10px 12px;border-right:3px solid var(--violet);margin-bottom:6px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+        <span style="font-size:12px;font-weight:600">${h.date} · ${h.time}</span>
+        <span class="badge bg">${h.imported} مستورد</span>
+      </div>
+      <div style="font-size:12px;color:var(--text2)">${h.total} سجل${h.skipped>0?' · '+h.skipped+' غير مطابق':''}</div>
+    </div>`).join(''):'<div style="font-size:13px;color:var(--text3);text-align:center;padding:12px 0">لا يوجد استيراد سابق</div>';
+}
+
+function clearPreview(){parsedRows=[];document.getElementById('preview-card').style.display='none';restoreDropZone();}
+
+function restoreDropZone(){
+  const dz=document.getElementById('drop-zone');
+  if(!dz) return;
+  dz.innerHTML=`
+    <input type="file" id="fp-file-input" accept=".xlsx,.xls,.csv" style="display:none" onchange="handleFile(this.files[0])">
+    <div id="drop-icon" style="font-size:48px;margin-bottom:12px;opacity:.5;">📊</div>
+    <div style="font-weight:700;font-size:16px;margin-bottom:6px;color:var(--text)">اسحب ملف Excel هنا</div>
+    <div style="font-size:13px;color:var(--text2)">أو اضغط لاختيار الملف</div>
+    <div style="font-size:12px;color:var(--text3);margin-top:8px;">يدعم: .xlsx · .xls · .csv</div>`;
+  dz.onclick=()=>document.getElementById('fp-file-input').click();
+}
+
+function downloadSample(){
+  const sample=[
+    'No.,Name,Date,Check In,Check Out,Late,OT,Department',
+    '1,محمد أحمد سالم,2025-06-07,07:55,16:05,0:00,0:05,قسم اللحام',
+    '2,كريم محمود علي,2025-06-07,07:50,17:00,0:00,1:00,قسم القطع',
+    '3,أحمد حسن إبراهيم,2025-06-07,08:45,16:00,0:45,0:00,قسم الجلخ والتشطيب',
+    '4,سامي يوسف عبد الله,2025-06-07,07:58,16:10,0:00,0:10,قسم التشكيل',
+    '5,طارق محمد فؤاد,2025-06-07,,,0:00,0:00,قسم اللحام',
+    '6,عمر سعد الدين,2025-06-07,08:00,16:00,0:00,0:00,الإدارة',
+  ].join('\n');
+  dl(sample,'ZKTeco_نموذج_مصر_ستيل.csv');
+  toast('تم تنزيل نموذج ZKTeco ✓');
+}
+
+// ══════════════════════════════════
+// HELPERS
+// ══════════════════════════════════
+function dl(csv,name){
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'}));
+  a.download=name;a.click();
+}
+function closeModal(){document.getElementById('modal').classList.remove('open');}
+function toast(msg,type='s'){
+  const c=document.getElementById('tc');
+  const el=document.createElement('div');
+  el.className=`toast ${type}`;
+  el.innerHTML=`<span>${type==='s'?'✓':'✕'}</span> ${msg}`;
+  c.appendChild(el);
+  setTimeout(()=>{el.style.opacity='0';el.style.transition='opacity .3s';setTimeout(()=>el.remove(),300);},2800);
+}
+
+// ══════════════════════════════════
+// INIT
+// ══════════════════════════════════
+document.getElementById('e-hire').value=new Date().toISOString().split('T')[0];
+renderEmp();
+updateHRKPIs();
+populateEmpSelects();
+populateQualitySelects();
+</script>
+</body>
+</html>

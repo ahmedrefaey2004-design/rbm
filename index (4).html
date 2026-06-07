@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مصر ستيل — نظام الإدارة</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080c12;--bg2:#0d1219;--bg3:#111822;--card:#0f1520;
+  --border:#1a2540;--border2:#243560;
+  --gold:#f0b429;--gold2:#c8960d;
+  --green:#22c55e;--red:#ef4444;--blue:#4f8ef7;
+  --text:#cdd5e8;--text2:#5a6a8a;--text3:#2a3550;
+  --font:'Cairo',sans-serif;--mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 30%,rgba(240,180,41,.04) 0%,transparent 60%),radial-gradient(ellipse at 80% 70%,rgba(79,142,247,.04) 0%,transparent 60%);pointer-events:none;z-index:0;}
+
+/* ══ LOGIN ══ */
+.login-wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:1000;background:var(--bg);}
+.login-box{background:var(--card);border:1px solid var(--border2);border-radius:20px;padding:48px 44px;width:400px;max-width:95vw;position:relative;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.6);}
+.login-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),#f97316,var(--gold));}
+.login-logo{text-align:center;margin-bottom:32px;}
+.login-logo-icon{width:72px;height:72px;border-radius:16px;background:linear-gradient(135deg,rgba(240,180,41,.15),rgba(240,180,41,.05));border:1px solid rgba(240,180,41,.25);display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 12px;}
+.login-title{font-size:24px;font-weight:900;color:var(--gold);}
+.login-sub{font-size:13px;color:var(--text2);margin-top:4px;}
+.login-field{margin-bottom:14px;}
+.login-field label{font-size:12px;color:var(--text2);font-weight:600;display:block;margin-bottom:6px;}
+.login-field input{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--font);font-size:14px;outline:none;transition:border .2s;}
+.login-field input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(240,180,41,.1);}
+.login-btn{width:100%;background:var(--gold);color:#000;border:none;border-radius:10px;padding:13px;font-family:var(--font);font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:8px;}
+.login-btn:hover{background:var(--gold2);transform:translateY(-1px);}
+.login-err{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--red);margin-top:10px;display:none;}
+.login-users{margin-top:20px;padding-top:16px;border-top:1px solid var(--border);}
+.login-users-title{font-size:11px;color:var(--text3);margin-bottom:8px;font-weight:600;letter-spacing:.5px;}
+.user-chip{display:inline-flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:4px 10px;font-size:11px;cursor:pointer;transition:border .2s;margin:3px;}
+.user-chip:hover{border-color:var(--gold);color:var(--gold);}
+
+/* ══ APP SHELL ══ */
+.app-shell{display:none;flex-direction:column;min-height:100vh;position:relative;z-index:1;}
+
+/* TOPBAR */
+.topbar{background:rgba(13,18,25,.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);height:56px;display:flex;align-items:center;padding:0 20px;gap:16px;position:sticky;top:0;z-index:200;}
+.topbar-logo{display:flex;align-items:center;gap:10px;min-width:180px;}
+.topbar-logo-mark{width:32px;height:32px;border-radius:7px;background:linear-gradient(135deg,var(--gold),#f97316);display:flex;align-items:center;justify-content:center;font-size:15px;}
+.topbar-name{font-weight:900;font-size:15px;color:var(--gold);}
+.topbar-nav{display:flex;gap:2px;flex:1;overflow-x:auto;}
+.topbar-nav::-webkit-scrollbar{display:none;}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:7px;border:none;background:transparent;color:var(--text2);font-family:var(--font);font-size:12px;cursor:pointer;transition:all .2s;white-space:nowrap;border-bottom:2px solid transparent;}
+.nav-btn.active{color:var(--gold);background:rgba(240,180,41,.08);border-bottom-color:var(--gold);border-radius:7px 7px 0 0;}
+.nav-btn:hover:not(.active){background:var(--bg3);color:var(--text);}
+.nav-btn .nb-icon{font-size:14px;}
+.topbar-right{display:flex;align-items:center;gap:10px;min-width:200px;justify-content:flex-end;}
+.user-badge{display:flex;align-items:center;gap:7px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:12px;}
+.user-avatar{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#000;}
+.logout-btn{background:transparent;border:1px solid var(--border);border-radius:7px;color:var(--text2);font-size:12px;padding:5px 10px;cursor:pointer;font-family:var(--font);transition:all .2s;}
+.logout-btn:hover{border-color:var(--red);color:var(--red);}
+
+/* CONTENT */
+.content-area{flex:1;display:flex;flex-direction:column;}
+.section-frame{flex:1;border:none;width:100%;display:none;}
+.section-frame.active{display:block;}
+
+/* HOME */
+.home-page{padding:32px;display:none;}
+.home-page.active{display:block;}
+.home-welcome{text-align:center;margin-bottom:40px;}
+.home-welcome h1{font-size:28px;font-weight:900;color:var(--gold);margin-bottom:8px;}
+.home-welcome p{font-size:14px;color:var(--text2);}
+.sections-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:900px;margin:0 auto 40px;}
+.section-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;cursor:pointer;transition:all .25s;text-align:center;position:relative;overflow:hidden;}
+.section-card:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.3);}
+.section-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--sc,var(--gold)),transparent);opacity:0;transition:opacity .3s;}
+.section-card:hover::before{opacity:1;}
+.sc-icon{font-size:36px;margin-bottom:12px;}
+.sc-num{font-size:10px;color:var(--text3);font-family:var(--mono);margin-bottom:4px;}
+.sc-name{font-size:15px;font-weight:700;margin-bottom:6px;}
+.sc-desc{font-size:12px;color:var(--text2);line-height:1.5;}
+
+/* IMPORT PANEL */
+.import-panel{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;max-width:900px;margin:0 auto;}
+.import-title{font-size:16px;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+.import-sub{font-size:13px;color:var(--text2);margin-bottom:20px;}
+.import-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.import-item{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px;transition:border .2s;}
+.import-item:hover{border-color:var(--border2);}
+.import-item-hd{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.import-item-icon{font-size:18px;}
+.import-item-name{font-size:13px;font-weight:600;}
+.import-item-desc{font-size:11px;color:var(--text2);margin-bottom:10px;line-height:1.5;}
+.import-item-cols{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px;}
+.col-tag{background:rgba(79,142,247,.08);border:1px solid rgba(79,142,247,.15);color:var(--blue);font-size:10px;padding:2px 6px;border-radius:4px;font-family:var(--mono);}
+.col-tag.required{background:rgba(240,180,41,.08);border-color:rgba(240,180,41,.2);color:var(--gold);}
+.import-drop{border:1.5px dashed var(--border2);border-radius:8px;padding:12px;text-align:center;cursor:pointer;transition:all .2s;font-size:12px;color:var(--text2);}
+.import-drop:hover,.import-drop.dragover{border-color:var(--gold);background:rgba(240,180,41,.04);color:var(--gold);}
+.import-status{margin-top:8px;font-size:11px;color:var(--green);display:none;}
+
+/* STATUS */
+.status-bar{background:var(--bg2);border-top:1px solid var(--border);padding:6px 20px;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text3);}
+.status-dots{display:flex;gap:14px;}
+.status-dot-item{display:flex;align-items:center;gap:5px;}
+.status-dot-item .dot{width:6px;height:6px;border-radius:50%;}
+
+/* MODAL */
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+.modal-ov.open{display:flex;}
+.modal{background:var(--card);border:1px solid var(--border2);border-radius:16px;width:560px;max-width:96vw;max-height:88vh;overflow-y:auto;animation:modalIn .25s ease;}
+@keyframes modalIn{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal-hd{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:var(--card);}
+.modal-title{font-weight:700;font-size:15px;}
+.modal-x{background:none;border:none;color:var(--text2);font-size:22px;cursor:pointer;line-height:1;}
+.modal-body{padding:20px 22px;}
+.modal-ft{padding:14px 22px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;}
+
+/* TOAST */
+.toast-c{position:fixed;bottom:20px;left:20px;z-index:99999;display:flex;flex-direction:column;gap:6px;}
+.toast{background:var(--bg2);border:1px solid var(--border2);border-radius:8px;padding:10px 15px;font-size:13px;display:flex;align-items:center;gap:8px;animation:toastIn .3s ease;min-width:200px;box-shadow:0 8px 24px rgba(0,0,0,.4);}
+@keyframes toastIn{from{transform:translateX(-16px);opacity:0}to{transform:translateX(0);opacity:1}}
+.toast.s{border-color:rgba(34,197,94,.35);}
+.toast.e{border-color:rgba(239,68,68,.35);}
+.toast.w{border-color:rgba(240,180,41,.35);}
+
+@media(max-width:768px){
+  .sections-grid,.import-grid{grid-template-columns:1fr 1fr;}
+  .topbar-nav{gap:1px;}
+  .nav-btn{padding:5px 8px;font-size:11px;}
+}
+@media(max-width:480px){
+  .sections-grid,.import-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════ LOGIN ══════════ -->
+<div class="login-wrap" id="login-wrap">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="login-logo-icon">🏭</div>
+      <div class="login-title">مصر ستيل</div>
+      <div class="login-sub">نظام إدارة المصنع المتكامل</div>
+    </div>
+
+    <div class="login-field">
+      <label>اسم المستخدم</label>
+      <input type="text" id="login-user" placeholder="admin" autocomplete="username" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <div class="login-field">
+      <label>كلمة المرور</label>
+      <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="login-btn" onclick="doLogin()">🔐 تسجيل الدخول</button>
+    <div class="login-err" id="login-err">❌ اسم المستخدم أو كلمة المرور غلط</div>
+
+    <div class="login-users">
+      <div class="login-users-title">اختر مستخدم سريع</div>
+      <div id="quick-users"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ APP SHELL ══════════ -->
+<div class="app-shell" id="app-shell">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-logo">
+      <div class="topbar-logo-mark">🏭</div>
+      <div>
+        <div class="topbar-name">مصر ستيل</div>
+      </div>
+    </div>
+
+    <div class="topbar-nav">
+      <button class="nav-btn active" onclick="showSection('home')" id="nav-home">
+        <span class="nb-icon">🏠</span> الرئيسية
+      </button>
+      <button class="nav-btn" onclick="showSection('s1')" id="nav-s1">
+        <span class="nb-icon">📦</span> المخازن والمشتريات
+      </button>
+      <button class="nav-btn" onclick="showSection('s2')" id="nav-s2">
+        <span class="nb-icon">⚙️</span> الإنتاج والـ BOM
+      </button>
+      <button class="nav-btn" onclick="showSection('s3')" id="nav-s3">
+        <span class="nb-icon">🏗️</span> الماكينات والصيانة
+      </button>
+      <button class="nav-btn" onclick="showSection('s4')" id="nav-s4">
+        <span class="nb-icon">👷</span> الموارد البشرية
+      </button>
+      <button class="nav-btn" onclick="showSection('s5')" id="nav-s5">
+        <span class="nb-icon">💰</span> المالية والتكاليف
+      </button>
+      <button class="nav-btn" onclick="showSection('s5b')" id="nav-s5b">
+        <span class="nb-icon">🧾</span> الفواتير وعروض الأسعار
+      </button>
+      <button class="nav-btn" onclick="showSection('s6')" id="nav-s6">
+        <span class="nb-icon">📊</span> Dashboard & AI
+      </button>
+    </div>
+
+    <div class="topbar-right">
+      <div style="font-size:11px;color:var(--text2);font-family:var(--mono)" id="top-time"></div>
+      <div class="user-badge">
+        <div class="user-avatar" id="top-avatar" style="background:var(--gold)">م</div>
+        <span id="top-username">admin</span>
+        <span id="top-role" style="color:var(--text3);font-size:10px"></span>
+      </div>
+      <button class="logout-btn" onclick="doLogout()">خروج</button>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content-area">
+
+    <!-- HOME -->
+    <div class="home-page active" id="section-home">
+      <div class="home-welcome">
+        <h1>أهلاً بك في مصر ستيل 👋</h1>
+        <p id="welcome-msg">نظام إدارة المصنع المتكامل — اختر القسم الذي تريد فتحه</p>
+      </div>
+
+      <div class="sections-grid">
+        <div class="section-card" onclick="showSection('s1')" style="--sc:#14b8a6">
+          <div class="sc-icon">📦</div>
+          <div class="sc-num">القسم 1</div>
+          <div class="sc-name">المخازن والمشتريات</div>
+          <div class="sc-desc">خامات · موردين · طلبات شراء · نقطة إعادة الطلب التلقائية</div>
+        </div>
+        <div class="section-card" onclick="showSection('s2')" style="--sc:#f97316">
+          <div class="sc-icon">⚙️</div>
+          <div class="sc-num">القسم 2</div>
+          <div class="sc-name">الإنتاج والـ BOM</div>
+          <div class="sc-desc">أوامر إنتاج · شجرة المنتج · مراحل التشغيل · الهالك والفاقد</div>
+        </div>
+        <div class="section-card" onclick="showSection('s3')" style="--sc:#4f8ef7">
+          <div class="sc-icon">🏗️</div>
+          <div class="sc-num">القسم 3</div>
+          <div class="sc-name">الماكينات والصيانة</div>
+          <div class="sc-desc">ساعات التشغيل · OEE · أعطال · جدول صيانة تنبؤي</div>
+        </div>
+        <div class="section-card" onclick="showSection('s4')" style="--sc:#a78bfa">
+          <div class="sc-icon">👷</div>
+          <div class="sc-num">القسم 4</div>
+          <div class="sc-name">الموارد البشرية</div>
+          <div class="sc-desc">عمال · حضور · ZKTeco بصمة · رواتب · جودة</div>
+        </div>
+        <div class="section-card" onclick="showSection('s5')" style="--sc:#f0b429">
+          <div class="sc-icon">💰</div>
+          <div class="sc-num">القسم 5</div>
+          <div class="sc-name">التكاليف والمالية</div>
+          <div class="sc-desc">P&L · تدفقات نقدية · أصول · إهلاك</div>
+        </div>
+        <div class="section-card" onclick="showSection('s5b')" style="--sc:#22c55e">
+          <div class="sc-icon">🧾</div>
+          <div class="sc-num">القسم 5+</div>
+          <div class="sc-name">الفواتير وعروض الأسعار</div>
+          <div class="sc-desc">فواتير ضريبية · عروض أسعار · جنيه أو دولار · طباعة ملونة</div>
+        </div>
+        <div class="section-card" onclick="showSection('s6')" style="--sc:#00e5ff">
+          <div class="sc-icon">📊</div>
+          <div class="sc-num">القسم 6</div>
+          <div class="sc-name">Dashboard & AI</div>
+          <div class="sc-desc">لوحة تحكم · ذكاء اصطناعي · تقارير · تنبيهات ذكية</div>
+        </div>
+      </div>
+
+      <!-- EXCEL IMPORT PANEL -->
+      <div class="import-panel">
+        <div class="import-title">📥 استيراد بيانات من Excel</div>
+        <div class="import-sub">ارفع ملف Excel أو CSV لأي قسم وسيتم استيراد البيانات القديمة تلقائياً</div>
+        <div class="import-grid" id="import-grid"></div>
+      </div>
+    </div>
+
+    <!-- SECTION IFRAMES -->
+    <iframe class="section-frame" id="section-s1" src="section1_warehouse_purchasing.html" title="المخازن والمشتريات"></iframe>
+    <iframe class="section-frame" id="section-s2" src="section2_production_bom.html" title="الإنتاج والـ BOM"></iframe>
+    <iframe class="section-frame" id="section-s3" src="section3_machines_maintenance.html" title="الماكينات والصيانة"></iframe>
+    <iframe class="section-frame" id="section-s4" src="section4_hr_quality.html" title="الموارد البشرية والجودة"></iframe>
+    <iframe class="section-frame" id="section-s5" src="section5_costs_finance_assets.html" title="التكاليف والمالية"></iframe>
+    <iframe class="section-frame" id="section-s5b" src="section5_invoice_quote.html" title="الفواتير وعروض الأسعار"></iframe>
+    <iframe class="section-frame" id="section-s6" src="section6_dashboard_ai_reports.html" title="Dashboard & AI"></iframe>
+  </div>
+
+  <!-- STATUS BAR -->
+  <div class="status-bar">
+    <div class="status-dots">
+      <div class="status-dot-item"><div class="dot" style="background:var(--green)"></div><span>النظام يعمل</span></div>
+      <div class="status-dot-item"><div class="dot" style="background:var(--gold)"></div><span>مصر ستيل — تشكيل المعادن</span></div>
+      <div class="status-dot-item"><div class="dot" style="background:var(--blue)"></div><span>الإصدار 1.0 — 6 أقسام</span></div>
+    </div>
+    <div style="display:flex;gap:16px;">
+      <span id="status-user"></span>
+      <span id="status-time"></span>
+    </div>
+  </div>
+</div>
+
+<!-- IMPORT MODAL -->
+<div class="modal-ov" id="import-modal">
+  <div class="modal">
+    <div class="modal-hd">
+      <div class="modal-title" id="import-modal-title">استيراد بيانات</div>
+      <button class="modal-x" onclick="closeImportModal()">✕</button>
+    </div>
+    <div class="modal-body" id="import-modal-body"></div>
+    <div class="modal-ft">
+      <button class="btn-x" onclick="closeImportModal()" style="background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:8px 16px;color:var(--text2);font-family:var(--font);font-size:13px;cursor:pointer;">إلغاء</button>
+      <button id="import-confirm-btn" onclick="confirmImport()" style="background:var(--gold);color:#000;border:none;border-radius:7px;padding:8px 20px;font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;display:none;">✅ استيراد البيانات</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-c" id="tc"></div>
+
+<script>
+// ══════════════════════════════════════
+// USERS & AUTH
+// ══════════════════════════════════════
+const USERS = [
+  {username:'admin',    password:'misr2025',  name:'المدير العام',      role:'مدير',         color:'#f0b429', permissions:['all']},
+  {username:'accountant',password:'acc123',   name:'المحاسب',           role:'محاسب',        color:'#22c55e', permissions:['s5','s5b','s6','home']},
+  {username:'production',password:'prod123',  name:'مشرف الإنتاج',     role:'مشرف إنتاج',   color:'#f97316', permissions:['s1','s2','s3','s6','home']},
+  {username:'hr',       password:'hr123',     name:'مدير الموارد',      role:'موارد بشرية',  color:'#a78bfa', permissions:['s4','s6','home']},
+  {username:'quality',  password:'qc123',     name:'مراقب الجودة',      role:'جودة',         color:'#14b8a6', permissions:['s2','s4','s6','home']},
+  {username:'viewer',   password:'view123',   name:'مستعرض',            role:'مستعرض',       color:'#4f8ef7', permissions:['s6','home']},
+];
+
+let currentUser = null;
+
+function doLogin(){
+  const u = document.getElementById('login-user').value.trim();
+  const p = document.getElementById('login-pass').value;
+  const user = USERS.find(x=>x.username===u && x.password===p);
+  if(!user){
+    document.getElementById('login-err').style.display='block';
+    document.getElementById('login-pass').value='';
+    document.getElementById('login-pass').focus();
+    setTimeout(()=>document.getElementById('login-err').style.display='none',3000);
+    return;
+  }
+  currentUser = user;
+  sessionStorage.setItem('msUser', JSON.stringify({username:user.username,name:user.name,role:user.role,color:user.color,permissions:user.permissions}));
+  startApp(user);
+}
+
+function quickLogin(username){
+  document.getElementById('login-user').value = username;
+  const user = USERS.find(x=>x.username===username);
+  if(user) document.getElementById('login-pass').value = user.password;
+  doLogin();
+}
+
+function startApp(user){
+  document.getElementById('login-wrap').style.display='none';
+  document.getElementById('app-shell').style.display='flex';
+  // Set user info
+  document.getElementById('top-username').textContent = user.name;
+  document.getElementById('top-role').textContent = user.role;
+  document.getElementById('top-avatar').textContent = user.name.charAt(0);
+  document.getElementById('top-avatar').style.background = user.color;
+  document.getElementById('status-user').textContent = `👤 ${user.name} (${user.role})`;
+  document.getElementById('welcome-msg').textContent = `أهلاً ${user.name} — ${user.role}`;
+  // Apply permissions
+  applyPermissions(user);
+  // Render imports
+  renderImportGrid();
+  // Start clock
+  startClock();
+  toast(`مرحباً ${user.name}! 👋`,'s');
+}
+
+function applyPermissions(user){
+  const all = user.permissions.includes('all');
+  ['s1','s2','s3','s4','s5','s5b','s6'].forEach(s=>{
+    const btn = document.getElementById('nav-'+s);
+    if(!btn) return;
+    if(!all && !user.permissions.includes(s)){
+      btn.style.opacity='0.3';
+      btn.style.pointerEvents='none';
+      btn.title='ليس لديك صلاحية للوصول لهذا القسم';
+    }
+  });
+}
+
+function doLogout(){
+  if(!confirm('هتسجل خروج؟')) return;
+  sessionStorage.removeItem('msUser');
+  currentUser = null;
+  document.getElementById('app-shell').style.display='none';
+  document.getElementById('login-wrap').style.display='flex';
+  document.getElementById('login-user').value='';
+  document.getElementById('login-pass').value='';
+  document.getElementById('login-user').focus();
+  toast('تم تسجيل الخروج','w');
+}
+
+// Check session
+(function(){
+  const saved = sessionStorage.getItem('msUser');
+  if(saved){
+    try{
+      const u = JSON.parse(saved);
+      const fullUser = USERS.find(x=>x.username===u.username);
+      if(fullUser){ currentUser=fullUser; startApp(fullUser); }
+    }catch(e){}
+  }
+  // Render quick login buttons
+  document.getElementById('quick-users').innerHTML = USERS.map(u=>`
+    <span class="user-chip" onclick="quickLogin('${u.username}')">
+      <span style="width:16px;height:16px;border-radius:50%;background:${u.color};display:inline-block;"></span>
+      ${u.name} <span style="color:var(--text3)">(${u.role})</span>
+    </span>`).join('');
+})();
+
+// ══════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════
+let currentSection = 'home';
+
+function showSection(id){
+  // Check permission
+  if(id !== 'home' && currentUser){
+    const hasAll = currentUser.permissions.includes('all');
+    if(!hasAll && !currentUser.permissions.includes(id)){
+      toast('ليس لديك صلاحية لهذا القسم','e');
+      return;
+    }
+  }
+  // Hide all
+  document.querySelectorAll('.home-page, .section-frame').forEach(el=>{
+    el.classList.remove('active');
+    if(el.tagName==='IFRAME') el.style.display='none';
+    if(el.classList.contains('home-page')) el.style.display='none';
+  });
+  // Show target
+  const target = document.getElementById('section-'+id);
+  if(target){
+    if(target.tagName==='IFRAME'){
+      target.style.display='block';
+      target.style.height='calc(100vh - 96px)';
+    } else {
+      target.style.display='block';
+      target.classList.add('active');
+    }
+  }
+  // Update nav
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  const activeBtn = document.getElementById('nav-'+id);
+  if(activeBtn) activeBtn.classList.add('active');
+  currentSection = id;
+}
+
+// nav list for permission check
+const NAV_LIST = ['home','s1','s2','s3','s4','s5','s5b','s6'];
+
+// ══════════════════════════════════════
+// EXCEL IMPORT SYSTEM
+// ══════════════════════════════════════
+const IMPORT_CONFIGS = [
+  {
+    id:'employees',
+    section:'s4',
+    icon:'👷',
+    name:'بيانات العمال',
+    desc:'ارفع قائمة العمال من HR أو Excel القديم',
+    requiredCols:['اسم الموظف','الراتب'],
+    optionalCols:['القسم','الوظيفة','التليفون','تاريخ التعيين'],
+    sampleData:[
+      ['اسم الموظف','القسم','الوظيفة','الراتب','التليفون','تاريخ التعيين'],
+      ['محمد أحمد سالم','قسم اللحام','لحام ستانلس','4500','01001000001','2020-03-15'],
+      ['كريم محمود علي','قسم القطع','مشغل CNC','5200','01001000002','2019-07-01'],
+    ]
+  },
+  {
+    id:'salaries',
+    section:'s4',
+    icon:'💵',
+    name:'الرواتب والحوافز',
+    desc:'مسير رواتب شهر سابق أو حوافز وخصومات',
+    requiredCols:['اسم الموظف','الراتب الأساسي'],
+    optionalCols:['حوافز','خصومات','ساعات إضافية','ملاحظات'],
+    sampleData:[
+      ['اسم الموظف','الراتب الأساسي','حوافز','خصومات','ساعات إضافية'],
+      ['محمد أحمد سالم','4500','0','0','0'],
+      ['كريم محمود علي','5200','500','0','2'],
+    ]
+  },
+  {
+    id:'receivables',
+    section:'s5',
+    icon:'💳',
+    name:'المديونيات والذمم',
+    desc:'ذمم مدينة (عملاء) وذمم دائنة (موردين)',
+    requiredCols:['اسم العميل/المورد','المبلغ','النوع'],
+    optionalCols:['تاريخ الاستحقاق','الحالة','ملاحظات'],
+    sampleData:[
+      ['اسم العميل/المورد','المبلغ','النوع','تاريخ الاستحقاق','الحالة'],
+      ['فندق سميراميس','90000','مدين (AR)','2025-07-01','معلق'],
+      ['الشركة المصرية للصلب','185000','دائن (AP)','2025-06-15','معلق'],
+    ]
+  },
+  {
+    id:'inventory',
+    section:'s1',
+    icon:'📦',
+    name:'بيانات المخزون',
+    desc:'أصناف المخزن الحالية والكميات',
+    requiredCols:['اسم الصنف','الكمية'],
+    optionalCols:['كود الصنف','الفئة','الوحدة','الحد الأدنى','سعر الوحدة'],
+    sampleData:[
+      ['كود الصنف','اسم الصنف','الفئة','الكمية','الوحدة','الحد الأدنى','سعر الوحدة'],
+      ['MAT-001','أنابيب ستانلس 304','ستانلس ستيل','3500','كجم','1000','185'],
+      ['MAT-002','صفائح ستانلس 2mm','ستانلس ستيل','420','كجم','500','210'],
+    ]
+  },
+  {
+    id:'suppliers',
+    section:'s1',
+    icon:'🏢',
+    name:'قائمة الموردين',
+    desc:'الموردين الحاليين مع بياناتهم',
+    requiredCols:['اسم المورد'],
+    optionalCols:['كود المورد','التخصص','التليفون','البريد الإلكتروني'],
+    sampleData:[
+      ['كود المورد','اسم المورد','التخصص','التليفون','البريد الإلكتروني'],
+      ['SUP-001','الشركة المصرية للحديد والصلب','ستانلس ستيل','0201000001','info@example.com'],
+    ]
+  },
+  {
+    id:'assets',
+    section:'s5',
+    icon:'🏗️',
+    name:'الأصول الثابتة',
+    desc:'الماكينات والسيارات والمباني مع تاريخ شرائها',
+    requiredCols:['اسم الأصل','تكلفة الشراء','تاريخ الشراء'],
+    optionalCols:['الفئة','العمر الإنتاجي','القيمة التخريدية','طريقة الإهلاك'],
+    sampleData:[
+      ['كود الأصل','اسم الأصل','الفئة','تكلفة الشراء','تاريخ الشراء','العمر الإنتاجي سنة'],
+      ['AST-001','ماكينة قطع بلازما CNC','ماكينات','850000','2021-03-01','10'],
+      ['AST-004','سيارة نصف نقل','سيارات','185000','2021-06-01','5'],
+    ]
+  },
+];
+
+let currentImportConfig = null;
+let parsedImportData = null;
+
+function renderImportGrid(){
+  const grid = document.getElementById('import-grid');
+  grid.innerHTML = IMPORT_CONFIGS.map(cfg=>`
+    <div class="import-item">
+      <div class="import-item-hd">
+        <span class="import-item-icon">${cfg.icon}</span>
+        <span class="import-item-name">${cfg.name}</span>
+      </div>
+      <div class="import-item-desc">${cfg.desc}</div>
+      <div class="import-item-cols">
+        ${cfg.requiredCols.map(c=>`<span class="col-tag required">${c} *</span>`).join('')}
+        ${cfg.optionalCols.map(c=>`<span class="col-tag">${c}</span>`).join('')}
+      </div>
+      <div class="import-drop" id="drop-${cfg.id}"
+        onclick="triggerImport('${cfg.id}')"
+        ondragover="dragoverImport(event,'${cfg.id}')"
+        ondragleave="dragleaveImport('${cfg.id}')"
+        ondrop="dropImport(event,'${cfg.id}')">
+        📂 اسحب الملف هنا أو اضغط
+        <br><span style="font-size:10px;opacity:.6">.xlsx · .xls · .csv</span>
+      </div>
+      <input type="file" id="file-${cfg.id}" accept=".xlsx,.xls,.csv" style="display:none" onchange="handleImportFile(this,'${cfg.id}')">
+      <div class="import-status" id="status-${cfg.id}"></div>
+      <button style="width:100%;margin-top:6px;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:5px;color:var(--text2);font-family:var(--font);font-size:11px;cursor:pointer;transition:all .15s;"
+        onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'"
+        onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text2)'"
+        onclick="downloadSampleExcel('${cfg.id}')">
+        ⬇️ تنزيل ملف نموذج
+      </button>
+    </div>`).join('');
+}
+
+function triggerImport(id){
+  document.getElementById('file-'+id).click();
+}
+
+function dragoverImport(e, id){
+  e.preventDefault();
+  document.getElementById('drop-'+id).classList.add('dragover');
+}
+function dragleaveImport(id){
+  document.getElementById('drop-'+id).classList.remove('dragover');
+}
+function dropImport(e, id){
+  e.preventDefault();
+  dragleaveImport(id);
+  const file = e.dataTransfer.files[0];
+  if(file) processImportFile(file, id);
+}
+function handleImportFile(input, id){
+  if(input.files[0]) processImportFile(input.files[0], id);
+}
+
+function processImportFile(file, configId){
+  const cfg = IMPORT_CONFIGS.find(c=>c.id===configId);
+  if(!cfg) return;
+  const ext = file.name.split('.').pop().toLowerCase();
+  const reader = new FileReader();
+  if(ext==='csv'){
+    reader.onload = e => parseAndShowImport(e.target.result, file.name, cfg);
+    reader.readAsText(file,'UTF-8');
+  } else {
+    reader.onload = e => parseXLSXImport(e.target.result, file.name, cfg);
+    reader.readAsArrayBuffer(file);
+  }
+}
+
+function parseAndShowImport(text, filename, cfg){
+  const lines = text.split('\n').map(l=>l.trim()).filter(l=>l);
+  if(lines.length<2){ toast('الملف فارغ أو لا يحتوي على بيانات','e'); return; }
+  const sep = lines[0].includes('\t')?'\t':',';
+  const headers = lines[0].split(sep).map(h=>h.trim().replace(/"/g,''));
+  const rows = lines.slice(1).map(l=>{
+    const vals = l.split(sep).map(v=>v.trim().replace(/"/g,''));
+    const obj = {};
+    headers.forEach((h,i)=>obj[h]=vals[i]||'');
+    return obj;
+  }).filter(r=>Object.values(r).some(v=>v));
+
+  showImportModal(cfg, headers, rows, filename);
+}
+
+function parseXLSXImport(buffer, filename, cfg){
+  try {
+    const uint8 = new Uint8Array(buffer);
+    const text = new TextDecoder('utf-8').decode(uint8);
+    // Try as CSV if not real ZIP
+    if(uint8[0]!==0x50||uint8[1]!==0x4B){
+      parseAndShowImport(text, filename, cfg); return;
+    }
+    // Basic ZIP/XLSX parsing
+    const files = readZip(uint8);
+    const sharedXml = files['xl/sharedStrings.xml']||'';
+    const sheetXml = files['xl/worksheets/sheet1.xml']||'';
+    if(!sheetXml){ toast('تعذر قراءة XLSX — جرب CSV','e'); return; }
+    const strings = [];
+    for(const m of sharedXml.matchAll(/<si[^>]*>([\s\S]*?)<\/si>/g)){
+      strings.push(m[1].replace(/<[^>]+>/g,'').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').trim());
+    }
+    const rowsRaw = [];
+    for(const rowM of sheetXml.matchAll(/<row[^>]*>([\s\S]*?)<\/row>/g)){
+      const cells = {};
+      for(const cM of rowM[1].matchAll(/<c[^>]*r="([A-Z]+)\d+"[^>]*(?:t="([^"]*)")?[^>]*>[\s\S]*?<v>([\s\S]*?)<\/v>/g)){
+        const col=cM[1],type=cM[2]||'',val=cM[3]||'';
+        cells[col] = type==='s'?(strings[parseInt(val)]||''):val;
+      }
+      rowsRaw.push(cells);
+    }
+    if(rowsRaw.length<2){ toast('الشيت لا يحتوي على بيانات','e'); return; }
+    const colLetters = Object.keys(rowsRaw[0]).sort();
+    const headers = colLetters.map(c=>rowsRaw[0][c]||c);
+    const dataRows = rowsRaw.slice(1).map(r=>{
+      const o={};colLetters.forEach((c,i)=>o[headers[i]]=r[c]||'');return o;
+    }).filter(r=>Object.values(r).some(v=>v));
+    showImportModal(cfg, headers, dataRows, filename);
+  } catch(e){ toast('خطأ في قراءة الملف — جرب CSV','e'); }
+}
+
+function readZip(uint8){
+  const files={};const view=new DataView(uint8.buffer);let i=0;
+  while(i<uint8.length-4){
+    if(view.getUint32(i,true)===0x04034b50){
+      const fnLen=view.getUint16(i+26,true);const extraLen=view.getUint16(i+28,true);
+      const compSize=view.getUint32(i+18,true);
+      const fn=new TextDecoder().decode(uint8.slice(i+30,i+30+fnLen));
+      const dataStart=i+30+fnLen+extraLen;
+      if(fn.endsWith('.xml')&&view.getUint16(i+8,true)===0){
+        try{files[fn]=new TextDecoder().decode(uint8.slice(dataStart,dataStart+compSize));}catch(e){}
+      }
+      i=dataStart+compSize;
+    }else{i++;}
+  }
+  return files;
+}
+
+function showImportModal(cfg, headers, rows, filename){
+  currentImportConfig = cfg;
+  parsedImportData = {headers, rows};
+
+  document.getElementById('import-modal-title').textContent = `${cfg.icon} استيراد — ${cfg.name}`;
+  document.getElementById('import-confirm-btn').style.display = rows.length>0?'':'none';
+
+  const missingRequired = cfg.requiredCols.filter(rc=>
+    !headers.some(h=>h.toLowerCase().includes(rc.toLowerCase())||rc.toLowerCase().includes(h.toLowerCase()))
+  );
+
+  document.getElementById('import-modal-body').innerHTML = `
+    <div style="background:rgba(79,142,247,.06);border:1px solid rgba(79,142,247,.15);border-radius:8px;padding:12px 14px;margin-bottom:14px;font-size:13px;">
+      <div style="font-weight:600;margin-bottom:4px;">📂 ${filename}</div>
+      <div style="color:var(--text2)">${rows.length} صف بيانات · ${headers.length} عمود</div>
+    </div>
+    ${missingRequired.length>0?`
+    <div style="background:rgba(240,180,41,.07);border:1px solid rgba(240,180,41,.2);border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:12px;color:var(--gold);">
+      ⚠️ أعمدة مطلوبة غير موجودة: ${missingRequired.join(' · ')}
+    </div>`:''}
+    <div style="font-size:12px;color:var(--text2);margin-bottom:8px;font-weight:600;">معاينة البيانات (أول 5 صفوف)</div>
+    <div style="overflow-x:auto;border-radius:8px;border:1px solid var(--border);">
+      <table style="width:100%;border-collapse:collapse;font-size:12px;">
+        <thead>
+          <tr>${headers.map(h=>`<th style="padding:8px 10px;text-align:right;background:var(--bg3);color:var(--text2);border-bottom:1px solid var(--border);white-space:nowrap">${h}</th>`).join('')}</tr>
+        </thead>
+        <tbody>
+          ${rows.slice(0,5).map(r=>`<tr>${headers.map(h=>`<td style="padding:7px 10px;border-bottom:1px solid var(--border);color:var(--text)">${r[h]||''}</td>`).join('')}</tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+    ${rows.length>5?`<div style="text-align:center;padding:8px;font-size:11px;color:var(--text3)">... و ${rows.length-5} صف آخر</div>`:''}
+    <div style="margin-top:14px;padding:12px 14px;background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.15);border-radius:8px;font-size:12px;">
+      <div style="font-weight:600;color:var(--green);margin-bottom:4px;">✅ ما سيحدث بعد الاستيراد</div>
+      <div style="color:var(--text2)">سيتم حفظ البيانات في localStorage — ستظهر في القسم "${cfg.section==='s4'?'الموارد البشرية':cfg.section==='s5'?'المالية':'المخازن'}" مباشرةً بعد الاستيراد.</div>
+    </div>`;
+
+  document.getElementById('import-modal').classList.add('open');
+}
+
+function confirmImport(){
+  if(!currentImportConfig || !parsedImportData) return;
+  const {id, name} = currentImportConfig;
+  const {rows} = parsedImportData;
+
+  // Save to localStorage for cross-section use
+  const key = `misrsteel_import_${id}`;
+  try {
+    localStorage.setItem(key, JSON.stringify({
+      data: rows,
+      importedAt: new Date().toISOString(),
+      count: rows.length
+    }));
+    // Show status
+    const statusEl = document.getElementById('status-'+id);
+    if(statusEl){
+      statusEl.style.display='block';
+      statusEl.textContent=`✅ تم استيراد ${rows.length} سجل`;
+    }
+    closeImportModal();
+    toast(`تم استيراد ${rows.length} سجل من "${name}" ✓`,'s');
+
+    // If we're in the related section, reload the frame
+    const sectionFrame = document.getElementById('section-'+currentImportConfig.section);
+    if(sectionFrame && sectionFrame.style.display!=='none'){
+      setTimeout(()=>sectionFrame.contentWindow?.location.reload(), 500);
+    }
+  } catch(e){
+    toast('خطأ في حفظ البيانات — تحقق من سعة المتصفح','e');
+  }
+  currentImportConfig = null;
+  parsedImportData = null;
+}
+
+function closeImportModal(){
+  document.getElementById('import-modal').classList.remove('open');
+}
+
+function downloadSampleExcel(configId){
+  const cfg = IMPORT_CONFIGS.find(c=>c.id===configId);
+  if(!cfg) return;
+  const csv = cfg.sampleData.map(row=>row.join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'}));
+  a.download = `نموذج_${cfg.name}_مصر_ستيل.csv`;
+  a.click();
+  toast(`تم تنزيل نموذج ${cfg.name} ✓`,'s');
+}
+
+// ══════════════════════════════════════
+// CLOCK
+// ══════════════════════════════════════
+function startClock(){
+  function tick(){
+    const now = new Date();
+    const t = now.toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    const d = now.toLocaleDateString('ar-EG',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+    document.getElementById('top-time').textContent = t;
+    document.getElementById('status-time').textContent = d;
+  }
+  tick();
+  setInterval(tick, 1000);
+}
+
+// ══════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════
+function toast(msg, type='s'){
+  const c = document.getElementById('tc');
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.innerHTML = `<span>${type==='s'?'✓':type==='w'?'⚠':'✕'}</span> ${msg}`;
+  c.appendChild(el);
+  setTimeout(()=>{el.style.opacity='0';el.style.transition='opacity .3s';setTimeout(()=>el.remove(),300);},3000);
+}
+</script>
+</body>
+</html>
