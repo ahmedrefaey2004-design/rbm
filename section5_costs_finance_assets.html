@@ -726,6 +726,12 @@ let editAssetId = null;
 // ══════════════════════════════════
 // NAVIGATION
 // ══════════════════════════════════
+function saveDB(){ try{ localStorage.setItem('misrsteel_s5_db', JSON.stringify(DB)); }catch(e){} }
+function gotoSection(id){ try{ window.parent.postMessage({type:'navigate',section:id},'*'); }catch(e){} }
+
+// Load from localStorage if available
+(function(){ try{ const s=localStorage.getItem('misrsteel_s5_db'); if(s){ const d=JSON.parse(s); if(d.costItems) DB.costItems=d.costItems; if(d.transactions) DB.transactions=d.transactions; if(d.assets) DB.assets=d.assets; if(d.nextId) DB.nextId=d.nextId; } }catch(e){} })();
+
 function nav(p){
   ['costs','finance','cashflow','assets','invoices'].forEach(k=>{
     document.getElementById('pg-'+k).style.display=k===p?'':'none';
@@ -904,7 +910,7 @@ function saveEnergy(){
   if(!qty||!price) return toast('أدخل الاستهلاك والسعر','e');
   DB.energy.push({id:DB.nextId.energy++,item:document.getElementById('en-item').value,qty,unit:document.getElementById('en-unit').value,price,month:document.getElementById('en-month').value||'2025-06',total:qty*price});
   ['en-qty','en-price'].forEach(id=>document.getElementById(id).value='');
-  renderCosts();toast('تم حفظ مصروف الطاقة ✓');
+  renderCosts();saveDB();toast('تم حفظ مصروف الطاقة ✓');
 }
 
 function saveOverhead(){
@@ -913,11 +919,11 @@ function saveOverhead(){
   if(!item||!amount) return toast('أدخل البند والمبلغ','e');
   DB.overhead.push({id:DB.nextId.overhead++,item,type:document.getElementById('oh-type').value,amount,month:document.getElementById('oh-month').value||'2025-06',notes:document.getElementById('oh-notes').value});
   ['oh-item','oh-amount','oh-notes'].forEach(id=>document.getElementById(id).value='');
-  renderCosts();toast('تم حفظ المصروف العام ✓');
+  renderCosts();saveDB();toast('تم حفظ المصروف العام ✓');
 }
 
-function deleteEnergy(id){DB.energy=DB.energy.filter(e=>e.id!==id);renderCosts();toast('تم الحذف','e');}
-function deleteOverhead(id){DB.overhead=DB.overhead.filter(o=>o.id!==id);renderCosts();toast('تم الحذف','e');}
+function deleteEnergy(id){DB.energy=DB.energy.filter(e=>e.id!==id);renderCosts();saveDB();toast('تم الحذف','e');}
+function deleteOverhead(id){DB.overhead=DB.overhead.filter(o=>o.id!==id);renderCosts();saveDB();toast('تم الحذف','e');}
 function exportCosts(){const rows=PRODUCTS_BOM.map(p=>[p.name,p.matCost,p.laborCost,p.energyCost,p.overhead,p.matCost+p.laborCost+p.energyCost+p.overhead].join(','));dl(['المنتج,خامات,عمالة,طاقة,عام,إجمالي',...rows].join('\n'),'تكاليف_مصر_ستيل.csv');toast('تم التصدير ✓');}
 
 // ══════════════════════════════════
@@ -1109,10 +1115,10 @@ function saveTransaction(){
   if(!amount||!desc) return toast('أدخل البيان والمبلغ','e');
   DB.cashflow.push({id:DB.nextId.cf++,date:document.getElementById('tx-date').value||new Date().toISOString().split('T')[0],desc,type:document.getElementById('tx-type').value,cat:document.getElementById('tx-cat').value,amount,note:document.getElementById('tx-note').value});
   ['tx-desc','tx-amount','tx-note'].forEach(id=>document.getElementById(id).value='');
-  renderCF();toast('تم تسجيل المعاملة ✓');
+  renderCF();saveDB();toast('تم تسجيل المعاملة ✓');
 }
 
-function deleteTx(id){DB.cashflow=DB.cashflow.filter(t=>t.id!==id);renderCF();toast('تم الحذف','e');}
+function deleteTx(id){DB.cashflow=DB.cashflow.filter(t=>t.id!==id);renderCF();saveDB();toast('تم الحذف','e');}
 function exportCF(){const rows=DB.cashflow.map(t=>[t.date,t.desc,t.type,t.cat,t.amount].join(','));dl(['التاريخ,البيان,النوع,الفئة,المبلغ',...rows].join('\n'),'تدفقات_مصر_ستيل.csv');toast('تم التصدير ✓');}
 
 // ══════════════════════════════════
@@ -1228,12 +1234,12 @@ function saveAsset(){
   const data={code:document.getElementById('as-code').value||`AST-${String(DB.nextId.asset).padStart(3,'0')}`,name,cat:document.getElementById('as-cat').value,cost,date:document.getElementById('as-date').value||new Date().toISOString().split('T')[0],life:parseInt(document.getElementById('as-life').value)||10,scrap:parseFloat(document.getElementById('as-scrap').value)||0,method:document.getElementById('as-method').value,notes:document.getElementById('as-notes').value};
   if(editAssetId){Object.assign(DB.assets.find(a=>a.id===editAssetId),data);editAssetId=null;toast('تم تعديل الأصل ✓');}
   else{DB.assets.push({id:DB.nextId.asset++,...data});toast('تم إضافة الأصل ✓');}
-  clearAssetForm();renderAssets();renderDepSchedule();updateAssetKPIs();
+  clearAssetForm();renderAssets();renderDepSchedule();updateAssetKPIs();saveDB();
 }
 
 function clearAssetForm(){['as-code','as-name','as-cost','as-date','as-life','as-scrap','as-notes'].forEach(id=>document.getElementById(id).value='');editAssetId=null;}
 function editAsset(id){const a=DB.assets.find(x=>x.id===id);if(!a)return;document.getElementById('as-code').value=a.code;document.getElementById('as-name').value=a.name;document.getElementById('as-cat').value=a.cat;document.getElementById('as-cost').value=a.cost;document.getElementById('as-date').value=a.date;document.getElementById('as-life').value=a.life;document.getElementById('as-scrap').value=a.scrap;document.getElementById('as-method').value=a.method;document.getElementById('as-notes').value=a.notes;editAssetId=id;toast('جاهز للتعديل');}
-function deleteAsset(id){if(!confirm('حذف الأصل؟'))return;DB.assets=DB.assets.filter(a=>a.id!==id);renderAssets();renderDepSchedule();toast('تم الحذف','e');}
+function deleteAsset(id){if(!confirm('حذف الأصل؟'))return;DB.assets=DB.assets.filter(a=>a.id!==id);renderAssets();renderDepSchedule();saveDB();toast('تم الحذف','e');}
 function exportAssets(){const rows=DB.assets.map(a=>{const dep=calcDepreciation(a);return[a.code,a.name,a.cat,a.cost,a.date,dep.monthlyDep.toFixed(0),dep.bookValue.toFixed(0)].join(',');});dl(['الكود,الاسم,الفئة,التكلفة,التاريخ,إهلاك شهري,القيمة الدفترية',...rows].join('\n'),'أصول_مصر_ستيل.csv');toast('تم التصدير ✓');}
 
 // ══════════════════════════════════

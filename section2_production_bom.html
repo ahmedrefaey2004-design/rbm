@@ -802,6 +802,12 @@ function renderPlanCards(){
   }).join(''):'<div style="text-align:center;color:var(--text3);padding:30px">لا توجد أوامر مفتوحة</div>';
 }
 
+function saveDB(){ try{ localStorage.setItem('misrsteel_s2_db', JSON.stringify(DB)); }catch(e){} }
+function gotoSection(id){ try{ window.parent.postMessage({type:'navigate',section:id},'*'); }catch(e){} }
+
+// Load from localStorage if available
+(function(){ try{ const s=localStorage.getItem('misrsteel_s2_db'); if(s){ const d=JSON.parse(s); if(d.products) DB.products=d.products; if(d.workOrders) DB.workOrders=d.workOrders; if(d.plan) DB.plan=d.plan; if(d.nextId) DB.nextId=d.nextId; } }catch(e){} })();
+
 function updateProductionKPIs(){
   const open=DB.workOrders.filter(w=>w.status==='جاري'||w.status==='مفتوح').length;
   const todayProd=DB.workOrders.reduce((s,w)=>s+w.produced,0);
@@ -834,7 +840,7 @@ function saveWO(){
   if(!productId||!qty) return toast('اختر منتج وأدخل الكمية','error');
   const num=`WO-${String(DB.nextId.wo).padStart(3,'0')}`;
   DB.workOrders.push({id:DB.nextId.wo++,num,productId,dest:document.getElementById('wo-dest').value,qty,produced:0,waste:0,start:start||new Date().toISOString().split('T')[0],due:due||'',status:'مفتوح',priority:document.getElementById('wo-priority').value,stage:'قطع وتشكيل',notes:document.getElementById('wo-notes').value});
-  clearWOForm();renderWO();renderPlanCards();populateWOSelects();
+  clearWOForm();renderWO();renderPlanCards();populateWOSelects(); saveDB();
   toast(`تم إصدار أمر الإنتاج ${num} ✓`);
 }
 
@@ -892,18 +898,18 @@ function showCostPreview(pid,qty){
 
 function startWO(id){
   const w=DB.workOrders.find(x=>x.id===id);
-  if(w){w.status='جاري';renderWO();renderPlanCards();toast(`بدأ تنفيذ ${w.num} ✓`);}
+  if(w){w.status='جاري';renderWO();renderPlanCards();saveDB();toast(`بدأ تنفيذ ${w.num} ✓`);}
 }
 
 function completeWO(id){
   const w=DB.workOrders.find(x=>x.id===id);
-  if(w){w.status='مكتمل';w.stage='تعبئة وشحن';w.produced=w.qty;renderWO();renderPlanCards();toast(`اكتمل ${w.num} ✓`);}
+  if(w){w.status='مكتمل';w.stage='تعبئة وشحن';w.produced=w.qty;renderWO();renderPlanCards();saveDB();toast(`اكتمل ${w.num} ✓`);}
 }
 
 function deleteWO(id){
   if(!confirm('حذف أمر الإنتاج؟')) return;
   DB.workOrders=DB.workOrders.filter(w=>w.id!==id);
-  renderWO();renderPlanCards();toast('تم الحذف','error');
+  renderWO();renderPlanCards();saveDB();toast('تم الحذف','error');
 }
 
 function viewWO(id){
@@ -949,7 +955,7 @@ function updateWOProgress(){
   w.produced=produced;w.waste=waste;w.stage=stage;
   if(produced>=w.qty) w.status='مكتمل';
   else if(produced>0) w.status='جاري';
-  renderWO();renderPlanCards();toast(`تم تحديث ${w.num} ✓`);
+  renderWO();renderPlanCards();saveDB();toast(`تم تحديث ${w.num} ✓`);
 }
 
 function renderStages(){
@@ -1048,7 +1054,7 @@ function saveProduct(){
   if(!name) return toast('أدخل اسم المنتج','error');
   const code=document.getElementById('b-code').value.trim()||`PRD-${String(DB.nextId.product).padStart(3,'0')}`;
   DB.products.push({id:DB.nextId.product++,code,name,type:document.getElementById('b-type').value,material:document.getElementById('b-material').value,priceLocal:parseFloat(document.getElementById('b-price-local').value)||0,priceExport:parseFloat(document.getElementById('b-price-export').value)||0,timeMin:parseInt(document.getElementById('b-time').value)||0,bom:[]});
-  clearProductForm();renderBOM();populateBOMSelects();toast('تم إضافة المنتج ✓');
+  clearProductForm();renderBOM();populateBOMSelects();saveDB();toast('تم إضافة المنتج ✓');
 }
 
 function clearProductForm(){
@@ -1066,18 +1072,18 @@ function addBOMMaterial(){
   if(!prod) return;
   prod.bom.push({matId:mid,qty,unit:unit||RAW.find(r=>r.id===mid)?.unit||'',note});
   ['bm-qty','bm-unit','bm-note'].forEach(id=>document.getElementById(id).value='');
-  renderBOM();toast('تم إضافة المكوّن ✓');
+  renderBOM();saveDB();toast('تم إضافة المكوّن ✓');
 }
 
 function removeBOMItem(pid,bi){
   const prod=DB.products.find(p=>p.id===pid);
-  if(prod){prod.bom.splice(bi,1);renderBOM();toast('تم حذف المكوّن','error');}
+  if(prod){prod.bom.splice(bi,1);renderBOM();saveDB();toast('تم حذف المكوّن','error');}
 }
 
 function deleteProduct(id){
   if(!confirm('هتحذف المنتج ده؟')) return;
   DB.products=DB.products.filter(p=>p.id!==id);
-  renderBOM();populateBOMSelects();toast('تم الحذف','error');
+  renderBOM();populateBOMSelects();saveDB();toast('تم الحذف','error');
 }
 
 function editProduct(id){

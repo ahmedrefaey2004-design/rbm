@@ -808,7 +808,8 @@ function toast(msg, type='s'){
   c.appendChild(el);
   setTimeout(()=>{el.style.opacity='0';el.style.transition='opacity .3s';setTimeout(()=>el.remove(),300);},3000);
 }
-  // Cross-section navigation from iframes
+
+// Cross-section navigation from iframes
 window.addEventListener('message', function(e){
   if(e.data && e.data.type === 'navigate'){
     showSection(e.data.section);

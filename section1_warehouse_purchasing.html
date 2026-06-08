@@ -616,6 +616,12 @@ let DB = {
 
 let currentEditType = null, currentEditId = null;
 
+function saveDB(){ try{ localStorage.setItem('misrsteel_s1_db', JSON.stringify(DB)); }catch(e){} }
+function gotoSection(id){ try{ window.parent.postMessage({type:'navigate',section:id},'*'); }catch(e){} }
+
+// Load from localStorage if available
+(function(){ try{ const s=localStorage.getItem('misrsteel_s1_db'); if(s){ const d=JSON.parse(s); if(d.inventory) DB.inventory=d.inventory; if(d.suppliers) DB.suppliers=d.suppliers; if(d.purchaseRequests) DB.purchaseRequests=d.purchaseRequests; if(d.purchaseOrders) DB.purchaseOrders=d.purchaseOrders; if(d.movements) DB.movements=d.movements; if(d.nextId) DB.nextId=d.nextId; } }catch(e){} })();
+
 // ════════════════════════════════════════
 // NAVIGATION
 // ════════════════════════════════════════
@@ -737,7 +743,7 @@ function saveItem() {
     DB.inventory.push({ id:DB.nextId.inv++, code:code||`MAT-${String(DB.nextId.inv).padStart(3,'0')}`, name, cat:document.getElementById('f-cat').value, qty, unit:document.getElementById('f-unit').value, minQty, price, supplier:parseInt(document.getElementById('f-supplier-inv').value)||null, notes:document.getElementById('f-notes').value });
     toast('تم إضافة الصنف ✓');
   }
-  clearItemForm(); renderInventory();
+  clearItemForm(); renderInventory(); saveDB();
 }
 
 function clearItemForm() {
@@ -765,7 +771,7 @@ function editItem(id) {
 function deleteItem(id) {
   if(!confirm('هتحذف الصنف ده؟')) return;
   DB.inventory = DB.inventory.filter(i=>i.id!==id);
-  renderInventory(); toast('تم الحذف','error');
+  renderInventory(); saveDB(); toast('تم الحذف','error');
 }
 
 // MOVEMENT
@@ -787,7 +793,7 @@ function addMovement() {
   DB.movements.push({ itemId, type, qty, reason, date:new Date().toISOString() });
   document.getElementById('mov-qty').value='';
   document.getElementById('mov-reason').value='';
-  renderInventory(); toast(`تم تسجيل ${type==='in'?'الوارد':'الصادر'} ✓`);
+  renderInventory(); saveDB(); toast(`تم تسجيل ${type==='in'?'الوارد':'الصادر'} ✓`);
 }
 
 // ════════════════════════════════════════
@@ -924,7 +930,7 @@ function saveSupplier() {
     DB.suppliers.push({ id:DB.nextId.sup++, code, name, spec:document.getElementById('s-spec').value, phone:document.getElementById('s-phone').value, email:document.getElementById('s-email').value, rating:3.5, active:true });
     toast('تم إضافة المورد ✓');
   }
-  clearSupplierForm(); renderPurchasing();
+  clearSupplierForm(); renderPurchasing(); saveDB();
 }
 
 function clearSupplierForm() {
@@ -947,7 +953,7 @@ function editSupplier(id) {
 function deleteSupplier(id) {
   if(!confirm('هتحذف المورد ده؟')) return;
   DB.suppliers = DB.suppliers.filter(s=>s.id!==id);
-  renderPurchasing(); toast('تم الحذف','error');
+  renderPurchasing(); saveDB(); toast('تم الحذف','error');
 }
 
 // PURCHASE REQUEST
@@ -958,18 +964,18 @@ function savePurchaseRequest() {
   const num = `PR-${String(DB.nextId.req).padStart(3,'0')}`;
   DB.purchaseRequests.push({ id:DB.nextId.req++, num, itemId, qty, priority:document.getElementById('pr-priority').value, date:new Date().toISOString().split('T')[0], status:'منتظر', supplierId:parseInt(document.getElementById('pr-supplier').value)||null, notes:document.getElementById('pr-notes').value });
   document.getElementById('pr-qty').value=''; document.getElementById('pr-notes').value='';
-  renderPurchasing(); toast('تم إرسال طلب الشراء ✓');
+  renderPurchasing(); saveDB(); toast('تم إرسال طلب الشراء ✓');
 }
 
 function approveRequest(id) {
   const r = DB.purchaseRequests.find(x=>x.id===id);
-  if(r) { r.status='معتمد'; renderPurchasing(); toast('تم اعتماد الطلب ✓'); }
+  if(r) { r.status='معتمد'; renderPurchasing(); saveDB(); toast('تم اعتماد الطلب ✓'); }
 }
 
 function deleteRequest(id) {
   if(!confirm('هتحذف الطلب؟')) return;
   DB.purchaseRequests = DB.purchaseRequests.filter(r=>r.id!==id);
-  renderPurchasing(); toast('تم الحذف','error');
+  renderPurchasing(); saveDB(); toast('تم الحذف','error');
 }
 
 // PURCHASE ORDER
@@ -983,7 +989,7 @@ function createPO() {
   const num = `PO-${String(DB.nextId.po).padStart(3,'0')}`;
   DB.purchaseOrders.push({ id:DB.nextId.po++, num, supplierId:req.supplierId, itemId:req.itemId, qty:req.qty, unitPrice:price, delivery, status:'مفتوح', reqId });
   document.getElementById('po-price').value=''; document.getElementById('po-delivery').value='';
-  renderPurchasing(); toast(`تم إنشاء أمر الشراء ${num} ✓`);
+  renderPurchasing(); saveDB(); toast(`تم إنشاء أمر الشراء ${num} ✓`);
 }
 
 function receivePO(id) {
@@ -992,14 +998,14 @@ function receivePO(id) {
   po.status='مستلم';
   const item = DB.inventory.find(i=>i.id===po.itemId);
   if(item) item.qty += po.qty;
-  renderPurchasing(); renderInventory();
+  renderPurchasing(); renderInventory(); saveDB();
   toast(`تم استلام ${po.num} وإضافة ${po.qty} للمخزون ✓`);
 }
 
 function deletePO(id) {
   if(!confirm('هتحذف أمر الشراء؟')) return;
   DB.purchaseOrders = DB.purchaseOrders.filter(p=>p.id!==id);
-  renderPurchasing(); toast('تم الحذف','error');
+  renderPurchasing(); saveDB(); toast('تم الحذف','error');
 }
 
 // ════════════════════════════════════════

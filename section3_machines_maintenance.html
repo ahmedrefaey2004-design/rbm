@@ -714,6 +714,12 @@ function toggleView(){
   renderMachines();
 }
 
+function saveDB(){ try{ localStorage.setItem('misrsteel_s3_db', JSON.stringify(DB)); }catch(e){} }
+function gotoSection(id){ try{ window.parent.postMessage({type:'navigate',section:id},'*'); }catch(e){} }
+
+// Load from localStorage if available
+(function(){ try{ const s=localStorage.getItem('misrsteel_s3_db'); if(s){ const d=JSON.parse(s); if(d.machines) DB.machines=d.machines; if(d.maintenance) DB.maintenance=d.maintenance; if(d.spareParts) DB.spareParts=d.spareParts; if(d.oeeRecords) DB.oeeRecords=d.oeeRecords; if(d.breakdowns) DB.breakdowns=d.breakdowns; if(d.nextId) DB.nextId=d.nextId; } }catch(e){} })();
+
 function updateMachineKPIs(){
   const running = DB.machines.filter(m=>m.status==='تعمل').length;
   const maint = DB.machines.filter(m=>m.status==='صيانة').length;
@@ -762,7 +768,7 @@ function saveMachine(){
     DB.machines.push({id:DB.nextId.mc++,...data});
     toast('تم إضافة الماكينة ✓');
   }
-  clearMachineForm(); renderMachines(); populateMachineSelects();
+  clearMachineForm(); renderMachines(); populateMachineSelects(); saveDB();
 }
 
 function clearMachineForm(){
@@ -790,7 +796,7 @@ function editMachine(id){
 function deleteMachine(id){
   if(!confirm('حذف الماكينة؟')) return;
   DB.machines=DB.machines.filter(m=>m.id!==id);
-  renderMachines(); populateMachineSelects(); toast('تم الحذف','e');
+  renderMachines(); populateMachineSelects(); saveDB(); toast('تم الحذف','e');
 }
 
 function quickMaintenance(id){
@@ -810,7 +816,7 @@ function logHours(){
   const m=DB.machines.find(x=>x.id===mid);
   if(m){ m.hours+=hrs; DB.hoursLog.push({machineId:mid,hours:hrs,date:document.getElementById('h-date').value,shift:document.getElementById('h-shift').value}); }
   document.getElementById('h-hours').value='';
-  renderMachines(); toast(`تم إضافة ${hrs} ساعة لـ ${m?m.name:''} ✓`);
+  renderMachines(); saveDB(); toast(`تم إضافة ${hrs} ساعة لـ ${m?m.name:''} ✓`);
 }
 
 function exportMachines(){
@@ -940,7 +946,7 @@ function saveMaint(){
   const status=document.getElementById('mt-status').value;
   DB.maintenance.push({id:DB.nextId.maint++,machineId:mid,type,desc,tech:document.getElementById('mt-tech').value,date:document.getElementById('mt-date').value||new Date().toISOString().split('T')[0],downtime:parseFloat(document.getElementById('mt-downtime').value)||0,laborCost:parseInt(document.getElementById('mt-labor-cost').value)||0,partsCost:parseInt(document.getElementById('mt-parts-cost').value)||0,status});
   if(type==='طارئة'){const m=DB.machines.find(x=>x.id===mid);if(m)m.status='صيانة';}
-  clearMaintForm(); renderMaint(); renderMachines(); toast('تم تسجيل الصيانة ✓');
+  clearMaintForm(); renderMaint(); renderMachines(); saveDB(); toast('تم تسجيل الصيانة ✓');
 }
 
 function clearMaintForm(){
@@ -970,7 +976,7 @@ function viewMaint(id){
 function deleteMaint(id){
   if(!confirm('حذف سجل الصيانة؟')) return;
   DB.maintenance=DB.maintenance.filter(m=>m.id!==id);
-  renderMaint(); toast('تم الحذف','e');
+  renderMaint(); saveDB(); toast('تم الحذف','e');
 }
 
 function saveSpare(){
@@ -1067,7 +1073,7 @@ function saveOEE(){
   const mc=DB.machines.find(x=>x.id===mid);
   if(mc) mc.oee=pct;
   ['oee-avail','oee-actual','oee-down','oee-planned','oee-produced','oee-good'].forEach(id=>document.getElementById(id).value='');
-  renderOEE(); renderMachines(); toast(`OEE محسوب: ${pct}% ✓`);
+  renderOEE(); renderMachines(); saveDB(); toast(`OEE محسوب: ${pct}% ✓`);
 }
 
 // ═══════════════════════════════════
@@ -1134,7 +1140,7 @@ function saveBreakdown(){
   if(status==='جاري الإصلاح'||status==='انتظار قطعة غيار'){const m=DB.machines.find(x=>x.id===mid);if(m)m.status='عطل';}
   ['bd-desc','bd-repair-h','bd-loss-val'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('bd-machine').value='';
-  renderBreakdowns(); renderBDAnalysis(); renderMachines(); toast('تم تسجيل العطل ✓');
+  renderBreakdowns(); renderBDAnalysis(); renderMachines(); saveDB(); toast('تم تسجيل العطل ✓');
 }
 
 function resolveBreakdown(id){
@@ -1143,13 +1149,13 @@ function resolveBreakdown(id){
   b.status='تم الإصلاح';
   const m=DB.machines.find(x=>x.id===b.machineId);
   if(m&&m.status==='عطل') m.status='تعمل';
-  renderBreakdowns(); renderMachines(); toast(`تم حل العطل ✓`);
+  renderBreakdowns(); renderMachines(); saveDB(); toast(`تم حل العطل ✓`);
 }
 
 function deleteBreakdown(id){
   if(!confirm('حذف سجل العطل؟')) return;
   DB.breakdowns=DB.breakdowns.filter(b=>b.id!==id);
-  renderBreakdowns(); renderBDAnalysis(); toast('تم الحذف','e');
+  renderBreakdowns(); renderBDAnalysis(); saveDB(); toast('تم الحذف','e');
 }
 
 function exportBreakdowns(){

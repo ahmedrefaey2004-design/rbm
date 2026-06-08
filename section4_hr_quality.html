@@ -909,6 +909,12 @@ function toggleEmpView(){
   renderEmp();
 }
 
+function saveDB(){ try{ localStorage.setItem('misrsteel_s4_db', JSON.stringify(DB)); }catch(e){} }
+function gotoSection(id){ try{ window.parent.postMessage({type:'navigate',section:id},'*'); }catch(e){} }
+
+// Load from localStorage if available
+(function(){ try{ const s=localStorage.getItem('misrsteel_s4_db'); if(s){ const d=JSON.parse(s); if(d.employees) DB.employees=d.employees; if(d.attendance) DB.attendance=d.attendance; if(d.salaries) DB.salaries=d.salaries; if(d.inspections) DB.inspections=d.inspections; if(d.defects) DB.defects=d.defects; if(d.nextId) DB.nextId=d.nextId; } }catch(e){} })();
+
 function updateHRKPIs(){
   const today=DB.attendance.filter(a=>a.date===new Date().toISOString().split('T')[0]);
   const present=today.filter(a=>a.status==='حاضر').length;
@@ -943,7 +949,7 @@ function saveEmp(){
   };
   if(editEmpId){Object.assign(DB.employees.find(e=>e.id===editEmpId),data);editEmpId=null;toast('تم تعديل بيانات الموظف ✓');}
   else{DB.employees.push({id:DB.nextId.emp++,...data});toast('تم إضافة الموظف ✓');}
-  clearEmpForm();renderEmp();populateEmpSelects();
+  clearEmpForm();renderEmp();populateEmpSelects();saveDB();
 }
 
 function clearEmpForm(){
@@ -969,7 +975,7 @@ function editEmp(id){
 function deleteEmp(id){
   if(!confirm('حذف الموظف؟')) return;
   DB.employees=DB.employees.filter(e=>e.id!==id);
-  renderEmp();populateEmpSelects();toast('تم الحذف','e');
+  renderEmp();populateEmpSelects();saveDB();toast('تم الحذف','e');
 }
 
 function updateProductivity(){
@@ -979,7 +985,7 @@ function updateProductivity(){
   if(!eid||!target) return toast('اختر موظف وأدخل المستهدف','e');
   const e=DB.employees.find(x=>x.id===eid);
   if(e){e.produced=qty;e.target=target;e.productivity=Math.min(100,Math.round(qty/target*100));}
-  renderEmp();toast('تم تحديث الإنتاجية ✓');
+  renderEmp();saveDB();toast('تم تحديث الإنتاجية ✓');
 }
 
 function exportEmp(){
@@ -1093,7 +1099,7 @@ function saveAttendance(){
   if(existing>=0) DB.attendance[existing]=entry; else DB.attendance.push(entry);
   document.getElementById('att-emp').value='';
   document.getElementById('att-note').value='';
-  renderAttendance();renderShiftSummary();renderAbsenceAlerts();toast('تم تسجيل الحضور ✓');
+  renderAttendance();renderShiftSummary();renderAbsenceAlerts();saveDB();toast('تم تسجيل الحضور ✓');
 }
 
 function quickPresent(eid){
@@ -1101,7 +1107,7 @@ function quickPresent(eid){
   const existing=DB.attendance.findIndex(a=>a.empId===eid&&a.date===today);
   const entry={id:existing>=0?DB.attendance[existing].id:DB.nextId.att++,empId:eid,date:today,status:'حاضر',inTime:'08:00',outTime:'16:00',overtime:0,note:''};
   if(existing>=0) DB.attendance[existing]=entry; else DB.attendance.push(entry);
-  renderAttendance();toast('تم تسجيل الحضور ✓');
+  renderAttendance();saveDB();toast('تم تسجيل الحضور ✓');
 }
 
 function markAllPresent(){
@@ -1111,7 +1117,7 @@ function markAllPresent(){
     const entry={id:existing>=0?DB.attendance[existing].id:DB.nextId.att++,empId:e.id,date:today,status:'حاضر',inTime:'08:00',outTime:'16:00',overtime:0,note:''};
     if(existing>=0) DB.attendance[existing]=entry; else DB.attendance.push(entry);
   });
-  renderAttendance();toast('تم تسجيل كل الموظفين حاضرين ✓');
+  renderAttendance();saveDB();toast('تم تسجيل كل الموظفين حاضرين ✓');
 }
 
 function editAtt(eid){
@@ -1180,7 +1186,7 @@ function updateSalary(){
     e.deduction+=parseInt(document.getElementById('sal-deduct').value)||0;
   }
   ['sal-bonus','sal-deduct','sal-reason'].forEach(id=>document.getElementById(id).value='');
-  renderSalary();toast('تم تحديث الراتب ✓');
+  renderSalary();saveDB();toast('تم تحديث الراتب ✓');
 }
 
 function viewSlip(eid){
@@ -1295,7 +1301,7 @@ function saveInspection(){
   const num=`QC-${String(DB.nextId.insp).padStart(3,'0')}`;
   DB.inspections.push({id:DB.nextId.insp++,num,productId,stage:document.getElementById('qi-stage').value,total,pass:pass||(total-fail),fail,inspector:parseInt(document.getElementById('qi-inspector').value)||0,date:new Date().toISOString().split('T')[0],notes:document.getElementById('qi-notes').value});
   ['qi-total','qi-pass','qi-fail','qi-notes'].forEach(id=>document.getElementById(id).value='');
-  renderQuality();toast(`تم تسجيل الفحص ${num} ✓`);
+  renderQuality();saveDB();toast(`تم تسجيل الفحص ${num} ✓`);
 }
 
 function saveDefect(){
@@ -1339,12 +1345,12 @@ function resolveDefect(id){
 
 function deleteDefect(id){
   DB.defects=DB.defects.filter(d=>d.id!==id);
-  renderDefects();updateQualityKPIs();toast('تم الحذف','e');
+  renderDefects();updateQualityKPIs();saveDB();toast('تم الحذف','e');
 }
 
 function deleteInspection(id){
   DB.inspections=DB.inspections.filter(i=>i.id!==id);
-  renderQuality();toast('تم الحذف','e');
+  renderQuality();saveDB();toast('تم الحذف','e');
 }
 
 function viewInspection(id){

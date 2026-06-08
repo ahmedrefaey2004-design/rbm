@@ -278,7 +278,7 @@ tr:hover td{background:rgba(255,255,255,.015);}
     <div style="display:flex;flex-direction:column;gap:14px;">
       <!-- OEE Gauges -->
       <div class="card">
-        <div class="card-hd"><div class="card-title"><span class="icon">⚙️</span> كفاءة الماكينات OEE</div></div>
+        <div class="card-hd"><div class="card-title"><span class="icon">⚙️</span> كفاءة الماكينات OEE</div><button onclick="gotoSection('s3')" style="background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.15);color:var(--cyan);border-radius:5px;padding:2px 8px;font-size:11px;cursor:pointer;font-family:var(--font)">↗</button></div>
         <div style="padding:14px 18px;display:flex;flex-direction:column;gap:8px;" id="oee-mini"></div>
       </div>
       <!-- Waste donut -->
@@ -293,12 +293,12 @@ tr:hover td{background:rgba(255,255,255,.015);}
   <div class="grid-3">
     <!-- Production -->
     <div class="card">
-      <div class="card-hd"><div class="card-title"><span class="icon">🏭</span> الإنتاج اليوم</div></div>
+      <div class="card-hd"><div class="card-title"><span class="icon">🏭</span> الإنتاج اليوم</div><button onclick="gotoSection('s2')" style="background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.15);color:var(--cyan);border-radius:5px;padding:2px 8px;font-size:11px;cursor:pointer;font-family:var(--font)">↗</button></div>
       <div style="padding:14px 18px;" id="prod-today"></div>
     </div>
     <!-- Inventory Alerts -->
     <div class="card">
-      <div class="card-hd"><div class="card-title"><span class="icon">📦</span> المخزون الحرج</div><span class="badge br" id="inv-alert-count">0</span></div>
+      <div class="card-hd"><div class="card-title"><span class="icon">📦</span> المخزون الحرج</div><div style="display:flex;align-items:center;gap:8px;"><span class="badge br" id="inv-alert-count">0</span><button onclick="gotoSection('s1')" style="background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.15);color:var(--cyan);border-radius:5px;padding:2px 8px;font-size:11px;cursor:pointer;font-family:var(--font)">↗</button></div></div>
       <div id="inv-alerts-list"></div>
     </div>
     <!-- Top Products -->
@@ -543,20 +543,20 @@ const DATA = {
     {name:'ترابيزة تصدير 316',inspections:1,pass:10,fail:0,defect:'—'},
   ],
   alerts: [
-    {id:1,level:'critical',title:'كمبريسور Atlas Copco متوقف',desc:'عطل في المكبس الرئيسي — توقف إنتاج قسم التشكيل',time:'منذ يومين',category:'ماكينات',resolved:false},
-    {id:2,level:'critical',title:'صفائح ستانلس 2mm تحت الحد الأدنى',desc:'الكمية الحالية 420 كجم — الحد الأدنى 500 كجم — طلبية تصدير أوروبا جاية',time:'منذ يوم',category:'مخازن',resolved:false},
-    {id:3,level:'warning',title:'إسفنج مقاعد 85 قطعة — حد 100',desc:'تأثر إنتاج الكراسي المنجدة',time:'منذ 3 أيام',category:'مخازن',resolved:false},
-    {id:4,level:'warning',title:'ماكينة جلخ OEE = 71%',desc:'أقل من المستهدف 80% — الصيانة الدورية مجدولة',time:'هذا الأسبوع',category:'ماكينات',resolved:false},
-    {id:5,level:'warning',title:'فاتورة مطاعم الشاطئ متأخرة',desc:'38,000 ج — متأخرة 22 يوم',time:'منذ 22 يوم',category:'مالية',resolved:false},
-    {id:6,level:'info',title:'مقياس قيمة مضافة — تاريخ التقديم قريب',desc:'موعد تقديم الإقرار الضريبي الشهري',time:'بعد 5 أيام',category:'مالية',resolved:false},
-    {id:7,level:'info',title:'معايرة CNC مجدولة',desc:'كل 3 أشهر — آخر معايرة 2025-03-01',time:'بعد 7 أيام',category:'ماكينات',resolved:false},
-    {id:8,level:'critical',title:'قماش تنجيد 40 متر — حد 60',desc:'يؤثر على طلبيات الكراسي المنجدة فندق هيلتون',time:'منذ يومين',category:'مخازن',resolved:false},
+    {id:1,level:'critical',title:'كمبريسور Atlas Copco متوقف',desc:'عطل في المكبس الرئيسي — توقف إنتاج قسم التشكيل',time:'منذ يومين',category:'ماكينات',resolved:false,section:'s3'},
+    {id:2,level:'critical',title:'صفائح ستانلس 2mm تحت الحد الأدنى',desc:'الكمية الحالية 420 كجم — الحد الأدنى 500 كجم — طلبية تصدير أوروبا جاية',time:'منذ يوم',category:'مخازن',resolved:false,section:'s1'},
+    {id:3,level:'warning',title:'إسفنج مقاعد 85 قطعة — حد 100',desc:'تأثر إنتاج الكراسي المنجدة',time:'منذ 3 أيام',category:'مخازن',resolved:false,section:'s1'},
+    {id:4,level:'warning',title:'ماكينة جلخ OEE = 71%',desc:'أقل من المستهدف 80% — الصيانة الدورية مجدولة',time:'هذا الأسبوع',category:'ماكينات',resolved:false,section:'s3'},
+    {id:5,level:'warning',title:'فاتورة مطاعم الشاطئ متأخرة',desc:'38,000 ج — متأخرة 22 يوم',time:'منذ 22 يوم',category:'مالية',resolved:false,section:'s5'},
+    {id:6,level:'info',title:'مقياس قيمة مضافة — تاريخ التقديم قريب',desc:'موعد تقديم الإقرار الضريبي الشهري',time:'بعد 5 أيام',category:'مالية',resolved:false,section:'s5'},
+    {id:7,level:'info',title:'معايرة CNC مجدولة',desc:'كل 3 أشهر — آخر معايرة 2025-03-01',time:'بعد 7 أيام',category:'ماكينات',resolved:false,section:'s3'},
+    {id:8,level:'critical',title:'قماش تنجيد 40 متر — حد 60',desc:'يؤثر على طلبيات الكراسي المنجدة فندق هيلتون',time:'منذ يومين',category:'مخازن',resolved:false,section:'s1'},
   ],
   aiInsights: [
-    {icon:'📦',color:'rgba(239,68,68,.15)',title:'نقص حرج في الخامات',desc:'صفائح ستانلس 2mm ستنفد خلال 4 أيام بمعدل الاستهلاك الحالي. طلبية أوروبا تحتاج 300 كجم إضافية.',action:'افتح طلب شراء',conf:94,level:'critical'},
-    {icon:'⚙️',color:'rgba(245,158,11,.12)',title:'توقع عطل كمبريسور',desc:'بناء على 12,000 ساعة تشغيل وسجل الأعطال، احتمال عطل ثاني في خلال 30 يوم إذا لم تُستبدل قطعة المكبس.',action:'جدول صيانة',conf:78,level:'warning'},
-    {icon:'📈',color:'rgba(34,197,94,.1)',title:'فرصة تصدير مرتفعة',desc:'الطلب على ترابيزات ستانلس 316 في السوق الأوروبي ارتفع 23%. توصي بزيادة خطة الإنتاج للشهر القادم.',action:'تحديث خطة الإنتاج',conf:71,level:'info'},
-    {icon:'💰',color:'rgba(167,139,250,.1)',title:'تحسين هامش الربح ممكن',desc:'كرسي حديد مطلي هامش ربحه 22% فقط. رفع السعر 8% سيبقيه تنافسياً مع تحسين الهامش لـ 28%.',action:'راجع التسعير',conf:66,level:'info'},
+    {icon:'📦',color:'rgba(239,68,68,.15)',title:'نقص حرج في الخامات',desc:'صفائح ستانلس 2mm ستنفد خلال 4 أيام بمعدل الاستهلاك الحالي. طلبية أوروبا تحتاج 300 كجم إضافية.',action:'افتح طلب شراء',conf:94,level:'critical',section:'s1'},
+    {icon:'⚙️',color:'rgba(245,158,11,.12)',title:'توقع عطل كمبريسور',desc:'بناء على 12,000 ساعة تشغيل وسجل الأعطال، احتمال عطل ثاني في خلال 30 يوم إذا لم تُستبدل قطعة المكبس.',action:'جدول صيانة',conf:78,level:'warning',section:'s3'},
+    {icon:'📈',color:'rgba(34,197,94,.1)',title:'فرصة تصدير مرتفعة',desc:'الطلب على ترابيزات ستانلس 316 في السوق الأوروبي ارتفع 23%. توصي بزيادة خطة الإنتاج للشهر القادم.',action:'تحديث خطة الإنتاج',conf:71,level:'info',section:'s2'},
+    {icon:'💰',color:'rgba(167,139,250,.1)',title:'تحسين هامش الربح ممكن',desc:'كرسي حديد مطلي هامش ربحه 22% فقط. رفع السعر 8% سيبقيه تنافسياً مع تحسين الهامش لـ 28%.',action:'راجع التسعير',conf:66,level:'info',section:'s5'},
   ],
   alertSettings: [
     {key:'inv_low',label:'مخزون تحت الحد الأدنى',enabled:true,level:'critical'},
@@ -567,6 +567,54 @@ const DATA = {
     {key:'maint_due',label:'صيانة دورية مجدولة',enabled:false,level:'info'},
   ]
 };
+
+// Cross-section navigation helper
+function gotoSection(id){ try{ window.parent.postMessage({type:'navigate',section:id},'*'); }catch(e){} }
+
+// Load shared data from localStorage (written by sections 1-4)
+(function loadSharedData(){
+  try{
+    const s1=JSON.parse(localStorage.getItem('misrsteel_s1_db'));
+    if(s1){
+      if(s1.inventory && s1.inventory.length) DATA.inventory=s1.inventory.map(i=>({name:i.name,code:i.code,cat:i.cat||i.category||'',qty:i.qty,minQty:i.minQty,price:i.price}));
+    }
+    const s2=JSON.parse(localStorage.getItem('misrsteel_s2_db'));
+    if(s2 && s2.workOrders && s2.workOrders.length){
+      const prods=s2.products||[];
+      DATA.products=s2.workOrders.slice(0,6).map(w=>{
+        const p=prods.find(x=>x.id===w.productId)||{};
+        return {name:p.name||'منتج',planned:w.qty,produced:w.produced||0,waste:w.waste||0,exportQty:w.dest==='تصدير'?w.qty:0,localQty:w.dest==='محلي'?w.qty:0,time:p.timeMin||45,matCost:0,laborCost:0,energyCost:0,overhead:0,priceLocal:p.priceLocal||0,priceExport:p.priceExport||0};
+      });
+    }
+    const s3=JSON.parse(localStorage.getItem('misrsteel_s3_db'));
+    if(s3 && s3.machines && s3.machines.length){
+      DATA.machines=s3.machines.map(m=>({name:m.name,code:m.code,hours:m.hours||0,oee:m.oee||0,lastMaint:m.lastMaint||'',downtime:m.downtime||0,breakdowns:m.breakdowns||0,maintCost:m.maintCost||0}));
+    }
+    const s4=JSON.parse(localStorage.getItem('misrsteel_s4_db'));
+    if(s4 && s4.employees && s4.employees.length){
+      DATA.employees=s4.employees.map(e=>{
+        const att=s4.attendance||[];
+        const myAtt=att.filter(a=>a.empId===e.id);
+        const present=myAtt.filter(a=>a.status==='حاضر').length||e.daysPresent||20;
+        const absent=myAtt.filter(a=>a.status==='غائب').length||e.daysAbsent||0;
+        return {name:e.name,dept:e.dept||e.department||'',present,absent,productivity:e.productivity||80,salary:e.salary||0,bonus:e.bonus||0};
+      });
+    }
+    // Rebuild dynamic alerts from shared data
+    const dynAlerts=[];
+    if(DATA.inventory){
+      DATA.inventory.filter(i=>i.qty<i.minQty).forEach(i=>{
+        dynAlerts.push({id:'inv_'+i.code,level:'critical',title:`${i.name} تحت الحد الأدنى`,desc:`الكمية ${i.qty} — الحد ${i.minQty}`,time:'الآن',category:'مخازن',resolved:false,section:'s1'});
+      });
+    }
+    if(DATA.machines){
+      DATA.machines.filter(m=>m.oee>0&&m.oee<75).forEach(m=>{
+        dynAlerts.push({id:'mch_'+m.code,level:'warning',title:`${m.name} OEE = ${m.oee}%`,desc:`أقل من المستهدف 75%`,time:'الآن',category:'ماكينات',resolved:false,section:'s3'});
+      });
+    }
+    if(dynAlerts.length) DATA.alerts=[...dynAlerts,...DATA.alerts.filter(a=>!dynAlerts.find(d=>d.id===a.id))];
+  }catch(e){}
+})();
 
 let activeAlerts = DATA.alerts.filter(a=>!a.resolved);
 let resolvedAlerts = [];
@@ -716,10 +764,11 @@ function renderInvAlerts(){
   list.innerHTML = critical.map(item=>`
     <div class="alert-item">
       <div style="width:3px;background:var(--red);border-radius:2px;align-self:stretch;flex-shrink:0"></div>
-      <div class="alert-body">
+      <div class="alert-body" style="flex:1">
         <div class="alert-title" style="font-size:12px">${item.name}</div>
         <div class="alert-desc">${item.qty} / ${item.minQty} ${item.qty<item.minQty?'⚠ تحت الحد':''}</div>
       </div>
+      <button onclick="gotoSection('s1')" style="flex-shrink:0;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#f87171;border-radius:6px;padding:3px 8px;font-size:11px;cursor:pointer;font-family:var(--font)">↗ المخزون</button>
     </div>`).join('') || '<div class="empty">✓ كل المخزون طيب</div>';
 }
 
@@ -789,7 +838,7 @@ function renderAI(){
       <div class="ai-insight-body">
         <div class="ai-insight-title">${ins.title} <span class="badge ${ins.level==='critical'?'br':ins.level==='warning'?'ba':'bc'}" style="font-size:9px">${ins.level==='critical'?'حرج':ins.level==='warning'?'تحذير':'معلومة'}</span></div>
         <div class="ai-insight-desc">${ins.desc}</div>
-        <div class="ai-insight-action">↗ ${ins.action}</div>
+        <div class="ai-insight-action" ${ins.section?`onclick="gotoSection('${ins.section}')" style="cursor:pointer"`:''}}>↗ ${ins.action}</div>
         <div class="ai-conf">ثقة النموذج: ${ins.conf}%</div>
       </div>
     </div>`).join('');
@@ -1095,7 +1144,10 @@ function renderAlerts(){
         <div class="alert-desc">${a.desc}</div>
         <div class="alert-time">${a.time} · ${a.category}</div>
       </div>
-      <button class="btn btn-g btn-sm" onclick="resolveAlert(${a.id})">✓ حُل</button>
+      <div style="display:flex;gap:4px;flex-shrink:0;">
+        ${a.section?`<button class="btn btn-sm" style="background:rgba(0,229,255,.1);border:1px solid rgba(0,229,255,.2);color:var(--cyan);font-size:11px;" onclick="gotoSection('${a.section}')">↗ افتح</button>`:''}
+        <button class="btn btn-g btn-sm" onclick="resolveAlert('${a.id}')">✓ حُل</button>
+      </div>
     </div>`).join('') || '<div class="empty">✅ لا توجد تنبيهات نشطة!</div>';
 
   // Settings
@@ -1124,7 +1176,7 @@ function renderAlerts(){
 }
 
 function resolveAlert(id){
-  const idx=activeAlerts.findIndex(a=>a.id===id);
+  const idx=activeAlerts.findIndex(a=>a.id==id);
   if(idx>=0){
     resolvedAlerts.unshift(activeAlerts[idx]);
     activeAlerts.splice(idx,1);
