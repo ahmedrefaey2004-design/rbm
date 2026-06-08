@@ -360,11 +360,20 @@ tr:hover td{background:rgba(255,255,255,.012);}
         <div class="fc-body">
           <div class="field">
             <label>اختر فاتورة محفوظة</label>
-            <select id="inv-select" onchange="loadFromInvoice()">
-              <option value="">— اختر فاتورة —</option>
-            </select>
+            <div style="display:flex;gap:6px;">
+              <select id="inv-select" onchange="loadFromInvoice()" style="flex:1">
+                <option value="">— اختر فاتورة —</option>
+              </select>
+              <button class="btn btn-g btn-sm" onclick="loadInvoicesIntoDropdown()" title="تحديث القائمة" style="padding:6px 10px;flex-shrink:0;">↻</button>
+            </div>
           </div>
-          <div style="font-size:11px;color:var(--text3);margin-top:4px;">أو أدخل البيانات يدوياً أدناه</div>
+          <div id="inv-refresh-msg" style="font-size:11px;color:var(--text3);margin-top:2px;"></div>
+          <div style="font-size:11px;color:var(--text3);margin-top:6px;padding:8px;background:var(--bg3);border-radius:6px;line-height:1.6;">
+            💡 لو مش ظاهرة الفواتير:<br>
+            1. افتح القسم 5 — الفواتير<br>
+            2. احفظ فاتورة من هناك<br>
+            3. اضغط ↻ هنا للتحديث
+          </div>
         </div>
       </div>
 
@@ -734,39 +743,123 @@ function exportJournal(){
 // CONTRACT
 // ══════════════════════════════════════
 function renderContractSidebar(){
-  // Load saved invoices from localStorage
-  const sel=document.getElementById('inv-select');
-  try{
-    const saved=JSON.parse(localStorage.getItem('misrsteel_docs')||'[]');
-    const invoices=saved.filter(d=>d.type==='invoice');
-    sel.innerHTML='<option value="">— اختر فاتورة —</option>'+invoices.map(inv=>`
-      <option value="${inv.id}">${inv.num} — ${inv.client} — ${inv.totals?.total?.toFixed(0)||0} ج</option>`).join('');
-  }catch(e){
-    sel.innerHTML='<option value="">— لا توجد فواتير محفوظة —</option>';
-  }
-  // Set today
   document.getElementById('ct-date').value=new Date().toISOString().split('T')[0];
+  loadInvoicesIntoDropdown();
   renderContractItems();
   renderContract();
 }
 
+function loadInvoicesIntoDropdown(){
+  const sel=document.getElementById('inv-select');
+  let invoices=[];
+
+  // Try all known localStorage keys
+  const keys=['misrsteel_docs','msInvoices','invoices'];
+  for(const key of keys){
+    try{
+      const raw=localStorage.getItem(key);
+      if(!raw) continue;
+      const parsed=JSON.parse(raw);
+      if(Array.isArray(parsed)){
+        const found=parsed.filter(d=>d.type==='invoice'||d.num?.startsWith('INV'));
+        if(found.length>0){ invoices=found; break; }
+      }
+    }catch(e){}
+  }
+
+  // Also check all localStorage keys for anything with invoices
+  if(invoices.length===0){
+    try{
+      for(let i=0;i<localStorage.length;i++){
+        const key=localStorage.key(i);
+        const raw=localStorage.getItem(key);
+        if(!raw||raw.length<10) continue;
+        const parsed=JSON.parse(raw);
+        if(Array.isArray(parsed)&&parsed.length>0&&parsed[0].num){
+          const found=parsed.filter(d=>d.type==='invoice'||d.num?.startsWith('INV'));
+          if(found.length>0){ invoices=[...invoices,...found]; }
+        }
+      }
+    }catch(e){}
+  }
+
+  if(invoices.length>0){
+    sel.innerHTML='<option value="">— اختر فاتورة —</option>'+
+      invoices.map(inv=>`<option value="${inv.id||inv.num}">${inv.num} — ${inv.client||inv.clientName||'—'} — ${(inv.totals?.total||inv.total||0).toFixed?.(0)||0} ج</option>`).join('');
+    document.getElementById('inv-refresh-msg').textContent=`✓ ${invoices.length} فاتورة محفوظة`;
+    document.getElementById('inv-refresh-msg').style.color='var(--green)';
+  } else {
+    sel.innerHTML='<option value="">— لا توجد فواتير محفوظة —</option>';
+    document.getElementById('inv-refresh-msg').textContent='⚠ لا توجد فواتير — أدخل البيانات يدوياً أو افتح القسم 5 أولاً';
+    document.getElementById('inv-refresh-msg').style.color='var(--gold2)';
+  }
+}
+
 function loadFromInvoice(){
-  const id=parseInt(document.getElementById('inv-select').value);
-  if(!id) return;
-  try{
-    const saved=JSON.parse(localStorage.getItem('misrsteel_docs')||'[]');
-    const inv=saved.find(d=>d.id===id);
-    if(!inv) return;
-    // Fill client
-    document.getElementById('ct-client').value=inv.client||'';
-    document.getElementById('ct-client-role').value=inv.clContact||'';
-    document.getElementById('ct-delivery').value=inv.clAddress||'مقر العميل';
-    // Fill items
-    contractItems=(inv.lineItems||[]).map(li=>({name:li.name,qty:li.qty,unitPrice:li.unitPrice,total:li.qty*li.unitPrice}));
-    renderContractItems();
-    renderContract();
-    toast(`تم استيراد بيانات ${inv.num} ✓`);
-  }catch(e){toast('خطأ في تحميل الفاتورة','e');}
+  const val=document.getElementById('inv-select').value;
+  if(!val) return;
+
+  let inv=null;
+  // Search all localStorage
+  const keys=['misrsteel_docs','msInvoices','invoices'];
+  for(const key of keys){
+    try{
+      const parsed=JSON.parse(localStorage.getItem(key)||'[]');
+      if(Array.isArray(parsed)){
+        inv=parsed.find(d=>String(d.id)===val||d.num===val);
+        if(inv) break;
+      }
+    }catch(e){}
+  }
+
+  // Also scan all keys
+  if(!inv){
+    try{
+      for(let i=0;i<localStorage.length;i++){
+        const raw=localStorage.getItem(localStorage.key(i));
+        const parsed=JSON.parse(raw);
+        if(Array.isArray(parsed)){
+          const found=parsed.find(d=>String(d.id)===val||d.num===val);
+          if(found){inv=found;break;}
+        }
+      }
+    }catch(e){}
+  }
+
+  if(!inv){ toast('تعذر تحميل الفاتورة','e'); return; }
+
+  // Fill client fields
+  document.getElementById('ct-client').value = inv.client||inv.clientName||'';
+  document.getElementById('ct-client-role').value = inv.clContact||inv.contactPerson||'';
+  document.getElementById('ct-delivery').value = inv.clAddress||'مقر العميل';
+
+  // Fill items from invoice line items
+  contractItems=[];
+  const lines=inv.lineItems||inv.items||[];
+  if(Array.isArray(lines)&&lines.length>0){
+    contractItems=lines.map(li=>({
+      name:li.name||li.description||li.desc||'بند',
+      qty:li.qty||li.quantity||1,
+      unitPrice:li.unitPrice||li.price||0,
+      total:(li.qty||1)*(li.unitPrice||li.price||0)
+    }));
+  }
+
+  // If items is a string (description field)
+  if(contractItems.length===0&&(inv.items||inv.description)){
+    contractItems=[{name:inv.items||inv.description,qty:1,unitPrice:inv.total||0,total:inv.total||0}];
+  }
+
+  // Set invoice number reference in contract num
+  const ctNum=document.getElementById('ct-num');
+  if(ctNum.value.includes('001')){
+    const newNum=`MS-CT-${inv.num||new Date().getFullYear()}-001`;
+    ctNum.value=newNum;
+  }
+
+  renderContractItems();
+  renderContract();
+  toast(`✓ تم استيراد بيانات ${inv.num} — ${inv.client||''}`);;
 }
 
 function addContractItem(){
