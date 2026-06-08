@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مصر ستيل — المخازن والمشتريات</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg2: #161922;
+    --bg3: #1e2330;
+    --card: #1a1f2e;
+    --border: #2a3045;
+    --border2: #3a4260;
+    --teal: #00c9a7;
+    --teal2: #00a388;
+    --blue: #4f8ef7;
+    --amber: #f4a942;
+    --red: #f05252;
+    --green: #22c55e;
+    --purple: #a78bfa;
+    --text: #e8ecf4;
+    --text2: #8892aa;
+    --text3: #4a5568;
+    --font: 'Cairo', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+    --radius: 10px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 14px; min-height: 100vh; }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px; position: sticky; top: 0; z-index: 100;
+  }
+  .header-logo { display: flex; align-items: center; gap: 10px; }
+  .header-logo .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 10px var(--teal); }
+  .header-logo span { font-weight: 700; font-size: 16px; color: var(--text); }
+  .header-logo small { font-size: 11px; color: var(--text2); margin-right: 4px; }
+  .header-tabs { display: flex; gap: 4px; }
+  .htab { padding: 6px 16px; border-radius: 6px; border: none; background: transparent; color: var(--text2); font-family: var(--font); font-size: 13px; cursor: pointer; transition: all .2s; }
+  .htab.active, .htab:hover { background: var(--bg3); color: var(--text); }
+  .htab.active { color: var(--teal); border-bottom: 2px solid var(--teal); border-radius: 6px 6px 0 0; }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 1280px; margin: 0 auto; padding: 24px; }
+  .section-title { font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .section-sub { font-size: 13px; color: var(--text2); margin-bottom: 24px; }
+
+  /* ── KPI ROW ── */
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+  .kpi { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; position: relative; overflow: hidden; }
+  .kpi::before { content: ''; position: absolute; top: 0; right: 0; width: 3px; height: 100%; background: var(--accent, var(--teal)); }
+  .kpi-label { font-size: 12px; color: var(--text2); margin-bottom: 8px; }
+  .kpi-value { font-size: 26px; font-weight: 700; color: var(--text); font-family: var(--mono); }
+  .kpi-sub { font-size: 11px; color: var(--text3); margin-top: 4px; }
+
+  /* ── MAIN GRID ── */
+  .main-grid { display: grid; grid-template-columns: 1fr 360px; gap: 20px; }
+
+  /* ── TABLE CARD ── */
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .card-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .card-title { font-weight: 600; font-size: 15px; color: var(--text); display: flex; align-items: center; gap: 8px; }
+  .card-title .icon { font-size: 16px; }
+  .card-actions { display: flex; gap: 8px; align-items: center; }
+
+  /* search */
+  .search-box { position: relative; }
+  .search-box input { background: var(--bg3); border: 1px solid var(--border); border-radius: 7px; padding: 7px 12px 7px 32px; color: var(--text); font-family: var(--font); font-size: 13px; width: 200px; outline: none; transition: border .2s; }
+  .search-box input:focus { border-color: var(--teal); }
+  .search-box::before { content: '⌕'; position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text3); font-size: 16px; }
+
+  /* btn */
+  .btn { padding: 8px 16px; border-radius: 7px; border: none; font-family: var(--font); font-size: 13px; cursor: pointer; transition: all .15s; display: inline-flex; align-items: center; gap: 6px; font-weight: 600; }
+  .btn-primary { background: var(--teal); color: #000; }
+  .btn-primary:hover { background: var(--teal2); }
+  .btn-ghost { background: var(--bg3); color: var(--text2); border: 1px solid var(--border); }
+  .btn-ghost:hover { color: var(--text); border-color: var(--border2); }
+  .btn-danger { background: transparent; color: var(--red); border: 1px solid transparent; padding: 4px 8px; font-size: 12px; }
+  .btn-danger:hover { background: rgba(240,82,82,.1); border-color: var(--red); }
+  .btn-edit { background: transparent; color: var(--blue); border: 1px solid transparent; padding: 4px 8px; font-size: 12px; }
+  .btn-edit:hover { background: rgba(79,142,247,.1); border-color: var(--blue); }
+  .btn-sm { padding: 5px 10px; font-size: 12px; }
+
+  /* table */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; }
+  th { background: var(--bg3); color: var(--text2); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; padding: 10px 16px; text-align: right; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  td { padding: 11px 16px; border-bottom: 1px solid var(--border); color: var(--text); font-size: 13px; vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,.02); }
+  .td-mono { font-family: var(--mono); font-size: 12px; }
+
+  /* badges */
+  .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+  .badge-green { background: rgba(34,197,94,.12); color: var(--green); border: 1px solid rgba(34,197,94,.2); }
+  .badge-amber { background: rgba(244,169,66,.12); color: var(--amber); border: 1px solid rgba(244,169,66,.2); }
+  .badge-red { background: rgba(240,82,82,.12); color: var(--red); border: 1px solid rgba(240,82,82,.2); }
+  .badge-blue { background: rgba(79,142,247,.12); color: var(--blue); border: 1px solid rgba(79,142,247,.2); }
+  .badge-purple { background: rgba(167,139,250,.12); color: var(--purple); border: 1px solid rgba(167,139,250,.2); }
+
+  /* ── SIDEBAR FORM ── */
+  .sidebar { display: flex; flex-direction: column; gap: 16px; }
+  .form-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .form-card-header { padding: 14px 18px; border-bottom: 1px solid var(--border); font-weight: 600; font-size: 14px; color: var(--teal); display: flex; align-items: center; gap: 8px; }
+  .form-body { padding: 18px; display: flex; flex-direction: column; gap: 13px; }
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field label { font-size: 12px; color: var(--text2); font-weight: 600; }
+  .field input, .field select, .field textarea {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 7px; padding: 9px 12px; color: var(--text);
+    font-family: var(--font); font-size: 13px; outline: none;
+    transition: border .2s; width: 100%;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--teal); }
+  .field select option { background: var(--bg3); }
+  .field textarea { resize: vertical; min-height: 70px; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .form-actions { display: flex; gap: 8px; padding: 0 18px 18px; }
+
+  /* ── TABS ── */
+  .tab-bar { display: flex; gap: 2px; padding: 16px 20px 0; border-bottom: 1px solid var(--border); }
+  .tab { padding: 8px 16px; border-radius: 7px 7px 0 0; border: none; background: transparent; color: var(--text2); font-family: var(--font); font-size: 13px; cursor: pointer; transition: all .2s; border-bottom: 2px solid transparent; }
+  .tab.active { color: var(--teal); border-bottom-color: var(--teal); background: rgba(0,201,167,.05); }
+  .tab:hover:not(.active) { color: var(--text); background: var(--bg3); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* ── ALERT ── */
+  .alert-bar { background: rgba(244,169,66,.07); border: 1px solid rgba(244,169,66,.2); border-radius: var(--radius); padding: 12px 16px; margin-bottom: 16px; font-size: 13px; color: var(--amber); display: flex; align-items: center; gap: 10px; }
+  .alert-bar span { flex: 1; }
+
+  /* ── PROGRESS ── */
+  .progress-bar { background: var(--bg3); border-radius: 4px; height: 5px; overflow: hidden; margin-top: 4px; }
+  .progress-fill { height: 100%; border-radius: 4px; transition: width .4s; }
+
+  /* ── MODAL ── */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.7); z-index: 999; align-items: center; justify-content: center; backdrop-filter: blur(2px); }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--card); border: 1px solid var(--border2); border-radius: 14px; width: 480px; max-width: 95vw; box-shadow: var(--shadow); animation: slideUp .25s ease; }
+  @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  .modal-header { padding: 20px 24px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .modal-title { font-weight: 700; font-size: 16px; }
+  .modal-close { background: none; border: none; color: var(--text2); font-size: 20px; cursor: pointer; line-height: 1; padding: 4px; border-radius: 5px; }
+  .modal-close:hover { background: var(--bg3); color: var(--text); }
+  .modal-body { padding: 20px 24px; display: flex; flex-direction: column; gap: 14px; }
+  .modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; gap: 10px; justify-content: flex-end; }
+
+  /* ── TOAST ── */
+  .toast-container { position: fixed; bottom: 24px; left: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
+  .toast { background: var(--bg2); border: 1px solid var(--border2); border-radius: 8px; padding: 12px 16px; font-size: 13px; display: flex; align-items: center; gap: 10px; animation: toastIn .3s ease; box-shadow: var(--shadow); min-width: 220px; }
+  @keyframes toastIn { from { transform: translateX(-20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+  .toast.success { border-color: rgba(34,197,94,.3); }
+  .toast.error { border-color: rgba(240,82,82,.3); }
+
+  /* ── EMPTY STATE ── */
+  .empty { text-align: center; padding: 40px 20px; color: var(--text2); }
+  .empty-icon { font-size: 36px; margin-bottom: 8px; opacity: .5; }
+  .empty p { font-size: 13px; }
+
+  /* reorder warning */
+  .reorder-flag { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: var(--amber); }
+
+  @media (max-width: 900px) {
+    .main-grid { grid-template-columns: 1fr; }
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    .header-tabs { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-logo">
+    <div class="dot"></div>
+    <div>
+      <span>مصر ستيل</span>
+      <small>— تشكيل المعادن | كراسي وترابيزات ستانلس وحديد</small>
+    </div>
+  </div>
+  <div class="header-tabs">
+    <button class="htab active" onclick="switchMain('warehouses')">📦 المخازن</button>
+    <button class="htab" onclick="switchMain('purchasing')">🛒 المشتريات</button>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <span style="font-size:12px;color:var(--text2);">القسم 1 من 6</span>
+    <div style="width:80px;height:4px;background:var(--bg3);border-radius:2px;overflow:hidden;">
+      <div style="width:16.6%;height:100%;background:var(--teal);border-radius:2px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ WAREHOUSES SECTION ══════════ -->
+<div id="main-warehouses" class="container">
+
+  <div class="section-title">📦 إدارة المخازن</div>
+  <div class="section-sub">خامات المعادن · مواد اللحام · التشطيبات · إكسسوار الكراسي والترابيزات</div>
+
+  <!-- KPIs -->
+  <div class="kpi-row">
+    <div class="kpi" style="--accent:var(--teal)">
+      <div class="kpi-label">إجمالي الأصناف</div>
+      <div class="kpi-value" id="kpi-items">0</div>
+      <div class="kpi-sub">في المخزن</div>
+    </div>
+    <div class="kpi" style="--accent:var(--red)">
+      <div class="kpi-label">أصناف تحت الحد</div>
+      <div class="kpi-value" id="kpi-low">0</div>
+      <div class="kpi-sub">تحتاج طلب شراء</div>
+    </div>
+    <div class="kpi" style="--accent:var(--amber)">
+      <div class="kpi-label">قيمة المخزون</div>
+      <div class="kpi-value" id="kpi-value">0</div>
+      <div class="kpi-sub">جنيه إجمالي</div>
+    </div>
+    <div class="kpi" style="--accent:var(--blue)">
+      <div class="kpi-label">أصناف ممتازة</div>
+      <div class="kpi-value" id="kpi-ok">0</div>
+      <div class="kpi-sub">فوق الحد الأدنى</div>
+    </div>
+  </div>
+
+  <!-- Alert for low stock -->
+  <div id="low-stock-alert" class="alert-bar" style="display:none">
+    <span>⚠️</span>
+    <span id="low-stock-msg"></span>
+    <button class="btn btn-ghost btn-sm" onclick="filterLow()">عرض الأصناف الحرجة</button>
+  </div>
+
+  <div class="main-grid">
+    <!-- TABLE -->
+    <div>
+      <div class="card">
+        <div class="tab-bar">
+          <button class="tab active" onclick="switchTab(this,'tab-raw')">خامات</button>
+          <button class="tab" onclick="switchTab(this,'tab-wip')">تحت التشغيل</button>
+          <button class="tab" onclick="switchTab(this,'tab-fg')">منتجات تامة</button>
+          <button class="tab" onclick="switchTab(this,'tab-spare')">قطع غيار</button>
+        </div>
+
+        <!-- Shared for all tabs -->
+        <div class="card-header" style="border-top:1px solid var(--border);">
+          <div class="search-box">
+            <input type="text" id="inv-search" placeholder="بحث..." oninput="renderInventory()">
+          </div>
+          <div class="card-actions">
+            <select id="cat-filter" onchange="renderInventory()" style="background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:7px 12px;color:var(--text);font-family:var(--font);font-size:13px;outline:none;">
+              <option value="">كل الفئات</option>
+            </select>
+            <button class="btn btn-ghost btn-sm" onclick="exportCSV('inventory')">↓ تصدير</button>
+          </div>
+        </div>
+
+        <div class="tab-content active" id="tab-raw">
+          <div class="table-wrap"><table id="inv-table">
+            <thead><tr>
+              <th>#</th><th>كود الصنف</th><th>اسم الصنف</th><th>الفئة</th>
+              <th>الكمية</th><th>الوحدة</th><th>الحد الأدنى</th>
+              <th>سعر الوحدة</th><th>الحالة</th><th>إجراء</th>
+            </tr></thead>
+            <tbody id="inv-tbody"></tbody>
+          </table></div>
+        </div>
+        <div class="tab-content" id="tab-wip"><div class="empty"><div class="empty-icon">🔄</div><p>الأصناف تحت التشغيل تُضاف من نظام الإنتاج (القسم 2)</p></div></div>
+        <div class="tab-content" id="tab-fg"><div class="empty"><div class="empty-icon">✅</div><p>المنتجات التامة تُضاف من نظام الإنتاج (القسم 2)</p></div></div>
+        <div class="tab-content" id="tab-spare">
+          <div class="table-wrap"><table>
+            <thead><tr><th>#</th><th>كود القطعة</th><th>اسم القطعة</th><th>الكمية</th><th>الوحدة</th><th>الحد الأدنى</th><th>الحالة</th><th>إجراء</th></tr></thead>
+            <tbody id="spare-tbody"></tbody>
+          </table></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIDEBAR FORM -->
+    <div class="sidebar">
+      <div class="form-card">
+        <div class="form-card-header">➕ إضافة / تعديل صنف</div>
+        <div class="form-body">
+          <div class="field-row">
+            <div class="field">
+              <label>كود الصنف</label>
+              <input type="text" id="f-code" placeholder="MAT-001">
+            </div>
+            <div class="field">
+              <label>الفئة</label>
+              <select id="f-cat">
+                <option>ستانلس ستيل</option><option>حديد</option>
+                <option>مواد لحام</option><option>تشطيبات</option><option>إكسسوار</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label>اسم الصنف</label>
+            <input type="text" id="f-name" placeholder="اسم المادة الخام...">
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label>الكمية الحالية</label>
+              <input type="number" id="f-qty" placeholder="0" min="0">
+            </div>
+            <div class="field">
+              <label>الوحدة</label>
+              <select id="f-unit">
+                <option>كجم</option><option>طن</option><option>متر</option>
+                <option>لتر</option><option>قطعة</option><option>رول</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label>الحد الأدنى</label>
+              <input type="number" id="f-min" placeholder="0" min="0">
+            </div>
+            <div class="field">
+              <label>سعر الوحدة (جنيه)</label>
+              <input type="number" id="f-price" placeholder="0.00" step="0.01">
+            </div>
+          </div>
+          <div class="field">
+            <label>المورد الافتراضي</label>
+            <select id="f-supplier-inv">
+              <option value="">— اختر —</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>ملاحظات</label>
+            <textarea id="f-notes" placeholder="أي ملاحظات..."></textarea>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-primary" style="flex:1" onclick="saveItem()">💾 حفظ الصنف</button>
+          <button class="btn btn-ghost" onclick="clearItemForm()">✕</button>
+        </div>
+      </div>
+
+      <!-- Movements mini log -->
+      <div class="form-card">
+        <div class="form-card-header">🔄 حركة المخزون</div>
+        <div class="form-body">
+          <div class="field">
+            <label>الصنف</label>
+            <select id="mov-item"><option value="">— اختر صنف —</option></select>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label>النوع</label>
+              <select id="mov-type">
+                <option value="in">وارد ↑</option>
+                <option value="out">صادر ↓</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>الكمية</label>
+              <input type="number" id="mov-qty" placeholder="0" min="1">
+            </div>
+          </div>
+          <div class="field">
+            <label>السبب</label>
+            <input type="text" id="mov-reason" placeholder="استلام من مورد / سحب للإنتاج...">
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-primary" style="flex:1" onclick="addMovement()">تسجيل الحركة</button>
+        </div>
+        <div id="mov-log" style="padding:0 18px 14px;font-size:12px;color:var(--text2);max-height:160px;overflow-y:auto;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ PURCHASING SECTION ══════════ -->
+<div id="main-purchasing" class="container" style="display:none">
+
+  <div class="section-title">🛒 إدارة المشتريات</div>
+  <div class="section-sub">موردي الصلب والستانلس · طلبات الشراء · أوامر الشراء · تقييم الموردين</div>
+
+  <div class="kpi-row">
+    <div class="kpi" style="--accent:var(--blue)">
+      <div class="kpi-label">إجمالي الموردين</div>
+      <div class="kpi-value" id="kpi-sup">0</div>
+      <div class="kpi-sub">مورد نشط</div>
+    </div>
+    <div class="kpi" style="--accent:var(--amber)">
+      <div class="kpi-label">طلبات معلقة</div>
+      <div class="kpi-value" id="kpi-pending-po">0</div>
+      <div class="kpi-sub">بانتظار الاعتماد</div>
+    </div>
+    <div class="kpi" style="--accent:var(--green)">
+      <div class="kpi-label">أوامر شراء مفتوحة</div>
+      <div class="kpi-value" id="kpi-open-po">0</div>
+      <div class="kpi-sub">لم تُستلم بعد</div>
+    </div>
+    <div class="kpi" style="--accent:var(--purple)">
+      <div class="kpi-label">إجمالي المشتريات</div>
+      <div class="kpi-value" id="kpi-total-purchases">0</div>
+      <div class="kpi-sub">جنيه هذا الشهر</div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+    <div>
+      <div class="card">
+        <div class="tab-bar">
+          <button class="tab active" onclick="switchTab(this,'ptab-suppliers')">الموردين</button>
+          <button class="tab" onclick="switchTab(this,'ptab-requests')">طلبات الشراء</button>
+          <button class="tab" onclick="switchTab(this,'ptab-orders')">أوامر الشراء</button>
+          <button class="tab" onclick="switchTab(this,'ptab-eval')">تقييم الموردين</button>
+        </div>
+        <div class="card-header" style="border-top:1px solid var(--border);">
+          <div class="search-box">
+            <input type="text" id="pur-search" placeholder="بحث..." oninput="renderPurchasing()">
+          </div>
+          <div class="card-actions">
+            <button class="btn btn-ghost btn-sm" onclick="exportCSV('purchasing')">↓ تصدير</button>
+          </div>
+        </div>
+
+        <!-- Suppliers -->
+        <div class="tab-content active" id="ptab-suppliers">
+          <div class="table-wrap"><table>
+            <thead><tr><th>#</th><th>كود المورد</th><th>اسم المورد</th><th>التخصص</th><th>التواصل</th><th>التقييم</th><th>الحالة</th><th>إجراء</th></tr></thead>
+            <tbody id="sup-tbody"></tbody>
+          </table></div>
+        </div>
+
+        <!-- Purchase Requests -->
+        <div class="tab-content" id="ptab-requests">
+          <div class="table-wrap"><table>
+            <thead><tr><th>#</th><th>رقم الطلب</th><th>الصنف</th><th>الكمية</th><th>الأولوية</th><th>التاريخ</th><th>الحالة</th><th>إجراء</th></tr></thead>
+            <tbody id="req-tbody"></tbody>
+          </table></div>
+        </div>
+
+        <!-- Purchase Orders -->
+        <div class="tab-content" id="ptab-orders">
+          <div class="table-wrap"><table>
+            <thead><tr><th>#</th><th>رقم الأمر</th><th>المورد</th><th>الصنف</th><th>الكمية</th><th>الإجمالي</th><th>التوصيل</th><th>الحالة</th><th>إجراء</th></tr></thead>
+            <tbody id="po-tbody"></tbody>
+          </table></div>
+        </div>
+
+        <!-- Evaluation -->
+        <div class="tab-content" id="ptab-eval">
+          <div class="table-wrap"><table>
+            <thead><tr><th>المورد</th><th>الجودة</th><th>الالتزام</th><th>السعر</th><th>الاستجابة</th><th>المجموع</th><th>التوصية</th></tr></thead>
+            <tbody id="eval-tbody"></tbody>
+          </table></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <!-- Add Supplier -->
+      <div class="form-card">
+        <div class="form-card-header">➕ إضافة مورد</div>
+        <div class="form-body">
+          <div class="field-row">
+            <div class="field">
+              <label>كود المورد</label>
+              <input type="text" id="s-code" placeholder="SUP-001">
+            </div>
+            <div class="field">
+              <label>التخصص</label>
+              <select id="s-spec">
+                <option>ستانلس ستيل</option><option>حديد</option>
+                <option>مواد لحام</option><option>تشطيبات</option><option>متنوع</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label>اسم المورد</label>
+            <input type="text" id="s-name" placeholder="اسم الشركة أو الفرد...">
+          </div>
+          <div class="field">
+            <label>رقم التواصل</label>
+            <input type="text" id="s-phone" placeholder="01xxxxxxxxx">
+          </div>
+          <div class="field">
+            <label>البريد / العنوان</label>
+            <input type="text" id="s-email" placeholder="email@example.com">
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-primary" style="flex:1" onclick="saveSupplier()">💾 حفظ المورد</button>
+          <button class="btn btn-ghost" onclick="clearSupplierForm()">✕</button>
+        </div>
+      </div>
+
+      <!-- Purchase Request -->
+      <div class="form-card">
+        <div class="form-card-header">📋 طلب شراء جديد</div>
+        <div class="form-body">
+          <div class="field">
+            <label>الصنف المطلوب</label>
+            <select id="pr-item"><option value="">— اختر صنف —</option></select>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label>الكمية</label>
+              <input type="number" id="pr-qty" placeholder="0" min="1">
+            </div>
+            <div class="field">
+              <label>الأولوية</label>
+              <select id="pr-priority">
+                <option value="عادي">عادي</option>
+                <option value="عاجل">عاجل</option>
+                <option value="حرج">حرج</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label>المورد المقترح</label>
+            <select id="pr-supplier"><option value="">— اختر —</option></select>
+          </div>
+          <div class="field">
+            <label>ملاحظات</label>
+            <textarea id="pr-notes" placeholder="سبب الطلب..." style="min-height:50px"></textarea>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-primary" style="flex:1" onclick="savePurchaseRequest()">إرسال الطلب</button>
+        </div>
+      </div>
+
+      <!-- Convert to PO -->
+      <div class="form-card">
+        <div class="form-card-header">📦 إنشاء أمر شراء</div>
+        <div class="form-body">
+          <div class="field">
+            <label>من طلب رقم</label>
+            <select id="po-from-req"><option value="">— اختر طلب معتمد —</option></select>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label>سعر الوحدة</label>
+              <input type="number" id="po-price" placeholder="0.00" step="0.01">
+            </div>
+            <div class="field">
+              <label>تاريخ التوصيل</label>
+              <input type="date" id="po-delivery">
+            </div>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-primary" style="flex:1" onclick="createPO()">إنشاء الأمر</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL (Edit) -->
+<div class="modal-overlay" id="edit-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-title">تعديل البيانات</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal()">إلغاء</button>
+      <button class="btn btn-primary" id="modal-save-btn" onclick="modalSave()">حفظ التعديل</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-container" id="toast-container"></div>
+
+<script>
+// ════════════════════════════════════════
+// DATA STORE
+// ════════════════════════════════════════
+let DB = {
+  inventory: [
+    { id:1, code:'MAT-001', name:'أنابيب ستانلس ستيل 304', cat:'ستانلس ستيل', qty:3500, unit:'كجم', minQty:1000, price:185, supplier:1, notes:'مقاس 25×25 مم - للكراسي والترابيزات' },
+    { id:2, code:'MAT-002', name:'صفائح ستانلس ستيل 2mm', cat:'ستانلس ستيل', qty:420, unit:'كجم', minQty:500, price:210, supplier:1, notes:'لأسطح الترابيزات' },
+    { id:3, code:'MAT-003', name:'مواسير حديد مربعة 40×40', cat:'حديد', qty:2800, unit:'كجم', minQty:800, price:62, supplier:2, notes:'للكراسي والترابيزات الحديد' },
+    { id:4, code:'MAT-004', name:'حديد مسطح 30×3 مم', cat:'حديد', qty:950, unit:'كجم', minQty:400, price:58, supplier:2, notes:'للأرجل والتقويات' },
+    { id:5, code:'MAT-005', name:'بلاط ستانلس 316 (تصدير)', cat:'ستانلس ستيل', qty:180, unit:'كجم', minQty:300, price:265, supplier:1, notes:'للطلبات التصديرية فقط - جودة عالية' },
+    { id:6, code:'MAT-006', name:'بودرة لحام ستانلس', cat:'مواد لحام', qty:95, unit:'كجم', minQty:50, price:340, supplier:3, notes:'' },
+    { id:7, code:'MAT-007', name:'أسلاك لحام حديد E6013', cat:'مواد لحام', qty:280, unit:'كجم', minQty:100, price:78, supplier:3, notes:'' },
+    { id:8, code:'MAT-008', name:'طلاء إيبوكسي أبيض', cat:'تشطيبات', qty:60, unit:'لتر', minQty:80, price:145, supplier:4, notes:'للمنتجات الحديد المحلية' },
+    { id:9, code:'MAT-009', name:'مسامير وبراغي ستانلس', cat:'إكسسوار', qty:5000, unit:'قطعة', minQty:2000, price:2.5, supplier:3, notes:'مقاسات متنوعة' },
+    { id:10, code:'MAT-010', name:'كفرات بلاستيك أرجل', cat:'إكسسوار', qty:1200, unit:'قطعة', minQty:500, price:3.5, supplier:4, notes:'للحماية من الخدش' },
+    { id:11, code:'MAT-011', name:'إسفنج مقاعد كراسي', cat:'تشطيبات', qty:85, unit:'قطعة', minQty:100, price:55, supplier:4, notes:'سماكة 5 سم' },
+    { id:12, code:'MAT-012', name:'قماش تنجيد', cat:'تشطيبات', qty:40, unit:'متر', minQty:60, price:120, supplier:4, notes:'للكراسي المنجدة' },
+  ],
+  suppliers: [
+    { id:1, code:'SUP-001', name:'الشركة المصرية للحديد والصلب', spec:'ستانلس ستيل', phone:'0201000001', email:'egyptsteel@example.com', rating:4.7, active:true },
+    { id:2, code:'SUP-002', name:'مجموعة بشاي للصلب', spec:'حديد', phone:'0201000002', email:'beshay@example.com', rating:4.3, active:true },
+    { id:3, code:'SUP-003', name:'ميدويلد للحام والإكسسوار', spec:'مواد لحام', phone:'0201000003', email:'midweld@example.com', rating:4.0, active:true },
+    { id:4, code:'SUP-004', name:'النصر للتشطيبات والمستلزمات', spec:'تشطيبات', phone:'0201000004', email:'nasr@example.com', rating:3.6, active:true },
+  ],
+  purchaseRequests: [
+    { id:1, num:'PR-001', itemId:2, qty:300, priority:'عاجل', date:'2025-06-01', status:'معتمد', supplierId:1, notes:'طلبية تصدير أوروبا جاية — صفائح ستانلس ناقصة' },
+    { id:2, num:'PR-002', itemId:8, qty:50, priority:'عاجل', date:'2025-06-02', status:'منتظر', supplierId:4, notes:'طلاء الحديد المحلي بيخلص' },
+    { id:3, num:'PR-003', itemId:11, qty:80, priority:'عادي', date:'2025-06-03', status:'منتظر', supplierId:4, notes:'إسفنج للكراسي المنجدة' },
+  ],
+  purchaseOrders: [
+    { id:1, num:'PO-001', supplierId:1, itemId:2, qty:300, unitPrice:205, delivery:'2025-06-12', status:'مفتوح', reqId:1 },
+  ],
+  movements: [],
+  nextId: { inv:13, sup:5, req:4, po:2 }
+};
+
+let currentEditType = null, currentEditId = null;
+
+// ════════════════════════════════════════
+// NAVIGATION
+// ════════════════════════════════════════
+function switchMain(section) {
+  document.getElementById('main-warehouses').style.display = section==='warehouses'?'':'none';
+  document.getElementById('main-purchasing').style.display = section==='purchasing'?'':'none';
+  document.querySelectorAll('.htab').forEach((b,i)=>b.classList.toggle('active', (i===0&&section==='warehouses')||(i===1&&section==='purchasing')));
+  if(section==='warehouses') renderInventory(), updateKPIs();
+  else renderPurchasing(), updatePurchasingKPIs();
+}
+
+function switchTab(btn, tabId) {
+  const parent = btn.closest('.card');
+  parent.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  parent.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  const el = document.getElementById(tabId);
+  if(el) el.classList.add('active');
+  renderPurchasing();
+}
+
+// ════════════════════════════════════════
+// INVENTORY
+// ════════════════════════════════════════
+function renderInventory(filter) {
+  const search = document.getElementById('inv-search').value.toLowerCase();
+  const catF = document.getElementById('cat-filter').value;
+  let items = DB.inventory.filter(i=>{
+    const matchSearch = !search || i.name.toLowerCase().includes(search) || i.code.toLowerCase().includes(search);
+    const matchCat = !catF || i.cat === catF;
+    const matchLow = !filter || i.qty <= i.minQty;
+    return matchSearch && matchCat && matchLow;
+  });
+
+  const tbody = document.getElementById('inv-tbody');
+  tbody.innerHTML = items.length ? items.map((item,idx)=>{
+    const sup = DB.suppliers.find(s=>s.id===item.supplier);
+    const isLow = item.qty <= item.minQty;
+    const pct = Math.min(100, Math.round(item.qty/item.minQty*100));
+    const statusBadge = isLow
+      ? `<span class="badge badge-red">⚠ منخفض</span>`
+      : `<span class="badge badge-green">✓ جيد</span>`;
+    return `<tr>
+      <td class="td-mono" style="color:var(--text3)">${idx+1}</td>
+      <td class="td-mono" style="color:var(--blue)">${item.code}</td>
+      <td><strong>${item.name}</strong><br><small style="color:var(--text3)">${sup?sup.name:'-'}</small></td>
+      <td><span class="badge badge-purple">${item.cat}</span></td>
+      <td>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="td-mono" style="color:${isLow?'var(--red)':'var(--text)'}">${item.qty.toLocaleString()}</span>
+          ${isLow?'<span class="reorder-flag">↻ إعادة طلب</span>':''}
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${isLow?'var(--red)':'var(--teal)'}"></div></div>
+      </td>
+      <td style="color:var(--text2)">${item.unit}</td>
+      <td class="td-mono" style="color:var(--text2)">${item.minQty}</td>
+      <td class="td-mono">${item.price.toLocaleString()} ج</td>
+      <td>${statusBadge}</td>
+      <td>
+        <button class="btn btn-edit" onclick="editItem(${item.id})">✎</button>
+        <button class="btn btn-danger" onclick="deleteItem(${item.id})">✕</button>
+      </td>
+    </tr>`;
+  }).join('') : '<tr><td colspan="10"><div class="empty"><div class="empty-icon">📦</div><p>لا توجد أصناف</p></div></td></tr>';
+
+  updateKPIs();
+  updateCatFilter();
+  updateSupplierDropdowns();
+  updateMovementDropdown();
+}
+
+function updateKPIs() {
+  const low = DB.inventory.filter(i=>i.qty<=i.minQty);
+  const total = DB.inventory.reduce((s,i)=>s+i.qty*i.price, 0);
+  document.getElementById('kpi-items').textContent = DB.inventory.length;
+  document.getElementById('kpi-low').textContent = low.length;
+  document.getElementById('kpi-value').textContent = total.toLocaleString();
+  document.getElementById('kpi-ok').textContent = DB.inventory.length - low.length;
+
+  const alert = document.getElementById('low-stock-alert');
+  if(low.length > 0) {
+    alert.style.display = 'flex';
+    document.getElementById('low-stock-msg').textContent = `${low.length} صنف وصل للحد الأدنى: ${low.map(i=>i.name).join(' · ')}`;
+  } else { alert.style.display = 'none'; }
+}
+
+function filterLow() { renderInventory(true); }
+
+function updateCatFilter() {
+  const sel = document.getElementById('cat-filter');
+  const cur = sel.value;
+  const cats = [...new Set(DB.inventory.map(i=>i.cat))];
+  sel.innerHTML = '<option value="">كل الفئات</option>' + cats.map(c=>`<option${c===cur?' selected':''}>${c}</option>`).join('');
+}
+
+function updateSupplierDropdowns() {
+  const opts = '<option value="">— اختر —</option>' + DB.suppliers.map(s=>`<option value="${s.id}">${s.name}</option>`).join('');
+  ['f-supplier-inv','pr-supplier'].forEach(id=>{ const el=document.getElementById(id); if(el) el.innerHTML=opts; });
+}
+
+function updateMovementDropdown() {
+  const sel = document.getElementById('mov-item');
+  sel.innerHTML = '<option value="">— اختر صنف —</option>' + DB.inventory.map(i=>`<option value="${i.id}">${i.code} — ${i.name}</option>`).join('');
+}
+
+// SAVE ITEM
+function saveItem() {
+  const code = document.getElementById('f-code').value.trim();
+  const name = document.getElementById('f-name').value.trim();
+  const qty = parseFloat(document.getElementById('f-qty').value)||0;
+  const minQty = parseFloat(document.getElementById('f-min').value)||0;
+  const price = parseFloat(document.getElementById('f-price').value)||0;
+  if(!name) return toast('أدخل اسم الصنف','error');
+  if(currentEditId) {
+    const item = DB.inventory.find(i=>i.id===currentEditId);
+    Object.assign(item,{ code, name, cat:document.getElementById('f-cat').value, qty, unit:document.getElementById('f-unit').value, minQty, price, supplier:parseInt(document.getElementById('f-supplier-inv').value)||null, notes:document.getElementById('f-notes').value });
+    currentEditId=null; toast('تم تعديل الصنف ✓');
+  } else {
+    DB.inventory.push({ id:DB.nextId.inv++, code:code||`MAT-${String(DB.nextId.inv).padStart(3,'0')}`, name, cat:document.getElementById('f-cat').value, qty, unit:document.getElementById('f-unit').value, minQty, price, supplier:parseInt(document.getElementById('f-supplier-inv').value)||null, notes:document.getElementById('f-notes').value });
+    toast('تم إضافة الصنف ✓');
+  }
+  clearItemForm(); renderInventory();
+}
+
+function clearItemForm() {
+  ['f-code','f-name','f-qty','f-min','f-price','f-notes'].forEach(id=>document.getElementById(id).value='');
+  currentEditId=null;
+}
+
+function editItem(id) {
+  const item = DB.inventory.find(i=>i.id===id);
+  if(!item) return;
+  document.getElementById('f-code').value = item.code;
+  document.getElementById('f-name').value = item.name;
+  document.getElementById('f-cat').value = item.cat;
+  document.getElementById('f-qty').value = item.qty;
+  document.getElementById('f-unit').value = item.unit;
+  document.getElementById('f-min').value = item.minQty;
+  document.getElementById('f-price').value = item.price;
+  document.getElementById('f-notes').value = item.notes||'';
+  if(item.supplier) document.getElementById('f-supplier-inv').value = item.supplier;
+  currentEditId = id;
+  document.getElementById('f-name').focus();
+  toast('جاهز للتعديل — عدّل البيانات واضغط حفظ');
+}
+
+function deleteItem(id) {
+  if(!confirm('هتحذف الصنف ده؟')) return;
+  DB.inventory = DB.inventory.filter(i=>i.id!==id);
+  renderInventory(); toast('تم الحذف','error');
+}
+
+// MOVEMENT
+function addMovement() {
+  const itemId = parseInt(document.getElementById('mov-item').value);
+  const type = document.getElementById('mov-type').value;
+  const qty = parseFloat(document.getElementById('mov-qty').value)||0;
+  const reason = document.getElementById('mov-reason').value.trim();
+  if(!itemId || !qty) return toast('اختر صنف وأدخل كمية','error');
+  const item = DB.inventory.find(i=>i.id===itemId);
+  if(!item) return;
+  if(type==='out' && item.qty < qty) return toast('الكمية المتاحة أقل من المطلوب','error');
+  item.qty += type==='in' ? qty : -qty;
+  const log = document.getElementById('mov-log');
+  const entry = document.createElement('div');
+  entry.style = 'padding:6px 0;border-bottom:1px solid var(--border);';
+  entry.innerHTML = `<span style="color:${type==='in'?'var(--green)':'var(--red)'}">${type==='in'?'↑':'↓'} ${qty} ${item.unit}</span> <span style="color:var(--text2)">${item.name}</span> ${reason?'<span style="color:var(--text3)">— '+reason+'</span>':''}`;
+  log.prepend(entry);
+  DB.movements.push({ itemId, type, qty, reason, date:new Date().toISOString() });
+  document.getElementById('mov-qty').value='';
+  document.getElementById('mov-reason').value='';
+  renderInventory(); toast(`تم تسجيل ${type==='in'?'الوارد':'الصادر'} ✓`);
+}
+
+// ════════════════════════════════════════
+// PURCHASING
+// ════════════════════════════════════════
+function renderPurchasing() {
+  renderSuppliers();
+  renderRequests();
+  renderPOs();
+  renderEval();
+  updatePurchasingKPIs();
+  updatePRDropdowns();
+}
+
+function renderSuppliers() {
+  const search = document.getElementById('pur-search').value.toLowerCase();
+  const tbody = document.getElementById('sup-tbody');
+  const items = DB.suppliers.filter(s=>!search || s.name.toLowerCase().includes(search)||s.code.toLowerCase().includes(search));
+  tbody.innerHTML = items.length ? items.map((s,i)=>{
+    const stars = '★'.repeat(Math.round(s.rating)) + '☆'.repeat(5-Math.round(s.rating));
+    const badge = s.rating>=4 ? 'badge-green' : s.rating>=3 ? 'badge-amber' : 'badge-red';
+    return `<tr>
+      <td class="td-mono" style="color:var(--text3)">${i+1}</td>
+      <td class="td-mono" style="color:var(--blue)">${s.code}</td>
+      <td><strong>${s.name}</strong></td>
+      <td><span class="badge badge-purple">${s.spec}</span></td>
+      <td style="color:var(--text2);font-size:12px">${s.phone}<br>${s.email}</td>
+      <td><span style="color:var(--amber);font-size:13px">${stars}</span><br><small class="td-mono">${s.rating}/5</small></td>
+      <td><span class="badge ${s.active?'badge-green':'badge-red'}">${s.active?'نشط':'موقوف'}</span></td>
+      <td>
+        <button class="btn btn-edit" onclick="editSupplier(${s.id})">✎</button>
+        <button class="btn btn-danger" onclick="deleteSupplier(${s.id})">✕</button>
+      </td>
+    </tr>`;
+  }).join('') : '<tr><td colspan="8"><div class="empty"><div class="empty-icon">🏢</div><p>لا توجد موردين</p></div></td></tr>';
+}
+
+function renderRequests() {
+  const tbody = document.getElementById('req-tbody');
+  tbody.innerHTML = DB.purchaseRequests.map((r,i)=>{
+    const item = DB.inventory.find(x=>x.id===r.itemId);
+    const sup = DB.suppliers.find(s=>s.id===r.supplierId);
+    const priClass = r.priority==='حرج'?'badge-red':r.priority==='عاجل'?'badge-amber':'badge-blue';
+    const stClass = r.status==='معتمد'?'badge-green':r.status==='مرفوض'?'badge-red':'badge-amber';
+    return `<tr>
+      <td class="td-mono" style="color:var(--text3)">${i+1}</td>
+      <td class="td-mono" style="color:var(--blue)">${r.num}</td>
+      <td>${item?item.name:'—'}</td>
+      <td class="td-mono">${r.qty} ${item?item.unit:''}</td>
+      <td><span class="badge ${priClass}">${r.priority}</span></td>
+      <td style="color:var(--text2);font-size:12px">${r.date}</td>
+      <td><span class="badge ${stClass}">${r.status}</span></td>
+      <td style="display:flex;gap:4px;flex-wrap:wrap">
+        ${r.status==='منتظر'?`<button class="btn btn-edit btn-sm" onclick="approveRequest(${r.id})">✓ اعتماد</button>`:``}
+        <button class="btn btn-danger" onclick="deleteRequest(${r.id})">✕</button>
+      </td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="8"><div class="empty"><div class="empty-icon">📋</div><p>لا توجد طلبات</p></div></td></tr>';
+}
+
+function renderPOs() {
+  const tbody = document.getElementById('po-tbody');
+  tbody.innerHTML = DB.purchaseOrders.map((po,i)=>{
+    const sup = DB.suppliers.find(s=>s.id===po.supplierId);
+    const item = DB.inventory.find(x=>x.id===po.itemId);
+    const total = po.qty * po.unitPrice;
+    const stClass = po.status==='مستلم'?'badge-green':po.status==='مفتوح'?'badge-amber':'badge-red';
+    return `<tr>
+      <td class="td-mono" style="color:var(--text3)">${i+1}</td>
+      <td class="td-mono" style="color:var(--blue)">${po.num}</td>
+      <td>${sup?sup.name:'—'}</td>
+      <td>${item?item.name:'—'}</td>
+      <td class="td-mono">${po.qty}</td>
+      <td class="td-mono" style="color:var(--green)">${total.toLocaleString()} ج</td>
+      <td style="color:var(--text2);font-size:12px">${po.delivery}</td>
+      <td><span class="badge ${stClass}">${po.status}</span></td>
+      <td style="display:flex;gap:4px">
+        ${po.status==='مفتوح'?`<button class="btn btn-edit btn-sm" onclick="receivePO(${po.id})">↓ استلام</button>`:''}
+        <button class="btn btn-danger" onclick="deletePO(${po.id})">✕</button>
+      </td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="9"><div class="empty"><div class="empty-icon">📦</div><p>لا توجد أوامر شراء</p></div></td></tr>';
+}
+
+function renderEval() {
+  const tbody = document.getElementById('eval-tbody');
+  tbody.innerHTML = DB.suppliers.map(s=>{
+    const total = s.rating;
+    const rec = total>=4.5?'ممتاز 🌟':total>=3.5?'جيد ✓':total>=2.5?'مقبول ⚠':'ضعيف ✕';
+    const recClass = total>=4.5?'badge-green':total>=3.5?'badge-blue':total>=2.5?'badge-amber':'badge-red';
+    const q = (s.rating * 0.9).toFixed(1), d = (s.rating * 1.0).toFixed(1), p = (s.rating * 0.95).toFixed(1), r = (s.rating * 1.05).toFixed(1);
+    return `<tr>
+      <td><strong>${s.name}</strong></td>
+      <td><div class="progress-bar" style="width:60px"><div class="progress-fill" style="width:${q*20}%;background:var(--teal)"></div></div><small>${q}</small></td>
+      <td><div class="progress-bar" style="width:60px"><div class="progress-fill" style="width:${d*20}%;background:var(--blue)"></div></div><small>${d}</small></td>
+      <td><div class="progress-bar" style="width:60px"><div class="progress-fill" style="width:${p*20}%;background:var(--amber)"></div></div><small>${p}</small></td>
+      <td><div class="progress-bar" style="width:60px"><div class="progress-fill" style="width:${Math.min(100,r*20)}%;background:var(--green)"></div></div><small>${r}</small></td>
+      <td class="td-mono" style="font-size:15px;color:var(--text)">${s.rating}/5</td>
+      <td><span class="badge ${recClass}">${rec}</span></td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="7"><div class="empty"><p>لا توجد بيانات تقييم</p></div></td></tr>';
+}
+
+function updatePurchasingKPIs() {
+  const pending = DB.purchaseRequests.filter(r=>r.status==='منتظر').length;
+  const open = DB.purchaseOrders.filter(p=>p.status==='مفتوح').length;
+  const totalPurchases = DB.purchaseOrders.reduce((s,p)=>s+p.qty*p.unitPrice,0);
+  document.getElementById('kpi-sup').textContent = DB.suppliers.length;
+  document.getElementById('kpi-pending-po').textContent = pending;
+  document.getElementById('kpi-open-po').textContent = open;
+  document.getElementById('kpi-total-purchases').textContent = totalPurchases.toLocaleString();
+}
+
+function updatePRDropdowns() {
+  const itemOpts = '<option value="">— اختر صنف —</option>' + DB.inventory.map(i=>`<option value="${i.id}">${i.code} — ${i.name}</option>`).join('');
+  const supOpts = '<option value="">— اختر —</option>' + DB.suppliers.map(s=>`<option value="${s.id}">${s.name}</option>`).join('');
+  const approvedReqs = DB.purchaseRequests.filter(r=>r.status==='معتمد');
+  const reqOpts = '<option value="">— اختر طلب معتمد —</option>' + approvedReqs.map(r=>{ const item=DB.inventory.find(x=>x.id===r.itemId); return `<option value="${r.id}">${r.num} — ${item?item.name:''} (${r.qty})</option>`;}).join('');
+  document.getElementById('pr-item').innerHTML = itemOpts;
+  document.getElementById('pr-supplier').innerHTML = supOpts;
+  document.getElementById('po-from-req').innerHTML = reqOpts;
+}
+
+// SAVE SUPPLIER
+function saveSupplier() {
+  const name = document.getElementById('s-name').value.trim();
+  if(!name) return toast('أدخل اسم المورد','error');
+  const code = document.getElementById('s-code').value.trim() || `SUP-${String(DB.nextId.sup).padStart(3,'0')}`;
+  if(currentEditId && currentEditType==='supplier') {
+    const s = DB.suppliers.find(x=>x.id===currentEditId);
+    Object.assign(s,{ code, name, spec:document.getElementById('s-spec').value, phone:document.getElementById('s-phone').value, email:document.getElementById('s-email').value });
+    currentEditId=null; currentEditType=null; toast('تم تعديل المورد ✓');
+  } else {
+    DB.suppliers.push({ id:DB.nextId.sup++, code, name, spec:document.getElementById('s-spec').value, phone:document.getElementById('s-phone').value, email:document.getElementById('s-email').value, rating:3.5, active:true });
+    toast('تم إضافة المورد ✓');
+  }
+  clearSupplierForm(); renderPurchasing();
+}
+
+function clearSupplierForm() {
+  ['s-code','s-name','s-phone','s-email'].forEach(id=>document.getElementById(id).value='');
+  currentEditId=null; currentEditType=null;
+}
+
+function editSupplier(id) {
+  const s = DB.suppliers.find(x=>x.id===id);
+  if(!s) return;
+  document.getElementById('s-code').value = s.code;
+  document.getElementById('s-name').value = s.name;
+  document.getElementById('s-spec').value = s.spec;
+  document.getElementById('s-phone').value = s.phone;
+  document.getElementById('s-email').value = s.email;
+  currentEditId=id; currentEditType='supplier';
+  toast('جاهز للتعديل');
+}
+
+function deleteSupplier(id) {
+  if(!confirm('هتحذف المورد ده؟')) return;
+  DB.suppliers = DB.suppliers.filter(s=>s.id!==id);
+  renderPurchasing(); toast('تم الحذف','error');
+}
+
+// PURCHASE REQUEST
+function savePurchaseRequest() {
+  const itemId = parseInt(document.getElementById('pr-item').value);
+  const qty = parseFloat(document.getElementById('pr-qty').value)||0;
+  if(!itemId||!qty) return toast('اختر صنف وأدخل الكمية','error');
+  const num = `PR-${String(DB.nextId.req).padStart(3,'0')}`;
+  DB.purchaseRequests.push({ id:DB.nextId.req++, num, itemId, qty, priority:document.getElementById('pr-priority').value, date:new Date().toISOString().split('T')[0], status:'منتظر', supplierId:parseInt(document.getElementById('pr-supplier').value)||null, notes:document.getElementById('pr-notes').value });
+  document.getElementById('pr-qty').value=''; document.getElementById('pr-notes').value='';
+  renderPurchasing(); toast('تم إرسال طلب الشراء ✓');
+}
+
+function approveRequest(id) {
+  const r = DB.purchaseRequests.find(x=>x.id===id);
+  if(r) { r.status='معتمد'; renderPurchasing(); toast('تم اعتماد الطلب ✓'); }
+}
+
+function deleteRequest(id) {
+  if(!confirm('هتحذف الطلب؟')) return;
+  DB.purchaseRequests = DB.purchaseRequests.filter(r=>r.id!==id);
+  renderPurchasing(); toast('تم الحذف','error');
+}
+
+// PURCHASE ORDER
+function createPO() {
+  const reqId = parseInt(document.getElementById('po-from-req').value);
+  const price = parseFloat(document.getElementById('po-price').value)||0;
+  const delivery = document.getElementById('po-delivery').value;
+  if(!reqId||!price||!delivery) return toast('أدخل كل البيانات المطلوبة','error');
+  const req = DB.purchaseRequests.find(r=>r.id===reqId);
+  if(!req) return;
+  const num = `PO-${String(DB.nextId.po).padStart(3,'0')}`;
+  DB.purchaseOrders.push({ id:DB.nextId.po++, num, supplierId:req.supplierId, itemId:req.itemId, qty:req.qty, unitPrice:price, delivery, status:'مفتوح', reqId });
+  document.getElementById('po-price').value=''; document.getElementById('po-delivery').value='';
+  renderPurchasing(); toast(`تم إنشاء أمر الشراء ${num} ✓`);
+}
+
+function receivePO(id) {
+  const po = DB.purchaseOrders.find(p=>p.id===id);
+  if(!po) return;
+  po.status='مستلم';
+  const item = DB.inventory.find(i=>i.id===po.itemId);
+  if(item) item.qty += po.qty;
+  renderPurchasing(); renderInventory();
+  toast(`تم استلام ${po.num} وإضافة ${po.qty} للمخزون ✓`);
+}
+
+function deletePO(id) {
+  if(!confirm('هتحذف أمر الشراء؟')) return;
+  DB.purchaseOrders = DB.purchaseOrders.filter(p=>p.id!==id);
+  renderPurchasing(); toast('تم الحذف','error');
+}
+
+// ════════════════════════════════════════
+// MODAL
+// ════════════════════════════════════════
+function closeModal() { document.getElementById('edit-modal').classList.remove('open'); }
+function modalSave() { closeModal(); }
+
+// ════════════════════════════════════════
+// EXPORT CSV
+// ════════════════════════════════════════
+function exportCSV(type) {
+  let rows, headers, filename;
+  if(type==='inventory') {
+    headers = ['الكود','الاسم','الفئة','الكمية','الوحدة','الحد الأدنى','السعر'];
+    rows = DB.inventory.map(i=>[i.code,i.name,i.cat,i.qty,i.unit,i.minQty,i.price]);
+    filename = 'المخزون.csv';
+  } else {
+    headers = ['الكود','الاسم','التخصص','التواصل','التقييم'];
+    rows = DB.suppliers.map(s=>[s.code,s.name,s.spec,s.phone,s.rating]);
+    filename = 'الموردين.csv';
+  }
+  const csv = [headers, ...rows].map(r=>r.join(',')).join('\n');
+  const blob = new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  a.click();
+  toast('تم تصدير الملف ✓');
+}
+
+// ════════════════════════════════════════
+// TOAST
+// ════════════════════════════════════════
+function toast(msg, type='success') {
+  const cont = document.getElementById('toast-container');
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.innerHTML = `<span>${type==='success'?'✓':'✕'}</span> ${msg}`;
+  cont.appendChild(el);
+  setTimeout(()=>{ el.style.opacity='0'; el.style.transition='opacity .3s'; setTimeout(()=>el.remove(),300); }, 2800);
+}
+
+// ════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════
+renderInventory();
+</script>
+</body>
+</html>
