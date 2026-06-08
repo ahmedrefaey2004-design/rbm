@@ -581,6 +581,10 @@ function saveDocs(docs) {
   try { localStorage.setItem(DOC_KEY, JSON.stringify(docs)); } catch(e) {}
 }
 
+// ── JOURNAL HELPERS ──────────────────────────────────────────
+function getJournal(){ try{ return JSON.parse(localStorage.getItem('misrsteel_journal')||'[]'); }catch(e){ return []; } }
+function postJE(je){ try{ const j=getJournal(); j.unshift(je); localStorage.setItem('misrsteel_journal',JSON.stringify(j)); }catch(e){} }
+
 // ══════════════════════════════════════
 // INIT
 // ══════════════════════════════════════
@@ -1086,6 +1090,45 @@ function saveDoc() {
   editingDocId = doc.id;
   renderSavedList();
   toast(`تم حفظ ${mode === 'quote' ? 'العرض' : 'الفاتورة'} ${doc.num} ✓`);
+
+  // Post journal entry when saving an invoice (not quote)
+  if(doc.type === 'invoice'){
+    const totals = doc.totals || calcTotals();
+    const total = totals.grandTotal || totals.total || 0;
+    const isExport = (doc.clDest||'').includes('تصدير') || (doc.currency||'') === 'USD';
+    const revAccount = isExport ? '4102' : '4101';
+    const revName = isExport ? 'مبيعات تصديرية' : 'مبيعات محلية';
+
+    // Read inventory to estimate COGS (average cost from s1)
+    let cogs = 0;
+    try {
+      const s1 = JSON.parse(localStorage.getItem('misrsteel_s1_db')||'{}');
+      const inv = s1.inventory || [];
+      (doc.lineItems||[]).forEach(li => {
+        const mat = inv.find(i => i.name === li.name || i.code === li.code);
+        if(mat) cogs += (mat.price || 0) * (li.qty || 1);
+      });
+    } catch(e){}
+
+    const jeEntries = [
+      {acc:'1103',name:'ذمم مدينة',debit:total,credit:0},
+      {acc:revAccount,name:revName,debit:0,credit:total}
+    ];
+    if(cogs > 0){
+      jeEntries.push({acc:'5101',name:'تكلفة مواد مباشرة',debit:cogs,credit:0});
+      jeEntries.push({acc:'1104',name:'مخزون خامات',debit:0,credit:cogs});
+    }
+
+    postJE({
+      id:'JE-'+Date.now(),
+      date:doc.docDate||new Date().toISOString().split('T')[0],
+      ref:doc.num,
+      desc:'فاتورة مبيعات — '+doc.client,
+      source:'s5b',
+      auto:true,
+      entries:jeEntries
+    });
+  }
 }
 
 function loadDoc(id) {

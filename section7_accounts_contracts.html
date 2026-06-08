@@ -540,12 +540,38 @@ const COA = [
   ]},
 ];
 
-const JOURNAL_ENTRIES = [
+const STATIC_JOURNAL_SEED = [
   {date:'2025-06-01',ref:'INV-001',desc:'تحصيل فاتورة فندق سميراميس',entries:[{acc:'1101',name:'النقدية',debit:85000,credit:0},{acc:'4101',name:'مبيعات محلية',debit:0,credit:85000}]},
   {date:'2025-06-02',ref:'PO-001',desc:'دفع مستحقات الشركة المصرية للصلب',entries:[{acc:'2101',name:'ذمم دائنة',debit:62000,credit:0},{acc:'1102',name:'البنك',debit:0,credit:62000}]},
   {date:'2025-06-04',ref:'SAL-JUN',desc:'صرف رواتب يونيو',entries:[{acc:'5104',name:'أجور عمالة',debit:38500,credit:0},{acc:'1101',name:'النقدية',debit:0,credit:38500}]},
   {date:'2025-06-06',ref:'INV-004',desc:'فاتورة فندق هيلتون',entries:[{acc:'1103',name:'ذمم مدينة',debit:60000,credit:0},{acc:'4101',name:'مبيعات محلية',debit:0,credit:60000}]},
 ];
+
+// ── JOURNAL PERSISTENCE ──────────────────────────────────────
+function getJournal(){
+  try{
+    const saved = JSON.parse(localStorage.getItem('misrsteel_journal')||'[]');
+    return saved.length ? saved : STATIC_JOURNAL_SEED;
+  }catch(e){ return STATIC_JOURNAL_SEED; }
+}
+function saveJournal(entries){
+  try{ localStorage.setItem('misrsteel_journal', JSON.stringify(entries)); }catch(e){}
+}
+function postJE(je){
+  const j=getJournal(); j.unshift(je); saveJournal(j);
+}
+
+function calcLiveBalances(){
+  const balances = {};
+  getJournal().forEach(je=>{
+    (je.entries||[]).forEach(e=>{
+      if(!balances[e.acc]) balances[e.acc]={debit:0,credit:0};
+      balances[e.acc].debit += e.debit||0;
+      balances[e.acc].credit += e.credit||0;
+    });
+  });
+  return balances;
+}
 
 let selectedAccount = null;
 let contractItems = [];
@@ -619,7 +645,7 @@ function selectAccount(code){
   selectedAccount=acc;
 
   // Render detail card
-  const relatedEntries = JOURNAL_ENTRIES.flatMap(je=>
+  const relatedEntries = getJournal().flatMap(je=>
     je.entries.filter(e=>e.acc===code).map(e=>({...e,date:je.date,ref:je.ref,desc:je.desc}))
   );
   const totalDebit=relatedEntries.reduce((s,e)=>s+e.debit,0);
@@ -666,7 +692,7 @@ function selectAccount(code){
 function renderJournal(){
   const tbody=document.getElementById('journal-tbody');
   let allRows=[];
-  JOURNAL_ENTRIES.forEach(je=>je.entries.forEach(e=>{
+  getJournal().forEach(je=>je.entries.forEach(e=>{
     allRows.push({date:je.date,ref:je.ref,desc:je.desc,...e});
   }));
   tbody.innerHTML=allRows.map(r=>`<tr>
@@ -711,12 +737,16 @@ function saveJournalEntry(){
   const debitTotal=journalLines.filter(l=>l.side==='debit').reduce((s,l)=>s+l.amount,0);
   const creditTotal=journalLines.filter(l=>l.side==='credit').reduce((s,l)=>s+l.amount,0);
   if(Math.abs(debitTotal-creditTotal)>0.01) return toast('القيد غير متوازن! المدين ≠ الدائن','e');
-  JOURNAL_ENTRIES.unshift({
+  const je = {
+    id:'JE-'+Date.now(),
     date:document.getElementById('j-date').value,
     ref:document.getElementById('j-ref').value,
     desc:document.getElementById('j-desc').value,
+    source:'s7',
+    auto:false,
     entries:journalLines.map(l=>({acc:l.acc.split(' ')[0],name:l.acc,debit:l.side==='debit'?l.amount:0,credit:l.side==='credit'?l.amount:0}))
-  });
+  };
+  postJE(je);
   journalLines=[];
   showJournalForm();
   renderJournalLines();
@@ -734,7 +764,7 @@ function updateCOAKPIs(){
 }
 
 function exportJournal(){
-  const rows=JOURNAL_ENTRIES.flatMap(je=>je.entries.map(e=>[je.date,je.ref,je.desc,e.acc,e.name,e.debit,e.credit].join(',')));
+  const rows=getJournal().flatMap(je=>je.entries.map(e=>[je.date,je.ref,je.desc,e.acc,e.name,e.debit,e.credit].join(',')));
   dl(['التاريخ,المرجع,البيان,كود الحساب,اسم الحساب,مدين,دائن',...rows].join('\n'),'قيود_مصر_ستيل.csv');
   toast('تم تصدير القيود ✓');
 }
@@ -1316,6 +1346,14 @@ function toast(msg,type='s'){const c=document.getElementById('tc');const el=docu
 renderCOA();
 renderJournal();
 updateCOAKPIs();
+
+// Refresh when other sections post journal entries
+window.addEventListener('storage', function(e){
+  if(e.key === 'misrsteel_journal'){
+    renderJournal();
+    updateCOAKPIs();
+  }
+});
 </script>
 </body>
 </html>

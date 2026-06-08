@@ -619,6 +619,10 @@ let currentEditType = null, currentEditId = null;
 function saveDB(){ try{ localStorage.setItem('misrsteel_s1_db', JSON.stringify(DB)); }catch(e){} }
 function gotoSection(id){ try{ window.parent.postMessage({type:'navigate',section:id},'*'); }catch(e){} }
 
+// ── JOURNAL HELPERS ──────────────────────────────────────────
+function getJournal(){ try{ return JSON.parse(localStorage.getItem('misrsteel_journal')||'[]'); }catch(e){ return []; } }
+function postJE(je){ try{ const j=getJournal(); j.unshift(je); localStorage.setItem('misrsteel_journal',JSON.stringify(j)); }catch(e){} }
+
 // Load from localStorage if available
 (function(){ try{ const s=localStorage.getItem('misrsteel_s1_db'); if(s){ const d=JSON.parse(s); if(d.inventory) DB.inventory=d.inventory; if(d.suppliers) DB.suppliers=d.suppliers; if(d.purchaseRequests) DB.purchaseRequests=d.purchaseRequests; if(d.purchaseOrders) DB.purchaseOrders=d.purchaseOrders; if(d.movements) DB.movements=d.movements; if(d.nextId) DB.nextId=d.nextId; } }catch(e){} })();
 
@@ -998,6 +1002,21 @@ function receivePO(id) {
   po.status='مستلم';
   const item = DB.inventory.find(i=>i.id===po.itemId);
   if(item) item.qty += po.qty;
+  // Post journal entry: Dr Inventory / Cr AP
+  const supplier = DB.suppliers.find(s=>s.id===po.supplierId);
+  const totalCost = po.qty * po.unitPrice;
+  postJE({
+    id:'JE-'+Date.now(),
+    date:new Date().toISOString().split('T')[0],
+    ref:po.num,
+    desc:'استلام مشتريات — '+(item?item.name:'')+(supplier?' من '+supplier.name:''),
+    source:'s1',
+    auto:true,
+    entries:[
+      {acc:'1104',name:'مخزون خامات',debit:totalCost,credit:0},
+      {acc:'2101',name:'ذمم دائنة',debit:0,credit:totalCost}
+    ]
+  });
   renderPurchasing(); renderInventory(); saveDB();
   toast(`تم استلام ${po.num} وإضافة ${po.qty} للمخزون ✓`);
 }

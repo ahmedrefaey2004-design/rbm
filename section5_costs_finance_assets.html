@@ -760,9 +760,49 @@ function switchTab(btn,id){
 }
 
 // ══════════════════════════════════
+// LIVE DATA LOADER
+// ══════════════════════════════════
+function loadLiveData(){
+  try{
+    // Load invoices from section5b
+    const docs = JSON.parse(localStorage.getItem('misrsteel_docs')||'[]');
+    const invoices = docs.filter(d=>d.type==='invoice');
+    if(invoices.length){
+      DB.invoices = invoices.map(d=>({
+        id:d.id, num:d.num||'INV', client:d.client,
+        date:d.docDate||'', amount:d.totals?.grandTotal||d.totals?.total||0,
+        status:d.docStatus||'مرسلة', currency:d.currency||'EGP'
+      }));
+    }
+    // Load purchase costs from section1
+    const s1 = JSON.parse(localStorage.getItem('misrsteel_s1_db')||'{}');
+    if(s1.purchaseOrders && s1.purchaseOrders.length){
+      const received = s1.purchaseOrders.filter(po=>po.status==='مستلم');
+      if(received.length){
+        DB.invoicesIn = received.map(po=>({
+          id:po.id, num:po.num, supplier:'',
+          date:po.delivery||'', amount:po.qty*po.unitPrice,
+          status:'مستلمة'
+        }));
+      }
+    }
+    // Load salaries from section4
+    const s4 = JSON.parse(localStorage.getItem('misrsteel_s4_db')||'{}');
+    if(s4.employees && s4.employees.length){
+      const totalSalaries = s4.employees.reduce((s,e)=>s+(e.salary||0)+(e.bonus||0),0);
+      if(totalSalaries > 0 && DB.cashflow){
+        const salIdx = DB.cashflow.findIndex(t=>t.desc && t.desc.includes('رواتب'));
+        if(salIdx >= 0) DB.cashflow[salIdx].amount = totalSalaries;
+      }
+    }
+  }catch(e){}
+}
+
+// ══════════════════════════════════
 // COSTS
 // ══════════════════════════════════
 function renderCosts(){
+  loadLiveData();
   const search=document.getElementById('cost-search').value.toLowerCase();
   const energyTotal=DB.energy.reduce((s,e)=>s+e.total,0);
   const overheadTotal=DB.overhead.reduce((s,o)=>s+o.amount,0);
@@ -930,6 +970,7 @@ function exportCosts(){const rows=PRODUCTS_BOM.map(p=>[p.name,p.matCost,p.laborC
 // FINANCE / P&L
 // ══════════════════════════════════
 function renderPL(){
+  loadLiveData();
   const revTotal=DB.revenues.reduce((s,r)=>s+r.amount,0);
   const matCost=PRODUCTS_BOM.reduce((s,p)=>s+p.matCost,0);
   const laborCost=38500;
