@@ -1253,7 +1253,7 @@ function renderQuality(){
     const inspector=DB.employees.find(e=>e.id===i.inspector);
     const passRate=Math.round(i.pass/i.total*100);
     const passed=i.fail===0;
-    const stageClass={فحص خامات:'bt',فحص تشغيل:'bb','فحص نهائي':'bv','فحص تصدير':'bp'}[i.stage]||'bv';
+    const stageClass={'فحص خامات':'bt','فحص تشغيل':'bb','فحص نهائي':'bv','فحص تصدير':'bp'}[i.stage]||'bv';
     return `<tr>
       <td class="mono" style="color:var(--violet)">${i.num}</td>
       <td><strong>${p?p.name:'—'}</strong></td>

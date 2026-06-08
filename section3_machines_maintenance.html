@@ -1083,7 +1083,7 @@ function renderBreakdowns(){
   const tbody=document.getElementById('bd-tbody');
   tbody.innerHTML=DB.breakdowns.length?DB.breakdowns.map((b,i)=>{
     const mc=DB.machines.find(x=>x.id===b.machineId);
-    const sc={تم الإصلاح:'bg','جاري الإصلاح':'bo','انتظار قطعة غيار':'br'}[b.status]||'ba';
+    const sc={'تم الإصلاح':'bg','جاري الإصلاح':'bo','انتظار قطعة غيار':'br'}[b.status]||'ba';
     return `<tr>
       <td class="mono" style="color:var(--text3)">${i+1}</td>
       <td><strong>${mc?mc.name:'—'}</strong><br><small style="color:var(--text3)">${mc?mc.code:''}</small></td>
